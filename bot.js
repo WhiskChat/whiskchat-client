@@ -12,7 +12,7 @@ socket.on("message", function(msg) {
     socket.on("chat", function(data) {
 	console.log(data.user + '| ' +  data.message);
 	setTimeout(function() {
-            if (data.message.substring(0, 57) === "<span class='label label-success'>has tipped WhiskDiceBot" && data.message.substring(0, 49) !== "<span class='label label-success'>has tipped akab" && data.user !== "WhiskDiceBot") {
+            if (data.message.substring(0, 57) === "<span class='label label-success'>has tipped WhiskDiceBot" && data.message.substring(0, 49) !== "<span class='label label-success'>has tipped akab" && data.user !== "akab") {
             // socket.emit("chat", {room: 'botgames', message: 'Thanks, ' + data.user + ' for the tip amounting to ' + data.message.substring(58, data.message.indexOf('mBTC!') - 1), color: "090"});
             if (started === true) {
                 setTimeout(function() {
