@@ -49,8 +49,8 @@ socket.on("connect", function() {
                             socket.emit("getbalance", {});
                             setTimeout(function() {
 				socket.emit("chat", {room: 'botgames', message: 'Current balance: ' + balance, color: "505"});
-				var rand = Math.floor(Math.random() * 11);
-				if (rand === 11 && lastWinner) {
+				var rand = Math.floor(Math.random() * 4);
+				if (rand === 3 && lastWinner) {
 				    setTimeout(function() {
                                         socket.emit("chat", {room: 'botgames', message: lastWinner + ': You won this payment!', color: "090"});
 					setTimeout(function() {
