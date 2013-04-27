@@ -2,6 +2,7 @@
 
 var io = require("socket.io-client");
 var started = false;
+var lastWinner = null;
 var socket = io.connect("http://192.155.86.153:8888/");
 console.log('Connecting');
 socket.on("connect", function() {
@@ -28,6 +29,7 @@ socket.on("connect", function() {
 				console.log('Sending');
 				var tip = String(data.message.substring(58, data.message.indexOf('mBTC!') - 1) * 1.25);
 				socket.emit("chat", {room: 'botgames', message: data.user + ': You win! Sending ' + tip, color: "090"});
+				lastWinner = data.user;
 			    }, 1500);
 			    setTimeout(function() {
 				var tip = String(data.message.substring(58, data.message.indexOf('mBTC!') - 1) * 1.25);
@@ -47,6 +49,16 @@ socket.on("connect", function() {
                             socket.emit("getbalance", {});
                             setTimeout(function() {
 				socket.emit("chat", {room: 'botgames', message: 'Current balance: ' + balance, color: "505"});
+				var rand = Math.floor(Math.random() * 11);
+				if (rand === 11 && lastWinner) {
+				    setTimeout(function() {
+                                        socket.emit("chat", {room: 'botgames', message: lastWinner + ': You won this payment!', color: "090"});
+					setTimeout(function() {
+                                            var tip = String(data.message.substring(58, data.message.indexOf('mBTC!') - 1));
+                                            socket.emit('tip', {user: lastWinner, room: 'botgames', tip: tip});
+					}, 2000);
+				    }, 2000);
+				}
                             }, 2000);
 			}, 2500);
 		    }
