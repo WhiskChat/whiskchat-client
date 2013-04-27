@@ -12,10 +12,13 @@ socket.on("message", function(msg) {
     socket.on("chat", function(data) {
 	console.log(data.user + '| ' +  data.message);
 	setTimeout(function() {
-        if (data.message.substring(0, 57) === "<span class='label label-success'>has tipped WhiskDiceBot") {
+            if (data.message.substring(0, 57) === "<span class='label label-success'>has tipped WhiskDiceBot" && data.message.substring(0, 49) !== "<span class='label label-success'>has tipped akab" && data.user !== "WhiskDiceBot") {
             // socket.emit("chat", {room: 'botgames', message: 'Thanks, ' + data.user + ' for the tip amounting to ' + data.message.substring(58, data.message.indexOf('mBTC!') - 1), color: "090"});
             if (started === true) {
-		setTimeout(function() {
+                setTimeout(function() {
+                    socket.emit("chat", {room: 'botgames', message: '/topic Bot Games - !help for help. | Bot balance: ' + balance + ' | Game enabled state: ' + started, color: "000"});
+                }, 30000);
+                setTimeout(function() {
 		}, 1000);
                 var rand = Math.floor(Math.random() * 3); 
 		if (rand === 2) {
@@ -56,7 +59,10 @@ socket.on("message", function(msg) {
                 socket.emit("chat", {room: 'botgames', message: 'Current balance: ' + balance, color: "505"});
             }, 2000);
 	    started = true;
-	}
+            setTimeout(function() {
+                socket.emit("chat", {room: 'botgames', message: '/topic Bot Games - !help for help. | Bot balance: ' + balance + ' | Game enabled state: ' + started, color: "000"});
+            }, 30000);
+        }
         if (data.message === "!stop" && (data.user === "whiskers75" || data.user === "admin")) {
             socket.emit("chat", {room: 'botgames', message: '/bold Stopping WhiskDice game (!help for info)', color: "505"});
             socket.emit("getbalance", {});
@@ -64,6 +70,9 @@ socket.on("message", function(msg) {
                 socket.emit("chat", {room: 'botgames', message: 'Current balance: ' + balance, color: "505"});
             }, 2000);
             started = false;
+            setTimeout(function() {
+                socket.emit("chat", {room: 'botgames', message: '/topic Bot Games - !help for help. | Bot balance: ' + balance + ' | Game enabled state: ' + started, color: "000"});
+            }, 30000);
         }
             if (data.message === "!help") {
                 socket.emit("chat", {room: 'botgames', message: data.user + ': Tip this bot to play. 33.3% chance to win, 1.1x payout if you do win. Do not tip if the balance is not big enough or the game is disabled. Game enabled state: ' + started, color: "505"});
@@ -71,6 +80,9 @@ socket.on("message", function(msg) {
                 setTimeout(function() {
                     socket.emit("chat", {room: 'botgames', message: 'Current balance: ' + balance, color: "505"});
                 }, 2000);
+                setTimeout(function() {
+                    socket.emit("chat", {room: 'botgames', message: '/topic Bot Games - !help for help. | Bot balance: ' + balance + ' | Game enabled state: ' + started, color: "000"});
+                }, 30000);
             }
             if (data.message === "!state") {
                 socket.emit("chat", {room: 'botgames', message: data.user + ': Game enabled state: ' + started, color: "505"});
@@ -78,14 +90,15 @@ socket.on("message", function(msg) {
                 setTimeout(function() {
                     socket.emit("chat", {room: 'botgames', message: 'Current balance: ' + balance, color: "505"});
                 }, 2000);
+                setTimeout(function() {
+                    socket.emit("chat", {room: 'botgames', message: '/topic Bot Games - !help for help. | Bot balance: ' + balance + ' | Game enabled state: ' + started, color: "000"});
+                }, 30000);
             }
             }, 1000);
     });
     var balance = 0;
     socket.emit("chat", {room: 'botgames', message: '/topic Bot Games - !help for help. | Bot balance: ' + balance + '| Game enabled state: ' + started, color: "505"});
-    setInterval(function() {
-       socket.emit("chat", {room: 'botgames', message: '/topic Bot Games - !help for help. | Bot balance: ' + balance + '| Game enabled state: ' + started, color: "505"});
-    }, 30000);
+
     socket.on("balance", function(data) {
         if (data.change) {
             balance = balance + data.change;
