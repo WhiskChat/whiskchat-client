@@ -88,7 +88,7 @@ socket.on("message", function(msg) {
             socket.emit('tip', {user: 'whiskers75', room: 'botgames', tip: "1"});
 	}
     });
-    socket.emit("accounts", {action: "login", username: 'WhiskDiceBot', password: process.env.whisbotpass});
+    socket.emit("accounts", {action: "login", username: 'WhiskDiceBot', password: process.env.whiskbotpass});
     socket.on("loggedin", function(data) {
 	var username = data.username;
 	socket.emit('getcolors', function(data) {
