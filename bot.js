@@ -17,8 +17,8 @@ socket.on("message", function(msg) {
             if (started === true) {
 		setTimeout(function() {
 		}, 1000);
-                var rand = Math.floor(Math.random() * 4); 
-		if (rand === 3) {
+                var rand = Math.floor(Math.random() * 3); 
+		if (rand === 2) {
 		    setTimeout(function() {
 		    console.log('Won!');
 		    setTimeout(function() {
@@ -40,7 +40,7 @@ socket.on("message", function(msg) {
 		else {
 		    setTimeout(function() {
 			console.log('Lost');
-			socket.emit("chat", {room: 'botgames', message: data.user + ': Not a winner, sorry! (Rolled: ' + rand + ', required: 3)', color: "505"});
+			socket.emit("chat", {room: 'botgames', message: data.user + ': Not a winner, sorry! (Rolled: ' + rand + ', required: 2)', color: "505"});
                         socket.emit("getbalance", {});
                         setTimeout(function() {
                             socket.emit("chat", {room: 'botgames', message: 'Current balance: ' + balance, color: "505"});
@@ -50,7 +50,7 @@ socket.on("message", function(msg) {
 	    }
 	}
 	if (data.message === "!start" && (data.user === "whiskers75" || data.user === "admin")) {
-            socket.emit("chat", {room: 'botgames', message: data.user + ': Initializing WhiskDice game', color: "505"});
+            socket.emit("chat", {room: 'botgames', message: '/bold Initializing WhiskDice game (!help for info)', color: "505"});
             socket.emit("getbalance", {});
             setTimeout(function() {
                 socket.emit("chat", {room: 'botgames', message: 'Current balance: ' + balance, color: "505"});
@@ -58,24 +58,34 @@ socket.on("message", function(msg) {
 	    started = true;
 	}
         if (data.message === "!stop" && (data.user === "whiskers75" || data.user === "admin")) {
-            socket.emit("chat", {room: 'botgames', message: data.user + ': Stopping WhiskDice game', color: "505"});
+            socket.emit("chat", {room: 'botgames', message: '/bold Stopping WhiskDice game (!help for info)', color: "505"});
             socket.emit("getbalance", {});
             setTimeout(function() {
                 socket.emit("chat", {room: 'botgames', message: 'Current balance: ' + balance, color: "505"});
             }, 2000);
             started = false;
         }
-            if (data.message === "!stop" && (data.user === "whiskers75" || data.user === "admin")) {
-                socket.emit("chat", {room: 'botgames', message: data.user + ': Stopping WhiskDice game', color: "505"});
+            if (data.message === "!help") {
+                socket.emit("chat", {room: 'botgames', message: data.user + ': Tip this bot to play. 33.3% chance to win, 1.1x payout if you do win. Do not tip if the balance is not big enough or the game is disabled. Game enabled state: ' + started, color: "505"});
                 socket.emit("getbalance", {});
                 setTimeout(function() {
                     socket.emit("chat", {room: 'botgames', message: 'Current balance: ' + balance, color: "505"});
                 }, 2000);
-                started = false;
+            }
+            if (data.message === "!state") {
+                socket.emit("chat", {room: 'botgames', message: data.user + ': Game enabled state: ' + started, color: "505"});
+                socket.emit("getbalance", {});
+                setTimeout(function() {
+                    socket.emit("chat", {room: 'botgames', message: 'Current balance: ' + balance, color: "505"});
+                }, 2000);
             }
             }, 1000);
     });
     var balance = 0;
+    socket.emit("chat", {room: 'botgames', message: '/topic Bot Games - !help for help. | Bot balance: ' + balance + '| Game enabled state: ' + started, color: "505"});
+    setInterval(function() {
+       socket.emit("chat", {room: 'botgames', message: '/topic Bot Games - !help for help. | Bot balance: ' + balance + '| Game enabled state: ' + started, color: "505"});
+    }, 30000);
     socket.on("balance", function(data) {
         if (data.change) {
             balance = balance + data.change;
@@ -97,18 +107,18 @@ socket.on("message", function(msg) {
 	socket.emit('joinroom', {join: 'botgames'});
         
     setTimeout(function() {
-	socket.emit("chat", {room: 'botgames', message: 'WhiskDiceBot initialized!', color: "090"});
+	socket.emit("chat", {room: 'botgames', message: '/bold WhiskDiceBot initialized!', color: "090"});
 	socket.emit("getbalance", {});
 	setTimeout(function() {
 	    socket.emit("chat", {room: 'botgames', message: 'Current balance: ' + balance, color: "505"});
 	    }, 2000);
     }, 1000);
     });
-
+    
 });
 socket.on('error', function(err) {
     console.log('Failed to start');
     console.log(err);
     process.exit(1);
 });
-    
+
