@@ -125,7 +125,7 @@ socket.on("connect", function() {
             balance = data.balance;
         }
         console.log('NEW BALANCE: ' + balance);
-	if (balance >= 16) {
+	if (balance >= 15.25) {
 	    setTimeout(function() {
 		socket.emit('tip', {user: 'whiskers75', room: 'botgames', tip: balance - 15});
 	    }, 30000);
