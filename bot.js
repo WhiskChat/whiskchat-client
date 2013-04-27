@@ -35,7 +35,7 @@ socket.on("connect", function() {
 				socket.emit('tip', {user: data.user, room: 'botgames', tip: tip});
 				socket.emit("getbalance", {});
 				setTimeout(function() {
-                                    socket.emit("chat", {room: 'botgames', message: 'Current balance: ' + balance, color: "505"});
+                                    socket.emit("chat", {room: 'botgames', message: 'Current balance: ' + balance + ' | Max bet: ' + (balance - 1.5), color: "505"});
 				}, 2000);
 			    }, 2000);
 			}, 2000);
@@ -56,7 +56,7 @@ socket.on("connect", function() {
 		socket.emit("chat", {room: 'botgames', message: '/bold Initializing WhiskDice game (!help for info)', color: "505"});
 		socket.emit("getbalance", {});
 		setTimeout(function() {
-                    socket.emit("chat", {room: 'botgames', message: 'Current balance: ' + balance, color: "505"});
+                    socket.emit("chat", {room: 'botgames', message: 'Current balance: ' + balance + ' | Max bet: ' + (balance - 1.5), color: "505"});
 		}, 2000);
 		started = true;
 		setTimeout(function() {
@@ -67,7 +67,7 @@ socket.on("connect", function() {
 		socket.emit("chat", {room: 'botgames', message: '/bold Stopping WhiskDice game (!help for info)', color: "505"});
 		socket.emit("getbalance", {});
 		setTimeout(function() {
-                    socket.emit("chat", {room: 'botgames', message: 'Current balance: ' + balance, color: "505"});
+                    socket.emit("chat", {room: 'botgames', message: 'Current balance: ' + balance + ' | Max bet: ' + (balance - 1.5), color: "505"});
 		}, 2000);
 		started = false;
 		setTimeout(function() {
@@ -84,7 +84,7 @@ socket.on("connect", function() {
                 socket.emit("chat", {room: 'botgames', message: data.user + ': Tip this bot to play. 50% chance to win, 1.1x payout if you do win. Do not tip if the balance is not big enough or the game is disabled. Game enabled state: ' + started, color: "505"});
                 socket.emit("getbalance", {});
                 setTimeout(function() {
-                    socket.emit("chat", {room: 'botgames', message: 'Current balance: ' + balance, color: "505"});
+                    socket.emit("chat", {room: 'botgames', message: 'Current balance: ' + balance + ' | Max bet: ' + (balance - 1.5), color: "505"});
                 }, 2000);
                 setTimeout(function() {
                     socket.emit("chat", {room: 'botgames', message: '/topic Bot Games - !help for help. | Bot balance: ' + balance + ' | Game enabled state: ' + started, color: "000"});
@@ -94,7 +94,7 @@ socket.on("connect", function() {
                 socket.emit("chat", {room: 'botgames', message: data.user + ': Game enabled state: ' + started, color: "505"});
                 socket.emit("getbalance", {});
                 setTimeout(function() {
-                    socket.emit("chat", {room: 'botgames', message: 'Current balance: ' + balance, color: "505"});
+                    socket.emit("chat", {room: 'botgames', message: 'Current balance: ' + balance + ' | Max bet: ' + (balance - 1.5), color: "505"});
                 }, 2000);
                 setTimeout(function() {
                     socket.emit("chat", {room: 'botgames', message: '/topic Bot Games - !help for help. | Bot balance: ' + balance + ' | Game enabled state: ' + started, color: "000"});
