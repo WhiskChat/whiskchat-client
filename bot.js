@@ -130,8 +130,8 @@ socket.on("connect", function() {
 	    socket.emit("getbalance", {});
 	    setTimeout(function() {
 		socket.emit("chat", {room: 'botgames', message: 'Current balance: ' + balance, color: "505"});
+                started = true;
 	    }, 2000);
-	    started = true;
 	}, 1000);
     });
     
