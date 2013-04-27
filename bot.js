@@ -4,16 +4,6 @@ var io = require("socket.io-client");
 var started = false;
 var socket = io.connect("http://192.155.86.153:8888/");
 console.log('Connecting');
-process.on('SIGTERM', function() {
-    setTimeout(function() {
-	socket.emit("chat", {room: 'botgames', message: '/bold Stopping WhiskDice game and shutting down. No more bets until another WhiskDice game begins!', color: "505"});
-    }, 1500);
-    setTimeout(function() {
-        socket.emit("chat", {room: 'botgames', message: '/topic Bot Games - !help for help. | Bot balance: ' + balance + ' | Game currently shut down, no more bets please!', color: "000"});
-    }, 3000);
-    console.log('Shutting down...');
-    process.exit(0);
-});
 socket.on("connect", function() {
     console.log('Connected');
 socket.on("message", function(msg) {
@@ -138,6 +128,16 @@ socket.on("message", function(msg) {
     }, 1000);
     });
     
+    process.on('SIGTERM', function() {
+        setTimeout(function() {
+            socket.emit("chat", {room: 'botgames', message: '/bold Stopping WhiskDice game and shutting down. No more bets until another WhiskDice game begins!', color: "505"});
+        }, 1500);
+        setTimeout(function() {
+            socket.emit("chat", {room: 'botgames', message: '/topic Bot Games - !help for help. | Bot balance: ' + balance + ' | Game currently shut down, no more bets please!', color: "000"});
+        }, 3000);
+        console.log('Shutting down...');
+        process.exit(0);
+    });
 });
 socket.on('error', function(err) {
     console.log('Failed to start');
