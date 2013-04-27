@@ -26,11 +26,11 @@ socket.on("connect", function() {
 			    console.log('Won!');
 			    setTimeout(function() {
 				console.log('Sending');
-				var tip = String(data.message.substring(58, data.message.indexOf('mBTC!') - 1) * 1.1);
+				var tip = String(data.message.substring(58, data.message.indexOf('mBTC!') - 1) * 1.2);
 				socket.emit("chat", {room: 'botgames', message: data.user + ': You win! Sending ' + tip, color: "090"});
 			    }, 1500);
 			    setTimeout(function() {
-				var tip = String(data.message.substring(58, data.message.indexOf('mBTC!') - 1) * 1.1);
+				var tip = String(data.message.substring(58, data.message.indexOf('mBTC!') - 1) * 1.2);
 				console.log('Emitting');
 				socket.emit('tip', {user: data.user, room: 'botgames', tip: tip});
 				socket.emit("getbalance", {});
@@ -81,7 +81,7 @@ socket.on("connect", function() {
                 }, 1000);
             }
             if (data.message === "!help") {
-                socket.emit("chat", {room: 'botgames', message: data.user + ': Tip this bot to play. 50% chance to win, 1.1x payout if you do win. Do not tip if the balance is not big enough or the game is disabled. Game enabled state: ' + started, color: "505"});
+                socket.emit("chat", {room: 'botgames', message: data.user + ': Tip this bot to play. 50% chance to win, 1.2x payout if you do win. Do not tip if the balance is not big enough or the game is disabled. Game enabled state: ' + started, color: "505"});
                 socket.emit("getbalance", {});
                 setTimeout(function() {
                     socket.emit("chat", {room: 'botgames', message: 'Current balance: ' + balance + ' | Max bet: ' + (balance - 1.5), color: "505"});
