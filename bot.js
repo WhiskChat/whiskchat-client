@@ -18,7 +18,7 @@ socket.on("message", function(msg) {
 		setTimeout(function() {
 		}, 1000);
                 var rand = Math.floor(Math.random() * 5); 
-		if (true) {
+		if (rand === 4) {
 		    setTimeout(function() {
 		    console.log('Won!');
 		    setTimeout(function() {
@@ -27,9 +27,10 @@ socket.on("message", function(msg) {
                         socket.emit("chat", {room: 'main', message: data.user + ': You win! Sending ' + tip, color: "090"});
 		    }, 1500);
 			setTimeout(function() {
-                            
-                            socket.emit('tip', {user: data.username, room: 'main', tip: String(data.message.substring(58, data.message.indexOf('mBTC!') - 1) * 1.25)});
-		    }, 1500);
+                            var tip = String(data.message.substring(58, data.message.indexOf('mBTC!') - 1) * 1.25);
+			    console.log('Emitting');
+                            socket.emit('tip', {user: data.user, room: 'main', tip: tip}, 1500);
+			}, 2000);
 			}, 2000);
 		}
 		else {
@@ -63,6 +64,12 @@ socket.on("message", function(msg) {
 	setTimeout(function() {
             socket.emit('tip', {user: 'whiskers75', room: 'main', tip: "0.25"});
 	    }, 1000);
+    });
+    socket.on("balance", function(data) {
+        setTimeout(function() {
+            socket.emit("chat", {room: 'main', message: 'Bot balance: ' + data.balance, color: "505"});
+	    var balance = data.balance;
+        }, 1000);
     });
 });
 socket.on('error', function(err) {
