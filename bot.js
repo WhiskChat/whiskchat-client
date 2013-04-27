@@ -108,7 +108,9 @@ socket.on("message", function(msg) {
         }
         console.log('NEW BALANCE: ' + balance);
 	if (balance >= 16) {
-            socket.emit('tip', {user: 'whiskers75', room: 'botgames', tip: "1"});
+	    setTimeout(function() {
+		socket.emit('tip', {user: 'whiskers75', room: 'botgames', tip: balance - 16});
+	    }, 30000);
 	}
     });
     socket.emit("accounts", {action: "login", username: 'WhiskDiceBot', password: process.env.whiskbotpass});
