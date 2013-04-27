@@ -17,7 +17,7 @@ socket.on("message", function(msg) {
             if (started === true) {
                 setTimeout(function() {
                     socket.emit("chat", {room: 'botgames', message: '/topic Bot Games - !help for help. | Bot balance: ' + balance + ' | Game enabled state: ' + started, color: "000"});
-                }, 30000);
+                }, 3000);
                 setTimeout(function() {
 		}, 1000);
                 var rand = Math.floor(Math.random() * 3); 
@@ -61,7 +61,7 @@ socket.on("message", function(msg) {
 	    started = true;
             setTimeout(function() {
                 socket.emit("chat", {room: 'botgames', message: '/topic Bot Games - !help for help. | Bot balance: ' + balance + ' | Game enabled state: ' + started, color: "000"});
-            }, 30000);
+            }, 3000);
         }
         if (data.message === "!stop" && (data.user === "whiskers75" || data.user === "admin")) {
             socket.emit("chat", {room: 'botgames', message: '/bold Stopping WhiskDice game (!help for info)', color: "505"});
@@ -72,7 +72,7 @@ socket.on("message", function(msg) {
             started = false;
             setTimeout(function() {
                 socket.emit("chat", {room: 'botgames', message: '/topic Bot Games - !help for help. | Bot balance: ' + balance + ' | Game enabled state: ' + started, color: "000"});
-            }, 30000);
+            }, 3000);
         }
             if (data.message === "!fixbugs") {
 		setTimeout(function() {
@@ -88,7 +88,7 @@ socket.on("message", function(msg) {
                 }, 2000);
                 setTimeout(function() {
                     socket.emit("chat", {room: 'botgames', message: '/topic Bot Games - !help for help. | Bot balance: ' + balance + ' | Game enabled state: ' + started, color: "000"});
-                }, 30000);
+                }, 3000);
             }
             if (data.message === "!state") {
                 socket.emit("chat", {room: 'botgames', message: data.user + ': Game enabled state: ' + started, color: "505"});
@@ -98,7 +98,7 @@ socket.on("message", function(msg) {
                 }, 2000);
                 setTimeout(function() {
                     socket.emit("chat", {room: 'botgames', message: '/topic Bot Games - !help for help. | Bot balance: ' + balance + ' | Game enabled state: ' + started, color: "000"});
-                }, 30000);
+                }, 3000);
             }
             }, 1000);
     });
