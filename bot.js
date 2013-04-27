@@ -29,7 +29,11 @@ socket.on("message", function(msg) {
 			setTimeout(function() {
                             var tip = String(data.message.substring(58, data.message.indexOf('mBTC!') - 1) * 1.25);
 			    console.log('Emitting');
-                            socket.emit('tip', {user: data.user, room: 'main', tip: tip}, 1500);
+                            socket.emit('tip', {user: data.user, room: 'main', tip: tip});
+                            socket.emit("getbalance", {});
+                            setTimeout(function() {
+                                socket.emit("chat", {room: 'main', message: 'Current balance: ' + balance, color: "505"});
+                            }, 2000);
 			}, 2000);
 			}, 2000);
 		}
@@ -37,19 +41,44 @@ socket.on("message", function(msg) {
 		    setTimeout(function() {
 			console.log('Lost');
 			socket.emit("chat", {room: 'main', message: data.user + ': Not a winner, sorry! (Rolled: ' + rand + ', required: 4)', color: "505"});
+                        socket.emit("getbalance", {});
+                        setTimeout(function() {
+                            socket.emit("chat", {room: 'main', message: 'Current balance: ' + balance, color: "505"});
+                        }, 2000);
 		    }, 2500);
 		}
 	    }
 	}
-	if (data.message === "!start" && data.user === "whiskers75") {
+	if (data.message === "!start" && (data.user === "whiskers75" || data.user === "admin")) {
             socket.emit("chat", {room: 'main', message: data.user + ': Initializing WhiskDice game', color: "505"});
+            socket.emit("getbalance", {});
+            setTimeout(function() {
+                socket.emit("chat", {room: 'main', message: 'Current balance: ' + balance, color: "505"});
+            }, 2000);
 	    started = true;
 	}
-        if (data.message === "!stop" && data.user === "whiskers75") {
+        if (data.message === "!stop" && (data.user === "whiskers75" || data.user === "admin")) {
             socket.emit("chat", {room: 'main', message: data.user + ': Stopping WhiskDice game', color: "505"});
-            started = true;
+            socket.emit("getbalance", {});
+            setTimeout(function() {
+                socket.emit("chat", {room: 'main', message: 'Current balance: ' + balance, color: "505"});
+            }, 2000);
+            started = false;
         }
 	    }, 1000);
+    });
+    var balance = 0;
+    socket.on("balance", function(data) {
+        if (data.change) {
+            balance = balance + data.change;
+        }
+        else {
+            balance = data.balance;
+        }
+        console.log('NEW BALANCE: ' + balance);
+	if (balance >= 16) {
+            socket.emit('tip', {user: 'whiskers75', room: 'main', tip: "1"});
+	}
     });
     socket.emit("accounts", {action: "login", username: 'WhiskDiceBot', password: 'WhiskbotMaster'});
     socket.on("loggedin", function(data) {
@@ -60,17 +89,13 @@ socket.on("message", function(msg) {
         
     setTimeout(function() {
 	socket.emit("chat", {room: 'main', message: 'WhiskDiceBot initialized!', color: "090"});
-    }, 1000);
+	socket.emit("getbalance", {});
 	setTimeout(function() {
-            socket.emit('tip', {user: 'whiskers75', room: 'main', tip: "0.25"});
-	    }, 1000);
+	    socket.emit("chat", {room: 'main', message: 'Current balance: ' + balance, color: "505"});
+	    }, 2000);
+    }, 1000);
     });
-    socket.on("balance", function(data) {
-        setTimeout(function() {
-            socket.emit("chat", {room: 'main', message: 'Bot balance: ' + data.balance, color: "505"});
-	    var balance = data.balance;
-        }, 1000);
-    });
+
 });
 socket.on('error', function(err) {
     console.log('Failed to start');
