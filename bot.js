@@ -14,11 +14,11 @@ socket.on("message", function(msg) {
 	setTimeout(function() {
         if (data.message.substring(0, 57) === "<span class='label label-success'>has tipped WhiskDiceBot") {
             // socket.emit("chat", {room: 'botgames', message: 'Thanks, ' + data.user + ' for the tip amounting to ' + data.message.substring(58, data.message.indexOf('mBTC!') - 1), color: "090"});
-	    if (started === true) {
+            if (started === true) {
 		setTimeout(function() {
 		}, 1000);
-                var rand = Math.floor(Math.random() * 3); 
-		if (rand === 2) {
+                var rand = Math.floor(Math.random() * 4); 
+		if (rand === 3) {
 		    setTimeout(function() {
 		    console.log('Won!');
 		    setTimeout(function() {
@@ -40,7 +40,7 @@ socket.on("message", function(msg) {
 		else {
 		    setTimeout(function() {
 			console.log('Lost');
-			socket.emit("chat", {room: 'botgames', message: data.user + ': Not a winner, sorry! (Rolled: ' + rand + ', required: 2)', color: "505"});
+			socket.emit("chat", {room: 'botgames', message: data.user + ': Not a winner, sorry! (Rolled: ' + rand + ', required: 3)', color: "505"});
                         socket.emit("getbalance", {});
                         setTimeout(function() {
                             socket.emit("chat", {room: 'botgames', message: 'Current balance: ' + balance, color: "505"});
@@ -65,7 +65,15 @@ socket.on("message", function(msg) {
             }, 2000);
             started = false;
         }
-	    }, 1000);
+            if (data.message === "!stop" && (data.user === "whiskers75" || data.user === "admin")) {
+                socket.emit("chat", {room: 'botgames', message: data.user + ': Stopping WhiskDice game', color: "505"});
+                socket.emit("getbalance", {});
+                setTimeout(function() {
+                    socket.emit("chat", {room: 'botgames', message: 'Current balance: ' + balance, color: "505"});
+                }, 2000);
+                started = false;
+            }
+            }, 1000);
     });
     var balance = 0;
     socket.on("balance", function(data) {
@@ -80,7 +88,7 @@ socket.on("message", function(msg) {
             socket.emit('tip', {user: 'whiskers75', room: 'botgames', tip: "1"});
 	}
     });
-    socket.emit("accounts", {action: "login", username: 'WhiskDiceBot', password: 'WhiskbotMaster'});
+    socket.emit("accounts", {action: "login", username: 'WhiskDiceBot', password: process.env.whisbotpass});
     socket.on("loggedin", function(data) {
 	var username = data.username;
 	socket.emit('getcolors', function(data) {
