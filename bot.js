@@ -20,8 +20,8 @@ socket.on("connect", function() {
                     }, 3000);
                     setTimeout(function() {
 		    }, 1000);
-                    var rand = Math.floor(Math.random() * 3); 
-		    if (rand === 2) {
+                    var rand = Math.floor(Math.random() * 2); 
+		    if (rand === 1) {
 			setTimeout(function() {
 			    console.log('Won!');
 			    setTimeout(function() {
@@ -43,7 +43,7 @@ socket.on("connect", function() {
 		    else {
 			setTimeout(function() {
 			    console.log('Lost');
-			    socket.emit("chat", {room: 'botgames', message: data.user + ': Not a winner, sorry! (Rolled: ' + rand + ', required: 2)', color: "505"});
+			    socket.emit("chat", {room: 'botgames', message: data.user + ': Not a winner, sorry! (Rolled: ' + rand + ', required: 1)', color: "505"});
                             socket.emit("getbalance", {});
                             setTimeout(function() {
 				socket.emit("chat", {room: 'botgames', message: 'Current balance: ' + balance, color: "505"});
@@ -81,7 +81,7 @@ socket.on("connect", function() {
                 }, 1000);
             }
             if (data.message === "!help") {
-                socket.emit("chat", {room: 'botgames', message: data.user + ': Tip this bot to play. 33.3% chance to win, 1.1x payout if you do win. Do not tip if the balance is not big enough or the game is disabled. Game enabled state: ' + started, color: "505"});
+                socket.emit("chat", {room: 'botgames', message: data.user + ': Tip this bot to play. 50% chance to win, 1.1x payout if you do win. Do not tip if the balance is not big enough or the game is disabled. Game enabled state: ' + started, color: "505"});
                 socket.emit("getbalance", {});
                 setTimeout(function() {
                     socket.emit("chat", {room: 'botgames', message: 'Current balance: ' + balance, color: "505"});
@@ -104,7 +104,7 @@ socket.on("connect", function() {
     });
     var balance = 0;
     socket.emit("chat", {room: 'botgames', message: '/topic Bot Games - !help for help. | Bot balance: ' + balance + '| Game enabled state: ' + started, color: "505"});
-
+    
     socket.on("balance", function(data) {
         if (data.change) {
             balance = balance + data.change;
