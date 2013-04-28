@@ -84,18 +84,11 @@ socket.on("connect", function() {
 		
 		started = true;
 		
-                    chat('botgames', '/topic Bot Games - !help for help. | Bot balance: ' + balance + ' | Game enabled state: ' + started, "000");
-		
             }
             if (data.message === "!stop" && data.room === "botgames" && (data.user === "whiskers75" || data.user === "admin")) {
 		chat('botgames', '/bold Stopping WhiskDice game (!help for info)', "505");
 		socket.emit("getbalance", {});
-		
-                
-		
 		started = false;
-		
-                    chat('botgames', '/topic Bot Games - !help for help. | Bot balance: ' + balance + ' | Game enabled state: ' + started, "000");
 		
             }
             if (data.message === "!fixbugs" && data.room === "botgames") {
