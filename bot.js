@@ -104,7 +104,7 @@ socket.on("connect", function() {
                 
             }
             if (data.message === "!help" && data.room === "botgames") {
-                chat('botgames', data.user + ': Tip this bot to play. 50% chance to win, 1.25x payout if you do win. Do not tip if the balance is not big enough or the game is disabled. Game enabled state: ' + started, "505");
+                chat('botgames', data.user + ': Tip this bot to play. 50% chance to win, 1.25x payout if you do win. Do not tip if the balance is not big enough or the game is disabled. !state gives info about the bot. !users gives online user count.', "090");
                 socket.emit("getbalance", {});
 		
             }
