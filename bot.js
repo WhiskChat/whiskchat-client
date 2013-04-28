@@ -97,7 +97,7 @@ socket.on("connect", function() {
             }
             if (data.message === "!users" && data.room === "botgames") {
                 setTimeout(function() {
-                    socket.emit("chat", {room: 'botgames', message: users.length + ' online users: ' + users.join(', '), color: "090"});
+                    socket.emit("chat", {room: 'botgames', message: '/bold ' + users.length + ' online users!', color: "090"});
                 }, 1000);
             }
             if (data.message === "!help" && data.room === "botgames") {
