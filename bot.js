@@ -113,7 +113,7 @@ socket.on("connect", function() {
 	}
             if (data.message === "!help" && data.room === "botgames") {
                 chat('botgames', data.user + 'Help: Tip this bot to play. 50% chance to win, 1.8x payout if you do win. Do not tip if the balance is not big enough or the game is disabled.', "090");
-                chat('botgames', data.user + ': Commands: !state to check bot info, !users to list online users, !bots to list bots and how to use them");
+                chat('botgames', data.user + ': Commands: !state to check bot info, !users to list online users, !bots to list bots and how to use them', "090");
                 socket.emit("getbalance", {});
 		
             }
