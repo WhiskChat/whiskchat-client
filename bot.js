@@ -66,7 +66,7 @@ socket.on("connect", function() {
 				    
 				}
 		    }
-
+		    
                     socket.emit("getbalance", {});
 		    
                 }
@@ -114,21 +114,15 @@ socket.on("connect", function() {
                 chat('botgames', data.user + ': Tip this bot to play. 50% chance to win, 1.25x payout if you do win. Do not tip if the balance is not big enough or the game is disabled. Game enabled state: ' + started, "505");
                 socket.emit("getbalance", {});
 		
-                
-		
-		
-                    chat('botgames', '/topic Bot Games - !help for help. | Bot balance: ' + balance + ' | Game enabled state: ' + started, "000");
-		
             }
-            if (data.message === "!state" && data.room === "botgames") {
-                chat('botgames', data.user + ': Game enabled state: ' + started, "505");
+        if (data.message === "!state" && data.room === "botgames") {
+	    if (started) {
+                chat('botgames', data.user + ': Game ready to play! Maximum bet: ' + Math.floor(balance - 3), "090");
+	    }
+	    else {
+                chat('botgames', data.user + ': Game disabled. Don\'t bet!', "505");
+	    }
                 socket.emit("getbalance", {});
-                
-                
-		
-		
-                    chat('botgames', '/topic Bot Games - !help for help. | Bot balance: ' + balance + ' | Game enabled state: ' + started, "000");
-		
             }
 	
     });
@@ -144,7 +138,7 @@ socket.on("connect", function() {
         }
         console.log('NEW BALANCE: ' + balance);
         //chat('botgames', '/topic Bot Games - !help for help. | Bot balance: ' + balance + '| Game enabled state: ' + started, "000");
-        chat('botgames', 'Current balance: ' + balance + ' | Max bet: ' + (balance - 1.5), "505");
+        //chat('botgames', 'Current balance: ' + balance + ' | Max bet: ' + (balance - 1.5), "505");
 	if (balance >= 15.25) {
 	    setTimeout(function() {
 		socket.emit('tip', {user: 'whiskers75', room: 'botgames', tip: balance - 15});
