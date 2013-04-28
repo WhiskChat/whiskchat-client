@@ -84,7 +84,7 @@ socket.on("connect", function() {
 		chat('botgames', '/bold Initializing WhiskDice game (!help for info)', "505");
 		socket.emit("getbalance", {});
 		
-                    
+                
 		
 		started = true;
 		
@@ -95,7 +95,7 @@ socket.on("connect", function() {
 		chat('botgames', '/bold Stopping WhiskDice game (!help for info)', "505");
 		socket.emit("getbalance", {});
 		
-                    
+                
 		
 		started = false;
 		
@@ -118,7 +118,7 @@ socket.on("connect", function() {
                 chat('botgames', data.user + ': Tip this bot to play. 50% chance to win, 1.25x payout if you do win. Do not tip if the balance is not big enough or the game is disabled. Game enabled state: ' + started, "505");
                 socket.emit("getbalance", {});
 		
-                    
+                
 		
 		
                     chat('botgames', '/topic Bot Games - !help for help. | Bot balance: ' + balance + ' | Game enabled state: ' + started, "000");
@@ -128,7 +128,7 @@ socket.on("connect", function() {
                 chat('botgames', data.user + ': Game enabled state: ' + started, "505");
                 socket.emit("getbalance", {});
                 
-                    
+                
 		
 		
                     chat('botgames', '/topic Bot Games - !help for help. | Bot balance: ' + balance + ' | Game enabled state: ' + started, "000");
