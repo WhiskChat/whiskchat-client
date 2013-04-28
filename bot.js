@@ -96,6 +96,7 @@ socket.on("connect", function() {
                 }, 1000);
             }
             if (data.message === "!users" && data.room === "botgames") {
+		socket.emit("joinroom", {room: "botgames"});
                 setTimeout(function() {
                     socket.emit("chat", {room: 'botgames', message: '/bold ' + users.length + ' online users!', color: "090"});
                 }, 1000);
