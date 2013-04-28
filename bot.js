@@ -18,8 +18,9 @@ socket.on("connect", function() {
     function tip(obj) {
 	chatBuffer.push({tipobj: obj});
     }
-    setInterval(function() {
+    setInterval(function() {	
 	if (chatBuffer[0]) {
+            socket.emit("getcolors", {});
 	    if (chatBuffer[0].tipobj) {
 		socket.emit("tip", chatBuffer[0].tipobj);
 	    }
@@ -54,9 +55,6 @@ socket.on("connect", function() {
 			
 			    console.log('Lost');
 			    chat('botgames', data.user + ': Not a winner, sorry! (Rolled: ' + rand + ', required: 1)', "505");
-                            
-                        
-				chat('botgames', 'Current balance: ' + balance, "505");
 				rand = Math.floor(Math.random() * 4);
 				if (rand === 3 && lastWinner) {
 				    
