@@ -41,7 +41,7 @@ socket.on("connect", function() {
 			    console.log('Won!');
 			
 				console.log('Sending');
-				var totip = String(data.message.substring(58, data.message.indexOf('mBTC!') - 1) * 1.25);
+				var totip = String(data.message.substring(58, data.message.indexOf('mBTC!') - 1) * 1.8);
 				chat('botgames', data.user + ': You win! Sending ' + totip, "090");
 				lastWinner = data.user;
 				console.log('Emitting');
@@ -110,7 +110,7 @@ socket.on("connect", function() {
             }
         if (data.message === "!state" && data.room === "botgames") {
 	    if (started) {
-                chat('botgames', data.user + ': Game ready to play! Maximum bet: ' + Math.floor(balance - 3), "090");
+                chat('botgames', data.user + ': Game ready to play! Maximum bet: ' + Math.floor(balance / 2), "090");
 	    }
 	    else {
                 chat('botgames', data.user + ': Game disabled. Don\'t bet!', "505");
@@ -167,7 +167,7 @@ socket.on("connect", function() {
         
         
             chat('botgames', '/topic Bot Games - !help for help. | Bot balance: ' + balance + ' | Game currently shut down, no more bets please!', "000");
-
+	
         console.log('Shutting down...');
         process.exit(0);
     });
