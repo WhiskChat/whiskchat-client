@@ -2,6 +2,7 @@
 
 var io = require("socket.io-client");
 var started = false;
+var users = [];
 var lastWinner = null;
 var socket = io.connect("http://192.155.86.153:8888/");
 console.log('Connecting');
@@ -91,7 +92,12 @@ socket.on("connect", function() {
             if (data.message === "!fixbugs" && data.room === "botgames") {
 		setTimeout(function() {
                     socket.emit('getcolors', {});
-		    socket.emit("chat", {room: 'botgames', message: 'Fixing bugs', color: "000"});
+		    socket.emit("chat", {room: 'botgames', message: 'Fixed bugs!', color: "090"});
+                }, 1000);
+            }
+            if (data.message === "!users" && data.room === "botgames") {
+                setTimeout(function() {
+                    socket.emit("chat", {room: 'botgames', message: users.length + ' online users: ' + users.join(', '), color: "090"});
                 }, 1000);
             }
             if (data.message === "!help" && data.room === "botgames") {
@@ -136,9 +142,17 @@ socket.on("connect", function() {
     socket.emit("accounts", {action: "login", username: 'WhiskDiceBot', password: process.env.whiskbotpass});
     socket.on("loggedin", function(data) {
 	var username = data.username;
+	socket.on("joinroom", function(data) {
+	    if (data.room === "botgames") {
+		users = data.users;
+	    }
+	});
 	socket.emit('joinroom', {join: 'botgames'});
         socket.emit("quitroom", {room: "main"});
 	setTimeout(function() {
+	    socket.on("newuser", function(data) {
+		users.push(data.username);
+	    });
 	    socket.emit("chat", {room: 'botgames', message: '/bold WhiskDiceBot initialized! (!help for info)', color: "090"});
 	    socket.emit("getbalance", {});
             socket.emit('getcolors', {});
