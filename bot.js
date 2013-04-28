@@ -103,8 +103,17 @@ socket.on("connect", function() {
                     chat('botgames', '/bold ' + users.length + ' online users!', "090");
                 
             }
+        if (data.message === "!bots" && data.room === "botgames") {
+            
+            chat('botgames', 'Bots | WhiskDiceBot: A clone of SatoshiDice. !help for info. | moobot: lordsonkit\'s fun bot, with cow tipping! !moo help for info.', "090");
+            
+        }
+	if (data.message.substring(0, 4) === "!moo") {
+            chat('botgames', data.user + ': Invoked Moobot, expect a PM...', "090");
+	}
             if (data.message === "!help" && data.room === "botgames") {
-                chat('botgames', data.user + ': Tip this bot to play. 50% chance to win, 1.8x payout if you do win. Do not tip if the balance is not big enough or the game is disabled. !state gives info about the bot. !users gives online user count.', "090");
+                chat('botgames', data.user + 'Help: Tip this bot to play. 50% chance to win, 1.8x payout if you do win. Do not tip if the balance is not big enough or the game is disabled.', "090");
+                chat('botgames', data.user + ': Commands: !state to check bot info, !users to list online users, !bots to list bots and how to use them");
                 socket.emit("getbalance", {});
 		
             }
