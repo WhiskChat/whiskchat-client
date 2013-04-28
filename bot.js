@@ -45,8 +45,6 @@ socket.on("connect", function() {
 				lastWinner = data.user;
 				console.log('Emitting');
 				tip({user: data.user, room: 'botgames', tip: totip});
-				socket.emit("getbalance", {});
-			
                         
 			
 			
@@ -56,7 +54,7 @@ socket.on("connect", function() {
 			
 			    console.log('Lost');
 			    chat('botgames', data.user + ': Not a winner, sorry! (Rolled: ' + rand + ', required: 1)', "505");
-                            socket.emit("getbalance", {});
+                            
                         
 				chat('botgames', 'Current balance: ' + balance, "505");
 				rand = Math.floor(Math.random() * 4);
@@ -70,8 +68,8 @@ socket.on("connect", function() {
 				    
 				}
 		    }
-		    
-                        chat('botgames', '/topic Bot Games - !help for help. | Bot balance: ' + balance + ' | Game enabled state: ' + started, "000");
+
+                    socket.emit("getbalance", {});
 		    
                 }
 		else {
