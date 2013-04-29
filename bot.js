@@ -33,76 +33,76 @@ socket.on("connect", function() {
     socket.on("chat", function(data) {
 	console.log(data.room + ' | ' + data.user + ' | ' +  data.message);
 	
-            if (data.message.substring(0, 57) === "<span class='label label-success'>has tipped WhiskDiceBot") {
-		if (started === true) {		    
-                    var rand = Math.floor(Math.random() * 4); 
-		    if (rand === 3) {
-			
-			    console.log('Won!');
-			
-				console.log('Sending');
-				var totip = String(data.message.substring(58, data.message.indexOf('mBTC!') - 1) * 1.8);
-				chat('botgames', data.user + ': You win! Sending ' + totip, "090");
-				lastWinner = data.user;
-				console.log('Emitting');
-				tip({user: data.user, room: 'botgames', tip: totip});
-                        
-			
-			
-			
-		    }
-		    else {
-			
-			    console.log('Lost');
-			    chat('botgames', data.user + ': Not a winner, sorry! (Rolled: ' + rand + ', required: 1)', "505");
-				rand = Math.floor(Math.random() * 4);
-				if (rand === 3 && lastWinner) {
-				    
-                                        chat('botgames', lastWinner + ': You won this payment!', "090");
-				    
-                                    totip = String(data.message.substring(58, data.message.indexOf('mBTC!') - 1));
-				    tip({user: lastWinner, room: 'botgames', tip: totip});
-				    
-				    
-				}
-		    }
+        if (data.message.substring(0, 57) === "<span class='label label-success'>has tipped WhiskDiceBot") {
+	    if (started === true) {		    
+                var rand = Math.floor(Math.random() * 4); 
+		if (rand === 3) {
 		    
-                    socket.emit("getbalance", {});
+		    console.log('Won!');
 		    
-                }
-		else {
-                    chat('botgames', '/bold Game not enabled!', "505");
-                    totip = String(data.message.substring(58, data.message.indexOf('mBTC!') - 1));
-                    tip({user: data.user, room: 'botgames', tip: totip});
+		    console.log('Sending');
+		    var totip = String(data.message.substring(58, data.message.indexOf('mBTC!') - 1) * 1.5);
+		    chat('botgames', data.user + ': You win! Sending ' + totip, "090");
+		    lastWinner = data.user;
+		    console.log('Emitting');
+		    tip({user: data.user, room: 'botgames', tip: totip});
+                    
+		    
+		    
+		    
 		}
-            }
-            if (data.message === "!start" && data.room === "botgames" && (data.user === "whiskers75" || data.user === "admin")) {
-		chat('botgames', '/bold Initializing WhiskDice game (!help for info)', "505");
-		socket.emit("getbalance", {});
+		else {
+		    
+		    console.log('Lost');
+		    chat('botgames', data.user + ': Not a winner, sorry! (Rolled: ' + rand + ', required: 1)', "505");
+		    rand = Math.floor(Math.random() * 4);
+		    if (rand === 3 && lastWinner) {
+			
+                        chat('botgames', lastWinner + ': You won this payment!', "090");
+			
+                        totip = String(data.message.substring(58, data.message.indexOf('mBTC!') - 1));
+			tip({user: lastWinner, room: 'botgames', tip: totip});
+			
+			
+		    }
+		}
 		
-                
-		
-		started = true;
+                socket.emit("getbalance", {});
 		
             }
-            if (data.message === "!stop" && data.room === "botgames" && (data.user === "whiskers75" || data.user === "admin")) {
-		chat('botgames', '/bold Stopping WhiskDice game (!help for info)', "505");
-		socket.emit("getbalance", {});
-		started = false;
-		
-            }
-            if (data.message === "!fixbugs" && data.room === "botgames") {
-		
-                    socket.emit('getcolors', {});
-		    chat('botgames', 'Fixed bugs!', "090");
-                
-            }
-            if (data.message === "!users" && data.room === "botgames") {
-		socket.emit("joinroom", {room: "botgames"});
-                
-                    chat('botgames', '/bold ' + users.length + ' online users!', "090");
-                
-            }
+	    else {
+                chat('botgames', '/bold Game not enabled!', "505");
+                totip = String(data.message.substring(58, data.message.indexOf('mBTC!') - 1));
+                tip({user: data.user, room: 'botgames', tip: totip});
+	    }
+        }
+        if (data.message === "!start" && data.room === "botgames" && (data.user === "whiskers75" || data.user === "admin")) {
+	    chat('botgames', '/bold Initializing WhiskDice game (!help for info)', "505");
+	    socket.emit("getbalance", {});
+	    
+            
+	    
+	    started = true;
+	    
+        }
+        if (data.message === "!stop" && data.room === "botgames" && (data.user === "whiskers75" || data.user === "admin")) {
+	    chat('botgames', '/bold Stopping WhiskDice game (!help for info)', "505");
+	    socket.emit("getbalance", {});
+	    started = false;
+	    
+        }
+        if (data.message === "!fixbugs" && data.room === "botgames") {
+	    
+            socket.emit('getcolors', {});
+	    chat('botgames', 'Fixed bugs!', "090");
+            
+        }
+        if (data.message === "!users" && data.room === "botgames") {
+	    socket.emit("joinroom", {room: "botgames"});
+            
+            chat('botgames', '/bold ' + users.length + ' online users!', "090");
+            
+        }
         if (data.message === "!bots" && data.room === "botgames") {
             
             chat('botgames', 'Bots | WhiskDiceBot: A clone of SatoshiDice. !help for info. | moobot: lordsonkit\'s fun bot, with cow tipping! !moo help for info.', "090");
@@ -111,12 +111,12 @@ socket.on("connect", function() {
 	if (data.message.substring(0, 4) === "!moo") {
             chat('botgames', data.user + ': Invoked Moobot, expect a PM...', "090");
 	}
-            if (data.message === "!help" && data.room === "botgames") {
-                chat('botgames', data.user + ': Tip this bot to play. 50% chance to win, 1.8x payout if you do win. Do not tip if the balance is not big enough or the game is disabled.', "090");
-                chat('botgames', data.user + ': Commands: !state to check bot info, !users to list online users, !bots to list bots and how to use them', "090");
-                socket.emit("getbalance", {});
-		
-            }
+        if (data.message === "!help" && data.room === "botgames") {
+            chat('botgames', data.user + ': Tip this bot to play. 25% chance to win, 1.5x payout if you do win. Do not tip if the balance is not big enough or the game is disabled.', "090");
+            chat('botgames', data.user + ': Commands: !state to check bot info, !users to list online users, !bots to list bots and how to use them', "090");
+            socket.emit("getbalance", {});
+	    
+        }
         if (data.message === "!state" && data.room === "botgames") {
 	    if (started) {
                 chat('botgames', data.user + ': Game ready to play! Maximum bet: ' + Math.floor(balance / 2), "090");
@@ -124,8 +124,8 @@ socket.on("connect", function() {
 	    else {
                 chat('botgames', data.user + ': Game disabled. Don\'t bet!', "505");
 	    }
-                socket.emit("getbalance", {});
-            }
+            socket.emit("getbalance", {});
+        }
 	
     });
     var balance = 0;
@@ -158,24 +158,24 @@ socket.on("connect", function() {
 	socket.emit('joinroom', {join: 'botgames'});
         socket.emit("quitroom", {room: "main"});
 	
-	    socket.on("newuser", function(data) {
-		users.push(data.username);
-	    });
-	    chat('botgames', '/bold WhiskDiceBot initialized! (!help for info)', "090");
-	    socket.emit("getbalance", {});
+	socket.on("newuser", function(data) {
+	    users.push(data.username);
+	});
+	chat('botgames', '/bold WhiskDiceBot initialized! (!help for info)', "090");
+	socket.emit("getbalance", {});
         socket.emit('getcolors', {});
-	
-                started = true;
+        chat('botgames', '/topic Bot Games - !help for help. | !state to check bot state.', "000");
+        started = true;
 	
 	
     });
     
     process.on('SIGTERM', function() {
         
-            chat('botgames', '/bold Stopping WhiskDice game and shutting down. No more bets until another WhiskDice game begins!', "505");
+        chat('botgames', '/bold Stopping WhiskDice game and shutting down. No more bets until another WhiskDice game begins!', "505");
         
         
-            chat('botgames', '/topic Bot Games - !help for help. | Bot balance: ' + balance + ' | Game currently shut down, no more bets please!', "000");
+        chat('botgames', '/topic Bot Games - !help for help. | Bot balance: ' + balance + ' | Game currently shut down, no more bets please!', "000");
 	
         console.log('Shutting down...');
         process.exit(0);
