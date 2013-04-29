@@ -35,8 +35,8 @@ socket.on("connect", function() {
 	
             if (data.message.substring(0, 57) === "<span class='label label-success'>has tipped WhiskDiceBot") {
 		if (started === true) {		    
-                    var rand = Math.floor(Math.random() * 2); 
-		    if (rand === 1) {
+                    var rand = Math.floor(Math.random() * 4); 
+		    if (rand === 3) {
 			
 			    console.log('Won!');
 			
