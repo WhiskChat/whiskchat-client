@@ -45,7 +45,7 @@ socket.on("connect", function() {
 		    console.log('Won!');
 		    console.log('Sending');
 		    var totip = String(data.message.substring(58, data.message.indexOf('mBTC!') - 1) * payout);
-		    chat('botgames', data.user + ': You win! Sending ' + totip, "090");
+		    chat('botgames', data.user + ': You win! Sending ' + totip + ' (' + rand + '/' + chance + ')', "090");
 		    lastWinner = data.user;
 		    console.log('Emitting');
 		    tip({user: data.user, room: 'botgames', tip: totip});
