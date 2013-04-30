@@ -41,7 +41,7 @@ socket.on("connect", function() {
 		if (rand === 0) {
 		    rand = 1;
 		}
-		if (rand >= chance) {
+		if (rand < (chance + 1)) {
 		    console.log('Won!');
 		    console.log('Sending');
 		    var totip = String(data.message.substring(58, data.message.indexOf('mBTC!') - 1) * payout);
