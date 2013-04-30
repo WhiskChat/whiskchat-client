@@ -41,21 +41,20 @@ socket.on("connect", function() {
 		if (rand === 0) {
 		    rand = 1;
 		}
-		if (rand < (chance + 1)) {
+                if (rand < (chance + 1) && (data.message.substring(58, data.message.indexOf('mBTC!') - 1) * payout) > balance) {
 		    console.log('Won!');
 		    console.log('Sending');
 		    var totip = String(data.message.substring(58, data.message.indexOf('mBTC!') - 1) * payout);
-		    chat('botgames', data.user + ': You win! Sending ' + totip + ' (' + rand + '/' + chance + ')', "090");
+		    chat('botgames', data.user + ': You win! Sending ' + totip + '!', "090");
 		    lastWinner = data.user;
 		    console.log('Emitting');
 		    tip({user: data.user, room: 'botgames', tip: totip});
 		}
 		else {
-		    
 		    console.log('Lost');
-		    chat('botgames', data.user + ': Not a winner, sorry! (Rolled: ' + rand + ', required: over ' + chance + ')', "505");
+		    chat('botgames', data.user + ': Not a winner, sorry! (' + chance + '% chance)', "505");
 		    rand = Math.floor(Math.random() * 4);
-		    if (rand === 3 && lastWinner) {
+                    if (rand === 3 && lastWinner && !((data.message.substring(58, data.message.indexOf('mBTC!') - 1) * payout) > balance)) {
                         chat('botgames', lastWinner + ': You won this payment!', "090");
                         totip = String(data.message.substring(58, data.message.indexOf('mBTC!') - 1));
 			tip({user: lastWinner, room: 'botgames', tip: totip});
@@ -70,6 +69,9 @@ socket.on("connect", function() {
 	    else {
                 chat('botgames', '/bold Game not enabled!', "505");
                 totip = String(data.message.substring(58, data.message.indexOf('mBTC!') - 1));
+		if (totip > 0.25) {
+		    totip = 0.25;
+		}
                 tip({user: data.user, room: 'botgames', tip: totip});
 	    }
         }
@@ -125,7 +127,7 @@ socket.on("connect", function() {
         }
         if (data.message === "!state" && data.room === "botgames") {
 	    if (started) {
-                chat('botgames', data.user + ': Game ready to play! Balance: ' + balance + '| Chance to win: ' + chance + '% | Payout: ' + payout + 'x', "090");
+                chat('botgames', data.user + ': Game ready to play! Balance: ' + balance + ' | Chance to win: ' + chance + '% | Payout: ' + payout + 'x', "090");
 		if (balance < 0 || balance === 0) {
                     chat('botgames', data.user + '/bold Alert: Negative or zero balance detected. Betting may result in monetary loss. Stopping WhiskDice game...', "505");
 		    started = false;
@@ -181,7 +183,6 @@ socket.on("connect", function() {
     });
     
     process.on('SIGTERM', function() {
-        
         chat('botgames', '/bold Stopping WhiskDice game and shutting down. No more bets until another WhiskDice game begins!', "505");
         
         
