@@ -114,21 +114,18 @@ socket.on("connect", function() {
             }
             if (data.message === "!bots" && data.room === "botgames") {
 		
-		chat('botgames', 'Bots | WhiskDiceBot: A clone of SatoshiDice. !help for info. | moobot: lordsonkit\'s fun bot, with cow tipping! !moo help for info.', "090");
+		chat('botgames', 'Bots | WhiskDiceBot: A clone of SatoshiDice. !help for info.', "090");
 		
             }
-	    if (data.message.substring(0, 4) === "!moo") {
-		chat('botgames', data.user + ': Invoked Moobot, expect a PM...', "090");
-	    }
             if (data.message === "!help" && data.room === "botgames") {
 		chat('botgames', data.user + ': Check !state for chance and payout. Tip this bot to play.', "090");
-		chat('botgames', data.user + ': Commands: !state to check bot info, !users to list online users, !bots to list bots and how to use them, !lastWinner to see last winner', "090");
+		chat('botgames', data.user + ': Commands: !state to check bot info, !users to list online users, !bots to list bots and how to use them, !lastwinner to see last winner', "090");
 		socket.emit("getbalance", {});
 		
             }
             if (data.message === "!state" && data.room === "botgames") {
 		if (started) {
-                    chat('botgames', data.user + ': Game ready to play! Balance: ' + balance + ' | Chance to win: ' + chance + '% | Payout: ' + payout + 'x | House edge: ' + (100 - (chance * payout)) + '%', "090");
+                    chat('botgames', data.user + ': Game ready to play! Balance: ' + balance + ' | Chance to win: ' + chance + '% | Payout: ' + payout + 'x | House edge: ' + (100 - (((chance / 100) * payout) * 100)) + '%', "090");
 		    if (balance < 0 || balance === 0) {
 			chat('botgames', data.user + '/bold Alert: Negative or zero balance detected. Betting may result in monetary loss. Stopping WhiskDice game...', "505");
 			started = false;
@@ -193,7 +190,7 @@ socket.on("connect", function() {
 	    }
 	});
 	if (!foundOwnRoom) {
-            chat('botgames', 'Error getting online users.', '505');
+            chat('botgames', 'Not on the top rooms list! :(', '505');
 	}
     });
     
