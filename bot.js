@@ -5,7 +5,7 @@ var started = false;
 var users = [];
 var chatBuffer = [];
 var chance = 25;
-var payout = 1.2;
+var payout = 1.75;
 var lastWinner = null;
 var socket = io.connect("http://192.155.86.153:8888/");
 console.log('Connecting');
@@ -128,7 +128,7 @@ socket.on("connect", function() {
             }
             if (data.message === "!state" && data.room === "botgames") {
 		if (started) {
-                    chat('botgames', data.user + ': Game ready to play! Balance: ' + balance + ' | Chance to win: ' + chance + '% | Payout: ' + payout + 'x | House edge: ' + (chance * payout) + '%', "090");
+                    chat('botgames', data.user + ': Game ready to play! Balance: ' + balance + ' | Chance to win: ' + chance + '% | Payout: ' + payout + 'x | House edge: ' + 100 - (chance * payout) + '%', "090");
 		    if (balance < 0 || balance === 0) {
 			chat('botgames', data.user + '/bold Alert: Negative or zero balance detected. Betting may result in monetary loss. Stopping WhiskDice game...', "505");
 			started = false;
