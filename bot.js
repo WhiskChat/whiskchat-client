@@ -125,7 +125,7 @@ socket.on("connect", function() {
             }
             if (data.message === "!state" && data.room === "botgames") {
 		if (started) {
-                    chat('botgames', data.user + ': Game ready to play! Balance: ' + balance + ' | Chance to win: ' + chance + '% | Payout: ' + payout + 'x | Last winner: ' + lastWinner ? lastWinner : 'None', "090");
+                    chat('botgames', data.user + ': Game ready to play! Balance: ' + balance + ' | Chance to win: ' + chance + '% | Payout: ' + payout + 'x', "090");
 		    if (balance < 0 || balance === 0) {
 			chat('botgames', data.user + '/bold Alert: Negative or zero balance detected. Betting may result in monetary loss. Stopping WhiskDice game...', "505");
 			started = false;
