@@ -32,6 +32,7 @@ socket.on("connect", function() {
 	    chatBuffer.splice(0, 1);
 	}
     }, 800);
+    setTimeout(function() {
     socket.on("chat", function(data) {
 	console.log(data.room + ' | ' + data.user + ' | ' +  data.message);
 	
@@ -106,10 +107,7 @@ socket.on("connect", function() {
             chat('botgames', 'Last winner: ' + lastWinner, "090");
         }
         if (data.message === "!users" && data.room === "botgames") {
-	    socket.emit("joinroom", {room: "botgames"});
-            
-            chat('botgames', '/bold ' + users.length + ' online users!', "090");
-            
+	    socket.emit('toprooms', {});
         }
         if (data.message === "!bots" && data.room === "botgames") {
             
@@ -140,6 +138,7 @@ socket.on("connect", function() {
         }
 	
     });
+    }, 3000); // Make sure we don't answer any previous stuff!
     var balance = 0;
     
     
@@ -173,13 +172,26 @@ socket.on("connect", function() {
 	socket.on("newuser", function(data) {
 	    users.push(data.username);
 	});
+	setTimeout(function() {
 	chat('botgames', '/bold WhiskDiceBot initialized! (!help for info)', "090");
 	socket.emit("getbalance", {});
         socket.emit('getcolors', {});
-        chat('botgames', '/topic Bot Games - !help for help. | !state to check bot state.', "000");
-        started = true;
+            started = true;
+	    }, 3000); // Match the setTimeout for the chat engine
 	
 	
+    });
+    socket.on('toprooms', function(data) {
+	var foundOwnRoom = false;
+	data.list.forEach(function(room) {
+	    if (room.room === 'botgames') {
+                chat('botgames', '#botgames: ' + room.users + ' people online!', '090');
+		foundOwnRoom = true;
+	    }
+	});
+	if (!foundOwnRoom) {
+            chat('botgames', 'Error getting online users.', '505');
+	}
     });
     
     process.on('SIGTERM', function() {
