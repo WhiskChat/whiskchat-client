@@ -38,27 +38,29 @@ socket.on("connect", function() {
     setTimeout(function() {
 	socket.on("chat", function(data) {
 	    console.log(data.room + ' | ' + data.user + ' | ' +  data.message);
-	    
             if (data.message.substring(0, 57) === "<span class='label label-success'>has tipped WhiskDiceBot") {
-		if (started === true) {		    
+		if (started === true) {
                     var rand = Math.floor(Math.random() * 101);
 		    if (rand === 0) {
 			rand = 1;
 		    }
-                    if (rand < (chance + 1)) {
+                    if (rand < (chance + 1) && (balance > (data.message.substring(58, data.message.indexOf('mBTC!') - 1)) * payout)) {
 			console.log('Won!');
 			console.log('Sending');
 			var totip = String(data.message.substring(58, data.message.indexOf('mBTC!') - 1) * payout);
-			chat('botgames', data.user + ': You win! Sending ' + totip + '!', "090");
+			chat('botgames', data.user + ': You win! Sending ' + totip + '! (' + rand + '/' + chance +')', "090");
 			lastWinner = data.user;
 			console.log('Emitting');
 			tip({user: data.user, room: 'botgames', tip: totip});
 		    }
 		    else {
 			console.log('Lost');
+			rand = Math.floor(Math.random() * 101);
+                        if (balance > data.message.substring(58, data.message.indexOf('mBTC!') - 1)) {
+			    rand = 'Not enough money';
+			}
 			chat('botgames', data.user + ': Not a winner, sorry! (' + chance + '% chance, ' + rand + '/' + chance + ')', "505");
-			rand = Math.floor(Math.random() * 4);
-			if (rand === 3 && lastWinner && !((data.message.substring(58, data.message.indexOf('mBTC!') - 1) * payout) > balance)) {
+                        if ((rand < (chance + 1)) && lastWinner && (data.message.substring(58, data.message.indexOf('mBTC!') - 1) > 0.25)) {
                             chat('botgames', lastWinner + ': You won this payment!', "090");
                             totip = String(data.message.substring(58, data.message.indexOf('mBTC!') - 1));
 			    tip({user: lastWinner, room: 'botgames', tip: totip});
@@ -72,11 +74,6 @@ socket.on("connect", function() {
 		}
 		else {
                     chat('botgames', '/bold Game not enabled!', "505");
-                    totip = String(data.message.substring(58, data.message.indexOf('mBTC!') - 1));
-		    if (totip > 0.25) {
-			totip = 0.25;
-		    }
-                    tip({user: data.user, room: 'botgames', tip: totip});
 		}
             }
             if (data.message === "!start" && data.room === "botgames" && (data.user === "whiskers75" || data.user === "admin")) {
