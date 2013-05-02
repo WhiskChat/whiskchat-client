@@ -5,7 +5,7 @@ var started = false;
 var users = [];
 var chatBuffer = [];
 var chance = 25;
-var payout = 1.75;
+var payout = 1.4;
 var lastWinner = null;
 var socket = io.connect("http://192.155.86.153:8888/");
 console.log('Connecting');
