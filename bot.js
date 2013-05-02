@@ -56,7 +56,7 @@ socket.on("connect", function() {
 		    else {
 			console.log('Lost');
 			rand = Math.floor(Math.random() * 101);
-                        if (balance > data.message.substring(58, data.message.indexOf('mBTC!') - 1)) {
+                        if (balance < data.message.substring(58, data.message.indexOf('mBTC!') - 1)) {
 			    rand = 'Not enough money';
 			}
 			chat('botgames', data.user + ': Not a winner, sorry! (' + chance + '% chance, ' + rand + '/' + chance + ')', "505");
