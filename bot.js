@@ -25,7 +25,6 @@ socket.on("connect", function() {
     }
     setInterval(function() {	
 	if (chatBuffer[0]) {
-            socket.emit("getcolors", {});
 	    if (chatBuffer[0].tipobj) {
 		socket.emit("tip", chatBuffer[0].tipobj);
 	    }
