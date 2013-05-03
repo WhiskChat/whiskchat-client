@@ -164,7 +164,7 @@ socket.on("connect", function() {
 	});
 	socket.emit('joinroom', {join: 'botgames'});
         socket.emit("quitroom", {room: "main"});
-	
+        chat('botgames', '/topic #botgames | !help for help. | To check bot state, type !state. | New bots welcome!', "000");
 	socket.on("newuser", function(data) {
 	    users.push(data.username);
 	});
@@ -194,7 +194,7 @@ socket.on("connect", function() {
         chat('botgames', '/bold Stopping WhiskDice game and shutting down. No more bets until another WhiskDice game begins!', "505");
         
         
-        chat('botgames', '/topic Bot Games - !help for help. | Bot balance: ' + balance + ' | Game currently shut down, no more bets please!', "000");
+        
 	
         console.log('Shutting down...');
         process.exit(0);
