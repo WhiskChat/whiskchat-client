@@ -6,6 +6,7 @@ var users = [];
 var chatBuffer = [];
 var chance = 25;
 var payout = 1.4;
+var shutdown = false;
 var lastWinner = null;
 var socket = io.connect("http://192.155.86.153:8888/");
 console.log('Connecting');
@@ -13,6 +14,10 @@ socket.on("connect", function() {
     console.log('Connected');
     socket.on("message", function(msg) {
 	console.log('SERVER MESSAGE: ' + msg.message);
+	if (msg === "You have been banned.") {
+	    console.log('Error: Banned!');
+	    process.exit(1);
+	}
     });
     function chat(room, msg, color) {
 	chatBuffer.push({room: room, message: msg, color: color});
@@ -32,6 +37,11 @@ socket.on("connect", function() {
 		socket.emit("chat", chatBuffer[0]);
 	    }
 	    chatBuffer.splice(0, 1);
+	}
+	else {
+	    if (shutdown) {
+		console.log('Shutting down...');
+	    }
 	}
     }, 800);
     setTimeout(function() {
@@ -86,6 +96,10 @@ socket.on("connect", function() {
 		socket.emit("getbalance", {});
 		started = false;
 		
+            }
+            if (data.message === "!shutdown" && data.room === "botgames" && (data.user === "whiskers75" || data.user === "admin")) {
+                chat('botgames', '/bold SHUTTING BOT DOWN DUE TO ADMIN COMMAND. STOP BETTING.', "505");
+		process.exit(2); 
             }
             if (data.message.substring(0, 4) === "!set" && data.room === "botgames" && (data.user === "whiskers75" || data.user === "admin")) {
 		var newOpts = data.message.split(' ');
@@ -192,12 +206,7 @@ socket.on("connect", function() {
     
     process.on('SIGTERM', function() {
         chat('botgames', '/bold Stopping WhiskDice game and shutting down. No more bets until another WhiskDice game begins!', "505");
-        
-        
-        
-	
-        console.log('Shutting down...');
-        process.exit(0);
+	shutdown = true;
     });
 });
 socket.on('error', function(err) {
