@@ -97,6 +97,9 @@ socket.on("connect", function() {
 		started = false;
 		
             }
+            if (data.message === "!topic" && data.room === "botgames" && (data.user === "whiskers75" || data.user === "admin")) {
+                chat('botgames', '/topic #botgames | !help for help. | To check bot state, type !state. | New bots welcome!', "000");
+            }
             if (data.message === "!shutdown" && data.room === "botgames" && (data.user === "whiskers75" || data.user === "admin")) {
                 chat('botgames', '/bold SHUTTING BOT DOWN DUE TO ADMIN COMMAND. STOP BETTING.', "505");
 		process.exit(2); 
@@ -190,7 +193,6 @@ socket.on("connect", function() {
 	});
 	socket.emit('joinroom', {join: 'botgames'});
         socket.emit("quitroom", {room: "main"});
-        chat('botgames', '/topic #botgames | !help for help. | To check bot state, type !state. | New bots welcome!', "000");
 	socket.on("newuser", function(data) {
 	    users.push(data.username);
 	});
