@@ -6,6 +6,7 @@ var random = require("secure_random");
 var users = [];
 var chatBuffer = [];
 var chance = 60;
+var edge = 0.9; // EV
 var payout = 1.4;
 var shutdown = false;
 var lastWinner = null;
@@ -55,7 +56,7 @@ socket.on("connect", function() {
 		if (message > 0 && message < 81) {
 		    // yay
 		    chance = message;
-		    payout = 0.9 / (message / 100);
+		    payout = edge / (message / 100);
                     chat('botgames', data.user + ': You selected a ' + chance + '% chance, with a ' + payout + 'x payout.', "090");
 		}
                 if (started === true && (balance > (data.message.substring(58, data.message.indexOf('mBTC') - 1)) * payout)) {
@@ -75,8 +76,8 @@ socket.on("connect", function() {
 						      chat('botgames', lastWinner + ': You won this payment!', "090");
 						      totip = String(data.message.substring(58, data.message.indexOf('mBTC') - 1));
 						      tip({user: lastWinner, room: 'botgames', tip: totip});
-						      
-						      
+						     
+						     
 						      } 
 			}
                         chance = oldchance;
@@ -108,7 +109,7 @@ socket.on("connect", function() {
 		
             }
             if (data.message === "!topic" && data.room === "botgames" && (data.user === "whiskers75" || data.user === "admin")) {
-                chat('botgames', '/topic The Official SatoshiDice clone! | 5% or less house edge! (less than #moobot) | YOU decide your chances of winning! | !help for info', "000");
+                chat('botgames', '/topic The Official SatoshiDice clone! | ' + ((1 - edge) * 100) + '% house edge (live) | YOU decide your chances of winning! | !help for info', "000");
             }
             if (data.message === "!shutdown" && data.room === "botgames" && (data.user === "whiskers75" || data.user === "admin")) {
                 chat('botgames', '/bold Shutting down bot, no more bets please!', "505");
@@ -164,7 +165,7 @@ socket.on("connect", function() {
             }
             if (data.message === "!state" && data.room === "botgames") {
 		if (started) {
-                    chat('botgames', data.user + ': Game ready to play! Balance: ' + balance + ' | Chance to win: ' + chance + '% | Payout: ' + payout + 'x', "090");
+                    chat('botgames', data.user + ': Game ready to play! Balance: ' + balance + ' | Chance to win: ' + chance + '% | Payout: ' + payout + 'x | EV (1 - this number to get house edge): ' + edge, "090");
 		    if (balance < 0.25 || balance === 0) {
 			chat('botgames', data.user + '/bold Alert: Negative or zero balance detected. Betting may result in monetary loss. Stopping WhiskDice game...', "505");
 			started = false;
