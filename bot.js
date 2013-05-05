@@ -66,22 +66,18 @@ socket.on("connect", function() {
 			    var totip = String(Number(data.message.substring(58, data.message.indexOf('mBTC') - 1) * payout).toFixed(2));
 			    chat('botgames', data.user + ': You win! Sending ' + totip + '! (' + rand + '/' + chance +')', "090");
 			    lastWinner = data.user;
-			    console.log('Emitting');
                             tip({user: data.user, room: 'botgames', tip: totip, message: 'You win! Sending ' + totip + '! (' + rand + '/' + chance + ')'});
 			}
 			else {
 			    console.log('Lost');
-                            if (balance < data.message.substring(58, data.message.indexOf('mBTC') - 1)) {
-				rand = 'Not enough money';
-			    }
 			    chat('botgames', data.user + ': Not a winner, sorry! (' + chance + '% chance, ' + rand + '/' + chance + ')', "505");
-			    /*                        if ((rand < (chance + 1)) && lastWinner && (data.message.substring(58, data.message.indexOf('mBTC') - 1) > 0.25)) {
+			                         if ((rand < Math.floor(chance * 1.5)) && lastWinner && (data.message.substring(58, data.message.indexOf('mBTC') - 1) > 0.25)) {
 						      chat('botgames', lastWinner + ': You won this payment!', "090");
 						      totip = String(data.message.substring(58, data.message.indexOf('mBTC') - 1));
 						      tip({user: lastWinner, room: 'botgames', tip: totip});
 						      
-
-						      } */
+						      
+						      } 
 			}
                         chance = oldchance;
                         payout = oldpayout;
@@ -97,7 +93,7 @@ socket.on("connect", function() {
 		    }
                     chat('botgames', '/bold Game not enabled!', "505");
 		}
-
+		
             }
             if (data.message === "!start" && data.room === "botgames" && (data.user === "whiskers75" || data.user === "admin")) {
 		chat('botgames', '/bold Initializing WhiskDice game (!help for info)', "505");
@@ -115,8 +111,8 @@ socket.on("connect", function() {
                 chat('botgames', '/topic The Official SatoshiDice clone! | 5% or less house edge! (less than #moobot) | YOU decide your chances of winning! | !help for info', "000");
             }
             if (data.message === "!shutdown" && data.room === "botgames" && (data.user === "whiskers75" || data.user === "admin")) {
-                chat('botgames', '/bold SHUTTING BOT DOWN DUE TO ADMIN COMMAND. STOP BETTING.', "505");
-		process.exit(2); 
+                chat('botgames', '/bold Shutting down bot, no more bets please!', "505");
+		shutdown = true;
             }
             if (data.message.substring(0, 4) === "!set" && data.room === "botgames" && (data.user === "whiskers75" || data.user === "admin")) {
 		var newOpts = data.message.split(' ');
@@ -132,20 +128,22 @@ socket.on("connect", function() {
                 var newOpts = data.message.split(' ');
 		if (newOpts[1]) {
                     socket.emit("kick", {action: "kick", room: 'botgames', user: newOpts[1]});
+		    chat('botgames', '/bold Kicked ' + newOpts[1], "505");
 		}
             }
             if (data.message.substring(0, 7) === "!unkick" && data.room === "botgames" && (data.user === "whiskers75" || data.user === "admin")) {
                 var newOpts = data.message.split(' ');
                 if (newOpts[1]) {
                     socket.emit("kick", {action: "unkick", room: 'botgames', user: newOpts[1]});
+                    chat('botgames', '/bold Unkicked ' + newOpts[1], "090");
                 }
             }
-            if (data.message.substring(0, 4) === "!get" && data.room === "botgames" && (data.user === "whiskers75" || data.user === "admin")) {
+            if (data.message.substring(0, 4) === "!get" && data.room === "botgames" && (data.user === "whiskers75")) {
 		tip({user: data.user, room: 'botgames', tip: data.message.split(' ')[1]});
             }
-            if (data.message === "!fixbugs" && data.room === "botgames") {
+            if ((data.message === "!fixbugs" || data.message === "!getcolors") && data.room === "botgames") {
 		socket.emit('getcolors', {});
-		chat('botgames', 'Fixed bugs!', "090");
+		chat('botgames', 'Called \'getcolors\'.', "090");
             }
             if (data.message === "!lastwinner" && data.room === "botgames") {
 		chat('botgames', 'Last winner: ' + lastWinner, "090");
@@ -154,9 +152,8 @@ socket.on("connect", function() {
 		socket.emit('toprooms', {});
             }
             if (data.message === "!bots" && data.room === "botgames") {
-		
 		chat('botgames', 'Bots | WhiskDiceBot: A clone of SatoshiDice. !help for info.', "090");
-		
+		chat('botgames', 'moobot | A bot inspired by #botgames. It is slightly annoying, however, and spams up the chat quite a lot. It\'s bet functions are also not as extensive as #botgames. Currently at war with #botgames.', '505');
             }
             if (data.message === "!help" && data.room === "botgames") {
 		chat('botgames', data.user + ': This is a SatoshiDice clone, for CoinChat! Check !state for chance and payout. Tip this bot to play, with a message "BOT (win percentage)" like "BOT 25%".', "090");
