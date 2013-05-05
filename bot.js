@@ -91,7 +91,7 @@ socket.on("connect", function() {
 		    
 		}
 		else {
-                    if ((balance > (data.message.substring(58, data.message.indexOf('mBTC') - 1)) * payout)) {
+                    if ((balance < (data.message.substring(58, data.message.indexOf('mBTC') - 1)) * payout)) {
                         chat('botgames', '/bold Exceeds balance!', "505");
                         tip({user: data.user, room: 'botgames', tip: String(data.message.substring(58, data.message.indexOf('mBTC') - 1)), message: 'Exceeds balance!'});
 		    }
