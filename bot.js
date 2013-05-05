@@ -108,7 +108,7 @@ socket.on("connect", function() {
 		
             }
             if (data.message === "!topic" && data.room === "botgames" && (data.user === "whiskers75" || data.user === "admin")) {
-                chat('botgames', '/topic #botgames | The Official SatoshiDice clone! | Tiny house edge | YOU decide your chances of winning! | !help for info', "000");
+                chat('botgames', '/topic The Official SatoshiDice clone! | 5% or less house edge! (less than #moobot) | YOU decide your chances of winning! | !help for info', "000");
             }
             if (data.message === "!shutdown" && data.room === "botgames" && (data.user === "whiskers75" || data.user === "admin")) {
                 chat('botgames', '/bold SHUTTING BOT DOWN DUE TO ADMIN COMMAND. STOP BETTING.', "505");
