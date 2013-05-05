@@ -5,8 +5,8 @@ var started = false;
 var random = require("secure_random");
 var users = [];
 var chatBuffer = [];
-var chance = 72;
-var payout = 1.25;
+var chance = 60;
+var payout = 1.4;
 var shutdown = false;
 var lastWinner = null;
 var socket = io.connect("http://192.155.86.153:8888/");
@@ -49,31 +49,38 @@ socket.on("connect", function() {
 	socket.on("chat", function(data) {
 	    console.log(data.room + ' | ' + data.user + ' | ' +  data.message + ' (' + data.winbtc + ' mBTC)');
             if (data.message.substring(0, 57) === "<span class='label label-success'>has tipped WhiskDiceBot") {
+                var message = Number(data.message.substring(data.message.indexOf('message: BOT ') + 12, data.message.indexOf('%) !')));
+		if (message > 0 && message !== 100) {
+		    // yay
+		    chance = message;
+		    payout = (0.9 / message); // 10% house edge
+                    chat('botgames', data.user + ': Parsed message (' + chance + '%/' + payout +'x)', "090");
+		}
 		if (started === true) {
 		    random.getRandomInt(1, 100, function(err, rand) {
-                    if (rand < (chance + 1) && (balance > (data.message.substring(58, data.message.indexOf('mBTC') - 1)) * payout)) {
-			console.log('Won!');
-			console.log('Sending');
-			var totip = String(data.message.substring(58, data.message.indexOf('mBTC') - 1) * payout);
-			chat('botgames', data.user + ': You win! Sending ' + totip + '! (' + rand + '/' + chance +')', "090");
-			lastWinner = data.user;
-			console.log('Emitting');
-			tip({user: data.user, room: 'botgames', tip: totip});
-		    }
-		    else {
-			console.log('Lost');
-                        if (balance < data.message.substring(58, data.message.indexOf('mBTC') - 1)) {
-			    rand = 'Not enough money';
+			if (rand < (chance + 1) && (balance > (data.message.substring(58, data.message.indexOf('mBTC') - 1)) * payout)) {
+			    console.log('Won!');
+			    console.log('Sending');
+			    var totip = String(data.message.substring(58, data.message.indexOf('mBTC') - 1) * payout);
+			    chat('botgames', data.user + ': You win! Sending ' + totip + '! (' + rand + '/' + chance +')', "090");
+			    lastWinner = data.user;
+			    console.log('Emitting');
+			    tip({user: data.user, room: 'botgames', tip: totip});
 			}
-			chat('botgames', data.user + ': Not a winner, sorry! (' + chance + '% chance, ' + rand + '/' + chance + ')', "505");
-/*                        if ((rand < (chance + 1)) && lastWinner && (data.message.substring(58, data.message.indexOf('mBTC') - 1) > 0.25)) {
-                            chat('botgames', lastWinner + ': You won this payment!', "090");
-                            totip = String(data.message.substring(58, data.message.indexOf('mBTC') - 1));
-			    tip({user: lastWinner, room: 'botgames', tip: totip});
-			    
-			    
-			} */
-		    }
+			else {
+			    console.log('Lost');
+                            if (balance < data.message.substring(58, data.message.indexOf('mBTC') - 1)) {
+				rand = 'Not enough money';
+			    }
+			    chat('botgames', data.user + ': Not a winner, sorry! (' + chance + '% chance, ' + rand + '/' + chance + ')', "505");
+			    /*                        if ((rand < (chance + 1)) && lastWinner && (data.message.substring(58, data.message.indexOf('mBTC') - 1) > 0.25)) {
+						      chat('botgames', lastWinner + ': You won this payment!', "090");
+						      totip = String(data.message.substring(58, data.message.indexOf('mBTC') - 1));
+						      tip({user: lastWinner, room: 'botgames', tip: totip});
+						      
+
+						      } */
+			}
 		    });
 		    
                     socket.emit("getbalance", {});
