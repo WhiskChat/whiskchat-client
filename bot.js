@@ -52,7 +52,7 @@ socket.on("connect", function() {
 	    console.log(data.room + ' | ' + data.user + ' | ' +  data.message + ' (' + data.winbtc + ' mBTC)');
             if (data.message.substring(0, 57) === "<span class='label label-success'>has tipped WhiskDiceBot") {
                 var message = Number(data.message.substring(data.message.indexOf('message: BOT ') + 12, data.message.indexOf('%) !')));
-		if (message > 0 && message !== 100) {
+		if (message > 0 && message < 61) {
 		    // yay
 		    chance = message;
 		    payout = Math.floor(0.95 / (message / 100));
