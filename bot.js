@@ -63,7 +63,7 @@ socket.on("connect", function() {
 			if (rand < (chance + 1) && (balance > (data.message.substring(58, data.message.indexOf('mBTC') - 1)) * payout)) {
 			    console.log('Won!');
 			    console.log('Sending');
-			    var totip = String(data.message.substring(58, data.message.indexOf('mBTC') - 1) * payout).toFixed(2);
+			    var totip = String(data.message.substring(58, data.message.indexOf('mBTC') - 1) * payout);
 			    chat('botgames', data.user + ': You win! Sending ' + totip + '! (' + rand + '/' + chance +')', "090");
 			    lastWinner = data.user;
 			    console.log('Emitting');
