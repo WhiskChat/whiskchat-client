@@ -5,6 +5,6 @@
     "private": true,
     "dependencies": {
 	"socket.io-client": "*",
-        "secure-random": "*"
+        "secure_random": "*"
     }
 }

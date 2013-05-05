@@ -2,7 +2,7 @@
 
 var io = require("socket.io-client");
 var started = false;
-var random = require("secure-random");
+var random = require("secure_random");
 var users = [];
 var chatBuffer = [];
 var chance = 72;
@@ -51,10 +51,10 @@ socket.on("connect", function() {
             if (data.message.substring(0, 57) === "<span class='label label-success'>has tipped WhiskDiceBot") {
 		if (started === true) {
 		    random.getRandomInt(1, 100, function(err, rand) {
-                    if (rand < (chance + 1) && (balance > (data.message.substring(58, data.message.indexOf('mBTC!') - 1)) * payout)) {
+                    if (rand < (chance + 1) && (balance > (data.message.substring(58, data.message.indexOf('mBTC') - 1)) * payout)) {
 			console.log('Won!');
 			console.log('Sending');
-			var totip = String(data.message.substring(58, data.message.indexOf('mBTC!') - 1) * payout);
+			var totip = String(data.message.substring(58, data.message.indexOf('mBTC') - 1) * payout);
 			chat('botgames', data.user + ': You win! Sending ' + totip + '! (' + rand + '/' + chance +')', "090");
 			lastWinner = data.user;
 			console.log('Emitting');
@@ -62,13 +62,13 @@ socket.on("connect", function() {
 		    }
 		    else {
 			console.log('Lost');
-                        if (balance < data.message.substring(58, data.message.indexOf('mBTC!') - 1)) {
+                        if (balance < data.message.substring(58, data.message.indexOf('mBTC') - 1)) {
 			    rand = 'Not enough money';
 			}
 			chat('botgames', data.user + ': Not a winner, sorry! (' + chance + '% chance, ' + rand + '/' + chance + ')', "505");
-/*                        if ((rand < (chance + 1)) && lastWinner && (data.message.substring(58, data.message.indexOf('mBTC!') - 1) > 0.25)) {
+/*                        if ((rand < (chance + 1)) && lastWinner && (data.message.substring(58, data.message.indexOf('mBTC') - 1) > 0.25)) {
                             chat('botgames', lastWinner + ': You won this payment!', "090");
-                            totip = String(data.message.substring(58, data.message.indexOf('mBTC!') - 1));
+                            totip = String(data.message.substring(58, data.message.indexOf('mBTC') - 1));
 			    tip({user: lastWinner, room: 'botgames', tip: totip});
 			    
 			    
@@ -149,7 +149,7 @@ socket.on("connect", function() {
             if (data.message === "!state" && data.room === "botgames") {
 		if (started) {
                     chat('botgames', data.user + ': Game ready to play! Balance: ' + balance + ' | Chance to win: ' + chance + '% | Payout: ' + payout + 'x', "090");
-		    if (balance < 0 || balance === 0) {
+		    if (balance < 0.25 || balance === 0) {
 			chat('botgames', data.user + '/bold Alert: Negative or zero balance detected. Betting may result in monetary loss. Stopping WhiskDice game...', "505");
 			started = false;
 		    }
