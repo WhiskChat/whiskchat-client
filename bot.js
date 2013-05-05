@@ -55,7 +55,7 @@ socket.on("connect", function() {
 		if (message > 0 && message < 81) {
 		    // yay
 		    chance = message;
-		    payout = 1 / (message / 100);
+		    payout = 0.92 / (message / 100);
                     chat('botgames', data.user + ': You selected a ' + chance + '% chance, with a ' + payout + 'x payout.', "090");
 		}
 		if (started === true) {
@@ -157,7 +157,7 @@ socket.on("connect", function() {
             if (data.message === "!help" && data.room === "botgames") {
 		chat('botgames', data.user + ': This is a SatoshiDice clone, for CoinChat! Check !state for chance and payout. Tip this bot to play, with a message "BOT (win percentage)" like "BOT 25%".', "090");
 		chat('botgames', data.user + ': Commands: !state to check bot info, !users to list online users, !bots to list bots and how to use them, !lastwinner to see last winner', "090");
-                chat('botgames', data.user + ': To use: /tip WhiskDiceBot (amount) BOT (win percentage)', "090");
+                chat('botgames', data.user + ': To use: /tip WhiskDiceBot (amount) BOT (win percentage). Percentage can be anything from 1% to 80%', "090");
 		socket.emit("getbalance", {});
 		
             }
