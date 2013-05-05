@@ -46,7 +46,7 @@ socket.on("connect", function() {
     }, 800);
     setTimeout(function() {
 	socket.on("chat", function(data) {
-	    console.log(data.room + ' | ' + data.user + ' | ' +  data.message);
+	    console.log(data.room + ' | ' + data.user + ' | ' +  data.message + '(' + data.winbtc + ' mBTC)');
             if (data.message.substring(0, 57) === "<span class='label label-success'>has tipped WhiskDiceBot") {
 		if (started === true) {
                     var rand = Math.floor(Math.random() * 101);
@@ -109,6 +109,18 @@ socket.on("connect", function() {
                     chat('botgames', '/bold CHANGING PAYOUT/CHANCE! New chance: ' + chance + '% | New payout: ' + payout + 'x' , "505");
 		}
 	    }
+            if (data.message.substring(0, 5) === "!kick" && data.room === "botgames" && (data.user === "whiskers75" || data.user === "admin")) {
+                var newOpts = data.message.split(' ');
+		if (newOpts[1]) {
+                    socket.emit("kick", {action: "kick", room: 'botgames', user: newOpts[1]});
+		}
+            }
+            if (data.message.substring(0, 7) === "!unkick" && data.room === "botgames" && (data.user === "whiskers75" || data.user === "admin")) {
+                var newOpts = data.message.split(' ');
+                if (newOpts[1]) {
+                    socket.emit("kick", {action: "unkick", room: 'botgames', user: newOpts[1]});
+                }
+            }
             if (data.message.substring(0, 4) === "!get" && data.room === "botgames" && (data.user === "whiskers75" || data.user === "admin")) {
 		tip({user: data.user, room: 'botgames', tip: data.message.split(' ')[1]});
             }
@@ -184,6 +196,7 @@ socket.on("connect", function() {
 	});
 	setTimeout(function() {
 	    chat('botgames', '/bold WhiskDiceBot initialized! (!help for info)', "090");
+	    chat('botgames', '/bold Betting is now enabled! Tip this bot to play.', "090");
 	    socket.emit("getbalance", {});
             socket.emit('getcolors', {});
             started = true;
