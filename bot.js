@@ -83,6 +83,8 @@ socket.on("connect", function() {
 
 						      } */
 			}
+                        chance = oldchance;
+                        payout = oldpayout;
 		    });
 		    
                     socket.emit("getbalance", {});
@@ -91,8 +93,7 @@ socket.on("connect", function() {
 		else {
                     chat('botgames', '/bold Game not enabled!', "505");
 		}
-		chance = oldchance;
-		payout = oldpayout;
+
             }
             if (data.message === "!start" && data.room === "botgames" && (data.user === "whiskers75" || data.user === "admin")) {
 		chat('botgames', '/bold Initializing WhiskDice game (!help for info)', "505");
