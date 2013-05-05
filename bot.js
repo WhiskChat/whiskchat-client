@@ -55,7 +55,7 @@ socket.on("connect", function() {
 		if (message > 0 && message < 81) {
 		    // yay
 		    chance = message;
-		    payout = 0.92 / (message / 100);
+		    payout = 0.97 / (message / 100);
                     chat('botgames', data.user + ': You selected a ' + chance + '% chance, with a ' + payout + 'x payout.', "090");
 		}
 		if (started === true) {
