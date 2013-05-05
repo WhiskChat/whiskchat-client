@@ -53,7 +53,7 @@ socket.on("connect", function() {
 		if (message > 0 && message !== 100) {
 		    // yay
 		    chance = message;
-		    payout = (0.9 / message); // 10% house edge
+		    payout = Math.floor(0.9 / (message / 100)); // 10% house edge
                     chat('botgames', data.user + ': Parsed message (' + chance + '%/' + payout +'x)', "090");
 		}
 		if (started === true) {
