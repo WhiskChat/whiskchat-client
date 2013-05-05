@@ -1,9 +1,10 @@
 {
-  "name": "whiskdicebot",
-  "description": "coinchat",
-  "version": "0.0.1",
-  "private": true,
-  "dependencies": {
-    "socket.io-client": "*"
-  }
+    "name": "whiskdicebot",
+    "description": "coinchat",
+    "version": "0.0.1",
+    "private": true,
+    "dependencies": {
+	"socket.io-client": "*",
+        "secure-random": "*"
+    }
 }

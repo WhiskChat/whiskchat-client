@@ -2,10 +2,11 @@
 
 var io = require("socket.io-client");
 var started = false;
+var random = require("secure-random");
 var users = [];
 var chatBuffer = [];
-var chance = 25;
-var payout = 1.4;
+var chance = 72;
+var payout = 1.25;
 var shutdown = false;
 var lastWinner = null;
 var socket = io.connect("http://192.155.86.153:8888/");
@@ -46,13 +47,10 @@ socket.on("connect", function() {
     }, 800);
     setTimeout(function() {
 	socket.on("chat", function(data) {
-	    console.log(data.room + ' | ' + data.user + ' | ' +  data.message + '(' + data.winbtc + ' mBTC)');
+	    console.log(data.room + ' | ' + data.user + ' | ' +  data.message + ' (' + data.winbtc + ' mBTC)');
             if (data.message.substring(0, 57) === "<span class='label label-success'>has tipped WhiskDiceBot") {
 		if (started === true) {
-                    var rand = Math.floor(Math.random() * 101);
-		    if (rand === 0) {
-			rand = 1;
-		    }
+		    random.getRandomInt(1, 100, function(err, rand) {
                     if (rand < (chance + 1) && (balance > (data.message.substring(58, data.message.indexOf('mBTC!') - 1)) * payout)) {
 			console.log('Won!');
 			console.log('Sending');
@@ -64,19 +62,19 @@ socket.on("connect", function() {
 		    }
 		    else {
 			console.log('Lost');
-			rand = Math.floor(Math.random() * 101);
                         if (balance < data.message.substring(58, data.message.indexOf('mBTC!') - 1)) {
 			    rand = 'Not enough money';
 			}
 			chat('botgames', data.user + ': Not a winner, sorry! (' + chance + '% chance, ' + rand + '/' + chance + ')', "505");
-                        if ((rand < (chance + 1)) && lastWinner && (data.message.substring(58, data.message.indexOf('mBTC!') - 1) > 0.25)) {
+/*                        if ((rand < (chance + 1)) && lastWinner && (data.message.substring(58, data.message.indexOf('mBTC!') - 1) > 0.25)) {
                             chat('botgames', lastWinner + ': You won this payment!', "090");
                             totip = String(data.message.substring(58, data.message.indexOf('mBTC!') - 1));
 			    tip({user: lastWinner, room: 'botgames', tip: totip});
 			    
 			    
-			}
+			} */
 		    }
+		    });
 		    
                     socket.emit("getbalance", {});
 		    
