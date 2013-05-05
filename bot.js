@@ -45,6 +45,8 @@ socket.on("connect", function() {
 	    }
 	}
     }, 800);
+    var oldchance = chance;
+    var oldpayout = payout;
     setTimeout(function() {
 	socket.on("chat", function(data) {
 	    console.log(data.room + ' | ' + data.user + ' | ' +  data.message + ' (' + data.winbtc + ' mBTC)');
@@ -89,6 +91,8 @@ socket.on("connect", function() {
 		else {
                     chat('botgames', '/bold Game not enabled!', "505");
 		}
+		chance = oldchance;
+		payout = oldpayout;
             }
             if (data.message === "!start" && data.room === "botgames" && (data.user === "whiskers75" || data.user === "admin")) {
 		chat('botgames', '/bold Initializing WhiskDice game (!help for info)', "505");
@@ -112,6 +116,8 @@ socket.on("connect", function() {
             if (data.message.substring(0, 4) === "!set" && data.room === "botgames" && (data.user === "whiskers75" || data.user === "admin")) {
 		var newOpts = data.message.split(' ');
 		if (newOpts[1] > 0 && newOpts[2] > 0) {
+		    oldchance = newOpts[1];
+		    oldpayout = newOpts[2];
 		    chance = newOpts[1];
 		    payout = newOpts[2];
                     chat('botgames', '/bold CHANGING PAYOUT/CHANCE! New chance: ' + chance + '% | New payout: ' + payout + 'x' , "505");
@@ -148,7 +154,7 @@ socket.on("connect", function() {
 		
             }
             if (data.message === "!help" && data.room === "botgames") {
-		chat('botgames', data.user + ': This is a SatoshiDice clone, for CoinChat! Check !state for chance and payout. Tip this bot to play.', "090");
+		chat('botgames', data.user + ': This is a SatoshiDice clone, for CoinChat! Check !state for chance and payout. Tip this bot to play, with a message "BOT (win percentage)" like "BOT 25%".', "090");
 		chat('botgames', data.user + ': Commands: !state to check bot info, !users to list online users, !bots to list bots and how to use them, !lastwinner to see last winner', "090");
 		socket.emit("getbalance", {});
 		
