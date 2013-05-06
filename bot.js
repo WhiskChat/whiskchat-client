@@ -56,7 +56,7 @@ socket.on("connect", function() {
 		if (message > 0 && message < 76) {
 		    // yay
 		    chance = message;
-		    payout = edge / (message / 100);
+		    payout = Number((edge / (message / 100)).toFixed(2));
                     chat('botgames', data.user + ': You selected a ' + chance + '% chance, with a ' + payout + 'x payout.', "090");
 		}
                 if (started === true && (balance > (data.message.substring(58, data.message.indexOf('mBTC') - 1)) * payout)) {
@@ -72,13 +72,13 @@ socket.on("connect", function() {
 			else {
 			    console.log('Lost');
 			    chat('botgames', data.user + ': Not a winner, sorry! (' + chance + '% chance, ' + rand + '/' + chance + ')', "505");
-			   /* if ((rand < Math.floor(chance * 1.5)) && lastWinner && (data.message.substring(58, data.message.indexOf('mBTC') - 1) > 0.25)) {
-				chat('botgames', lastWinner + ': You won this payment!', "090");
-				totip = String(data.message.substring(58, data.message.indexOf('mBTC') - 1));
-				tip({user: lastWinner, room: 'botgames', tip: totip});
-				
-				
-			    } */
+			    /* if ((rand < Math.floor(chance * 1.5)) && lastWinner && (data.message.substring(58, data.message.indexOf('mBTC') - 1) > 0.25)) {
+			       chat('botgames', lastWinner + ': You won this payment!', "090");
+			       totip = String(data.message.substring(58, data.message.indexOf('mBTC') - 1));
+			       tip({user: lastWinner, room: 'botgames', tip: totip});
+			       
+			       
+			       } */
 			}
                         chance = oldchance;
                         payout = oldpayout;
@@ -89,10 +89,9 @@ socket.on("connect", function() {
 		}
 		else {
                     if ((balance < (data.message.substring(58, data.message.indexOf('mBTC') - 1)) * payout)) {
-                        chat('botgames', '/bold Exceeds balance!', "505");
+                        chat('botgames', '/bold Bet exceeds what the bot can pay!', "505");
                         tip({user: data.user, room: 'botgames', tip: String(data.message.substring(58, data.message.indexOf('mBTC') - 1)), message: 'Exceeds balance!'});
 		    }
-		    
                     else {
 			chat('botgames', '/bold Game not enabled!', "505");
 		    }
@@ -111,7 +110,7 @@ socket.on("connect", function() {
 		
             }
             if (data.message === "!topic" && data.room === "botgames" && (data.user === "whiskers75" || data.user === "admin")) {
-                chat('botgames', '/topic The official SatoshiDice for CoinChat! | Admin approved | ' + ((1 - edge) * 100).toFixed(2) + '% house edge (live) | YOU decide your chances of winning! | New and improved bet engine! | !help for info', "000");
+                chat('botgames', '/topic The official SatoshiDice for CoinChat! | Admin approved | ' + ((1 - edge) * 100).toFixed(2) + '% house edge! | YOU decide your chances of winning! | Current balance: ' + balance.toFixed(2) +'mBTC | !help for info', "000");
             }
             if (data.message === "!shutdown" && data.room === "botgames" && (data.user === "whiskers75" || data.user === "admin")) {
                 chat('botgames', '/bold Shutting down bot, no more bets please!', "505");
@@ -155,8 +154,7 @@ socket.on("connect", function() {
 		socket.emit('toprooms', {});
             }
             if (data.message === "!bots" && data.room === "botgames") {
-		chat('botgames', 'Bots | WhiskDiceBot: A clone of SatoshiDice. !help for info.', "090");
-		chat('botgames', 'moobot | A bot inspired by #botgames. It is slightly annoying, however, and spams up the chat quite a lot. It\'s bet functions are also not as extensive as #botgames. Currently at war with #botgames.', '505');
+		chat('botgames', 'Bots: | WhiskDiceBot (#botgames): A clone of SatoshiDice, with more advanced bet options. !help for info.', "090");
             }
             if (data.message === "!help" && data.room === "botgames") {
 		chat('botgames', data.user + ': This is a SatoshiDice clone, for CoinChat! Check !state for chance and payout. Tip this bot to play, with a message "BOT (win percentage)" like "BOT 25%".', "090");
@@ -166,17 +164,16 @@ socket.on("connect", function() {
 		
             }
             if (data.message === "!state" && data.room === "botgames") {
+                socket.emit("getbalance", {});
 		if (started) {
-                    chat('botgames', data.user + ': Game ready to play! Balance: ' + balance + ' | Chance to win: ' + chance + '% | Payout: ' + payout + 'x | EV (1 - this number to get house edge): ' + edge, "090");
-		/*    if (balance < 0.25 || balance === 0) {
-			chat('botgames', data.user + '/bold Alert: Negative or zero balance detected. Betting may result in monetary loss. Stopping WhiskDice game...', "505"); 
-			started = false;
-		    } */
+		    setTimeout(function() {
+                        chat('botgames', data.user + ': Game enabled! Balance: ' + balance.toFixed(2) + ' | House edge: ' + ((1 - edge) * 100).toFixed(2) + '%', "090");
+		    }, 2000); // Wait for getbalance
 		}
 		else {
                     chat('botgames', data.user + ': Game disabled. Don\'t bet!', "505");
 		}
-		socket.emit("getbalance", {});
+		
             }
 	    
 	});
