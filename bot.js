@@ -167,9 +167,9 @@ socket.on("connect", function() {
 		if (started) {
                     chat('botgames', data.user + ': Game ready to play! Balance: ' + balance + ' | Chance to win: ' + chance + '% | Payout: ' + payout + 'x | EV (1 - this number to get house edge): ' + edge, "090");
 		/*    if (balance < 0.25 || balance === 0) {
-			chat('botgames', data.user + '/bold Alert: Negative or zero balance detected. Betting may result in monetary loss. Stopping WhiskDice game...', "505"); */
+			chat('botgames', data.user + '/bold Alert: Negative or zero balance detected. Betting may result in monetary loss. Stopping WhiskDice game...', "505"); 
 			started = false;
-		    }
+		    } */
 		}
 		else {
                     chat('botgames', data.user + ': Game disabled. Don\'t bet!', "505");
