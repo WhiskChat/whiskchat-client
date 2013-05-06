@@ -6,7 +6,7 @@ var random = require("secure_random");
 var users = [];
 var chatBuffer = [];
 var chance = 60;
-var edge = 0.9; // EV
+var edge = 0.85; // EV
 var payout = 1.4;
 var shutdown = false;
 var lastWinner = null;
@@ -53,7 +53,7 @@ socket.on("connect", function() {
 	    console.log(data.room + ' | ' + data.user + ' | ' +  data.message + ' (' + data.winbtc + ' mBTC)');
             if (data.message.substring(0, 57) === "<span class='label label-success'>has tipped WhiskDiceBot") {
                 var message = Number(data.message.substring(data.message.indexOf('message: BOT ') + 12, data.message.indexOf('%) !')));
-		if (message > 0 && message < 81) {
+		if (message > 0 && message < 76) {
 		    // yay
 		    chance = message;
 		    payout = edge / (message / 100);
@@ -72,13 +72,13 @@ socket.on("connect", function() {
 			else {
 			    console.log('Lost');
 			    chat('botgames', data.user + ': Not a winner, sorry! (' + chance + '% chance, ' + rand + '/' + chance + ')', "505");
-			    if ((rand < Math.floor(chance * 1.5)) && lastWinner && (data.message.substring(58, data.message.indexOf('mBTC') - 1) > 0.25)) {
+			   /* if ((rand < Math.floor(chance * 1.5)) && lastWinner && (data.message.substring(58, data.message.indexOf('mBTC') - 1) > 0.25)) {
 				chat('botgames', lastWinner + ': You won this payment!', "090");
 				totip = String(data.message.substring(58, data.message.indexOf('mBTC') - 1));
 				tip({user: lastWinner, room: 'botgames', tip: totip});
 				
 				
-			    } 
+			    } */
 			}
                         chance = oldchance;
                         payout = oldpayout;
@@ -92,9 +92,11 @@ socket.on("connect", function() {
                         chat('botgames', '/bold Exceeds balance!', "505");
                         tip({user: data.user, room: 'botgames', tip: String(data.message.substring(58, data.message.indexOf('mBTC') - 1)), message: 'Exceeds balance!'});
 		    }
-                    chat('botgames', '/bold Game not enabled!', "505");
+		    
+                    else {
+			chat('botgames', '/bold Game not enabled!', "505");
+		    }
 		}
-		
             }
             if (data.message === "!start" && data.room === "botgames" && (data.user === "whiskers75" || data.user === "admin")) {
 		chat('botgames', '/bold Initializing WhiskDice game (!help for info)', "505");
@@ -159,7 +161,7 @@ socket.on("connect", function() {
             if (data.message === "!help" && data.room === "botgames") {
 		chat('botgames', data.user + ': This is a SatoshiDice clone, for CoinChat! Check !state for chance and payout. Tip this bot to play, with a message "BOT (win percentage)" like "BOT 25%".', "090");
 		chat('botgames', data.user + ': Commands: !state to check bot info, !users to list online users, !bots to list bots and how to use them, !lastwinner to see last winner', "090");
-                chat('botgames', data.user + ': To use: /tip WhiskDiceBot (amount) BOT (win percentage). Percentage can be anything from 1% to 80%', "090");
+                chat('botgames', data.user + ': To use: /tip WhiskDiceBot (amount) BOT (win percentage). Percentage can be anything from 1% to 75%', "090");
 		socket.emit("getbalance", {});
 		
             }
