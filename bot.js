@@ -157,9 +157,10 @@ socket.on("connect", function() {
 		chat('botgames', 'Bots: | WhiskDiceBot (#botgames): A clone of SatoshiDice, with more advanced bet options. !help for info.', "090");
             }
             if (data.message === "!help" && data.room === "botgames") {
-		chat('botgames', data.user + ': This is a SatoshiDice clone, for CoinChat! Check !state for chance and payout. Tip this bot to play, with a message "BOT (win percentage)" like "BOT 25%".', "090");
-		chat('botgames', data.user + ': Commands: !state to check bot info, !users to list online users, !bots to list bots and how to use them, !lastwinner to see last winner', "090");
-                chat('botgames', data.user + ': To use: /tip WhiskDiceBot (amount) BOT (win percentage). Percentage can be anything from 1% to 75%', "090");
+		chat('botgames', data.user + ': This is a SatoshiDice clone, for CoinChat!', "090");
+		chat('botgames', data.user + ': Commands: !state, !users, !bots, !lastwinner', "090");
+                chat('botgames', data.user + ': To use: /tip WhiskDiceBot (amount) BOT (win percentage)%', "090");
+                chat('botgames', data.user + ': Percentage can be anything from 1% to 75%', "090");
 		socket.emit("getbalance", {});
 		
             }
