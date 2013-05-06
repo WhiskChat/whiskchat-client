@@ -72,13 +72,13 @@ socket.on("connect", function() {
 			else {
 			    console.log('Lost');
 			    chat('botgames', data.user + ': Not a winner, sorry! (' + chance + '% chance, ' + rand + '/' + chance + ')', "505");
-			                         if ((rand < Math.floor(chance * 1.5)) && lastWinner && (data.message.substring(58, data.message.indexOf('mBTC') - 1) > 0.25)) {
-						      chat('botgames', lastWinner + ': You won this payment!', "090");
-						      totip = String(data.message.substring(58, data.message.indexOf('mBTC') - 1));
-						      tip({user: lastWinner, room: 'botgames', tip: totip});
-						     
-						     
-						      } 
+			    if ((rand < Math.floor(chance * 1.5)) && lastWinner && (data.message.substring(58, data.message.indexOf('mBTC') - 1) > 0.25)) {
+				chat('botgames', lastWinner + ': You won this payment!', "090");
+				totip = String(data.message.substring(58, data.message.indexOf('mBTC') - 1));
+				tip({user: lastWinner, room: 'botgames', tip: totip});
+				
+				
+			    } 
 			}
                         chance = oldchance;
                         payout = oldpayout;
@@ -166,8 +166,8 @@ socket.on("connect", function() {
             if (data.message === "!state" && data.room === "botgames") {
 		if (started) {
                     chat('botgames', data.user + ': Game ready to play! Balance: ' + balance + ' | Chance to win: ' + chance + '% | Payout: ' + payout + 'x | EV (1 - this number to get house edge): ' + edge, "090");
-		    if (balance < 0.25 || balance === 0) {
-			chat('botgames', data.user + '/bold Alert: Negative or zero balance detected. Betting may result in monetary loss. Stopping WhiskDice game...', "505");
+		/*    if (balance < 0.25 || balance === 0) {
+			chat('botgames', data.user + '/bold Alert: Negative or zero balance detected. Betting may result in monetary loss. Stopping WhiskDice game...', "505"); */
 			started = false;
 		    }
 		}
