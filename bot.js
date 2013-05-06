@@ -110,7 +110,7 @@ socket.on("connect", function() {
 		
             }
             if (data.message === "!topic" && data.room === "botgames" && (data.user === "whiskers75" || data.user === "admin")) {
-                chat('botgames', '/topic The official SatoshiDice for CoinChat! | Admin approved | ' + ((1 - edge) * 100).toFixed(2) + '% house edge! | YOU decide your chances of winning! | Current balance: ' + balance.toFixed(2) +'mBTC | !help for info', "000");
+                chat('botgames', '/topic The official SatoshiDice for CoinChat! | Admin approved | ' + ((1 - edge) * 100).toFixed(2) + '% house edge! | YOU decide your chances of winning! | !help for info', "000");
             }
             if (data.message === "!shutdown" && data.room === "botgames" && (data.user === "whiskers75" || data.user === "admin")) {
                 chat('botgames', '/bold Shutting down bot, no more bets please!', "505");
