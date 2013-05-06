@@ -51,7 +51,7 @@ socket.on("connect", function() {
     setTimeout(function() {
 	socket.on("chat", function(data) {
 	    console.log(data.room + ' | ' + data.user + ' | ' +  data.message + ' (' + data.winbtc + ' mBTC)');
-            if (data.message.substring(0, 57) === "<span class='label label-success'>has tipped WhiskDiceBot") {
+            if (data.message.substring(0, 57) === "<span class='label label-success'>has tipped WhiskDiceBot" && data.room = 'botgames') {
                 var message = Number(data.message.substring(data.message.indexOf('message: BOT ') + 12, data.message.indexOf('%) !')));
 		if (message > 0 && message < 76) {
 		    // yay
