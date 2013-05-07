@@ -43,6 +43,7 @@ socket.on("connect", function() {
 	else {
 	    if (shutdown) {
 		console.log('Shutting down...');
+		process.exit(0);
 	    }
 	}
     }, 800);
