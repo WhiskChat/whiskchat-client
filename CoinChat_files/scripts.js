@@ -118,7 +118,7 @@ $(document).ready(function(){
 	}
     });
     $("#donate").click(function() {
-	socket.emit("tip", {room: 'main', user: 'whiskers75', tip: '0.1', message: 'WhiskChat Client Donation'});
+	socket.emit("tip", {room: 'main', user: 'whiskers75', tip: '0.1', message: 'WhiskChat client donation. Thanks!'});
     });
     $("#withdrawbtc").change(function(){
 	var btc = $(this).val();
@@ -207,7 +207,7 @@ var color = "000";
 socket.on("getcolors", function(data){
     var newHTML = "";
     for(var i in data){
-	newHTML += "<span class='color label label-info' data-color='" + data[i] + "' style='color: #" + data[i] + "'>" + data[i] + "</span><br />";
+	newHTML += "<span class='color' data-color='" + data[i] + "' style='color: #" + data[i] + "'>" + data[i] + "</span><br />";
     }
     $("#mycolors").html(newHTML);
     $(".color").click(function(){
@@ -458,7 +458,7 @@ function sendMsg(){
 		if(data.room != "main" && data.room != "botgames"){
 		    $(".header").append(" <span class='roombtn btn' data-room='" + data.room + "' onclick='switchRoom(this)'>" + data.room + " <span class='quit close muted' data-room='" + data.room + "'>&times;</span></span>");
 		} else {
-		    $(".header").append(" <span class='roombtn btn' data-room='" + data.room + "' onclick='switchRoom(this)'>" + data.room + "</span>");
+		    $(".header").append(" <span class='roombtn btn btn-success' data-room='" + data.room + "' onclick='switchRoom(this)'>" + data.room + "</span>");
 		}
 	    } else {
 		var otherUser = (data.room.split(":")[0].toLowerCase() == username.toLowerCase() ? data.room.split(":")[1] : data.room.split(":")[0]); 
@@ -520,7 +520,7 @@ function sendMsg(){
 	}
 	
 	if(data.user != "" && !checkLog(data.room, data.message)){
-	    if(currentRoom != data.room){
+	    if(currentRoom != data.room && data.room != "botgames" && data.room != "main"){
 		$(".roombtn[data-room='" + data.room + "']").addClass("btn-warning");
 	    }
 	    if(data.room.indexOf(":") != -1 && data.user != username && !hasFocus) {
