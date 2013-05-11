@@ -297,7 +297,7 @@ function sendMsg(){
 	    return;
         }
         if(msg.substr(0,4) == "/bet" && currentRoom == "botgames") {
-            if(msg.split(" ").length == 2){
+            if(msg != "/bet"){
                 var tipAmount = msg.split(" ")[0];
                 var tipMsg = msg.split(" ")[1];
                 callMsg({message: 'System: Betting ' + tipAmount + ' with a ' + tipMsg + 'chance...', type: 'alert-success'});
