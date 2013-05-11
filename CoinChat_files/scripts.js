@@ -64,10 +64,6 @@ $(document).ready(function(){
         forcedc = true;
         socket.disconnect();
     });
-    $(".user").click(function() {
-        console.log('Placing user ' + $(this).attr('data-user'));
-	$("#chatinput").val($(this).attr('data-user') + ':');
-    });
     $("#login-button").click(function(){
 	socket.emit("accounts", {action: "login", username: $("#login-username").val(), password: $("#login-password").val()});
     });
@@ -719,6 +715,10 @@ socket.on("loggedin", function(data){
     setTimeout(function() {
 	socket.emit('chat', {room: 'main', message: '!; connect', color: "000"});
     }, 2000);
+    $(".user").click(function() {
+        console.log('Placing user ' + $(this).attr('data-user'));
+        $("#chatinput").val($(this).attr('data-user') + ':');
+    });
 });
 socket.on("balance", function(data){
     if(typeof data.balance != 'undefined'){
