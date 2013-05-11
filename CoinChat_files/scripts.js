@@ -64,6 +64,10 @@ $(document).ready(function(){
         forcedc = true;
         socket.disconnect();
     });
+    $(".user").click(function() {
+        console.log('Placing user ' + $(this).attr('data-user'));
+	$("#chatinput").val($(this).attr('data-user') + ':');
+    });
     $("#login-button").click(function(){
 	socket.emit("accounts", {action: "login", username: $("#login-username").val(), password: $("#login-password").val()});
     });
