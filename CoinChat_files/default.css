@@ -200,7 +200,6 @@ body {
     font-size: 12pt;
 }
 #cat {
-    background-image: url('http://coinchat.org/img/cat_hover.png'); /* preload */
     background-image: url('http://coinchat.org/img/cat.png');
     height: 107px;
     width: 259px;
