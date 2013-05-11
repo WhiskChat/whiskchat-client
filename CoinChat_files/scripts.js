@@ -513,8 +513,7 @@ socket.on("chat", function(data){
 	$(".roombtn[data-room='" + data.room + "']").removeClass("btn-warning");
 	changeTitle("CoinChat");
     }
-    if(data.message.toLowerCase().indexOf(username.toLowerCase()) != -1 && username.length > 0){
-        data.message = "" + data.message 
+    if(data.message.toLowerCase().indexOf(username.toLowerCase()) != -1 && username.length > 0){ 
 	if(!focus){
 	    startFlashing("Mentioned by " + data.user);
 	}
@@ -541,7 +540,13 @@ socket.on("chat", function(data){
         var label = "label-important";
         var winBTCtext = " <span class='label " + label + "'>(evil)</span>";
     }
-    winBTCtext = winBTCtext + " <span class='label label-success>Mentioned!</span> ";
+    if(data.message.toLowerCase().indexOf(username.toLowerCase()) != -1 && username.length > 0){
+        winBTCtext += " <span class='label label-success>Mentioned!</span> ";
+        if(!focus){
+            startFlashing("Mentioned by " + data.user);
+        }
+    }
+    
     if(data.user == username){
 	var m = "";
     } else {
