@@ -637,7 +637,7 @@ socket.on("chat", function(data){
 	}
 	log(data.message.split("<span class=\"foo\"></span>")[0], currentRoom);
 	
-	if((!fs && $("#chattext").scrollTop() + 520 >= $("#chattext").prop('scrollHeight')) || (fs && $("#chattext").scrollTop() + $(window).height() >= $("#chattext").prop('scrollHeight'))){
+	if((!fs && $("#chattext").scrollTop() + 650 >= $("#chattext").prop('scrollHeight')) || (fs && $("#chattext").scrollTop() + $(window).height() >= $("#chattext").prop('scrollHeight'))){
 	    $("#chattext").animate({ scrollTop:$("#chattext").prop('scrollHeight') }, "slow");
 	}
 	$(".chatline").hover(function(){
