@@ -453,7 +453,7 @@ var users = [];
 var currentRoom = "";
 function updateSidebar(){
     if(currentRoom == "main"){
-        $("#chatsidebar").html("<div class='alert alert-success' style='width: 210px; margin-left: 0px; margin-right: 10px; margin-top: 10px'><strong>WhiskChat Client enabled!</strong><br><iframe data-aa='3135' src='//ad.a-ads.com/3135?size=250x250' scrolling='no' style='width:250px; height:250px; border:0px; padding:0;overflow:hidden' allowtransparency='true'></iframe></div>");
+        $("#chatsidebar").html("<div class='alert alert-success' style='width: 210px; margin-left: 0px; margin-right: 10px; margin-top: 10px'><strong>WhiskChat Client</strong></div><br><iframe class='anonad' data-aa='3135' src='//ad.a-ads.com/3135?size=250x250' scrolling='no' style='width:250px; height:250px; border:0px; padding:0;overflow:hidden' allowtransparency='true'></iframe></div>");
     } else if(users[currentRoom]){
         $("#chatsidebar").html("");
         for(var i in users[currentRoom]){
