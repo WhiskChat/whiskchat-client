@@ -479,10 +479,8 @@ function sendMsg(){
 	}
 	console.log("joinroom");
 	updateSidebar();
-	socket.emit('chat', {room: data.room, message: '!; joinroom', color: "000"});
     });
 socket.on("quitroom", function(data){
-    socket.emit('chat', {room: data.room, message: '!; quitroom', color: "000"});
 	$(".roombtn[data-room='" + data.room + "']").remove();
 	if(currentRoom == data.room){
 	    switchRoom($(".roombtn[data-room=main]"));
