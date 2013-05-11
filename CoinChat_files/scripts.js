@@ -276,6 +276,9 @@ function sendMsg(){
 	}
 	if(msg.substr(0,4) == "/tip"){
 	    // /tip username 1.25 thank you
+	    if (msg == '/tip') {
+		callMsg({message: 'Syntax: /tip username amount (message)', type: 'alert-success'});
+	    }
 	    if(msg.split(" ").length > 2){
 		var tipTo = msg.split(" ")[1];
 		var tipAmount = msg.split(" ")[2];
@@ -284,7 +287,7 @@ function sendMsg(){
 		} else {
 		    var tipMsg = "";
 		}
-		callMsg({message: 'System: Tipping ' + user + ' ' + tipAmount + ' (message: ' + tipMsg + ')', type: 'alert-success'});
+		callMsg({message: 'System: Tipping ' + tipTo + ' ' + tipAmount + message ? '(message: ' + tipMsg + ')', type: 'alert-success' : ''});
 		socket.emit("tip", {room: currentRoom, user: tipTo, tip: tipAmount, message: tipMsg});
 		return;
 	    }
