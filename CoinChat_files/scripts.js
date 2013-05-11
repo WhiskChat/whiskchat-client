@@ -218,9 +218,9 @@ socket.on("getcolors", function(data){
 });
 socket.on("disconnect", function(data){
     ///alert("Disconnected from server. Refreshing..");
-    callMsg({message: "Disconnected. Refreshing...", type: 'alert-warning'});
+    callMsg({message: "Disconnected.", type: 'alert-warning'});
     
-    setTimeout(function(){document.location.reload(true)}, 1000 + Math.random()*3750);
+    if (!forcedc) {setTimeout(function(){document.location.reload(true)}, 1000 + Math.random()*3750);}
     
 });
 socket.on("addcolor", function(data){
@@ -281,6 +281,7 @@ function sendMsg(){
 	}
         if(msg.substr(0,5) == "/quit"){
             socket.emit("chat", {room: currentRoom, message: '!; quitchat', color: "000"});
+	    forcedc = true;
 	    socket.disconnect();
         }
         if(msg.substr(0,5) == "/ping"){
