@@ -538,7 +538,7 @@ socket.on("quitroom", function(data){
         if (data.message == '!; quitroom') {
             data.message = "<span class='label label-important'>left the room.</span>"
         }
-        if (data.message == '!; quitCHAT') {
+        if (data.message == '!; quitchat') {
             data.message = "<span class='label label-important'>disconnected.</span>"
         }
         if(data.user != "" && !checkLog(data.room, data.message)){
