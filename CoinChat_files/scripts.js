@@ -207,7 +207,7 @@ var color = "000";
 socket.on("getcolors", function(data){
     var newHTML = "";
     for(var i in data){
-	newHTML += "<span class='color' data-color='" + data[i] + "' style='color: #" + data[i] + "'>" + data[i] + "</span><br />";
+	newHTML += "<span class='color label label-info' data-color='" + data[i] + "' style='color: #" + data[i] + "'>" + data[i] + "</span><br />";
     }
     $("#mycolors").html(newHTML);
     $(".color").click(function(){
