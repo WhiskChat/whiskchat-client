@@ -153,10 +153,10 @@ body {
     display: none;
 }
 .chatline .user:hover:before {
-    content: "Click to PM";
+    content: "Click to insert";
 }
 .chatline .user:hover:active:before {
-    content: "PMing..";
+    content: "Inserting...";
     font-weight: bold;
 }
 .chatline:before, .chatline:after {
@@ -190,6 +190,12 @@ body {
 }
 .tipbutton {
     position: absolute;
+    right: 0;
+}
+.anonad {
+    position: absolute;
+    top: 0;
+    left: 0;
     right: 0;
 }
 .quit {
