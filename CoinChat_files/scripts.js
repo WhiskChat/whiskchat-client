@@ -290,7 +290,7 @@ function sendMsg(){
 		} else {
 		    var tipMsg = "";
 		}
-		callMsg({message: 'System: Tipping ' + tipTo + ' ' + tipAmount + message ? '(message: ' + tipMsg + ')', type: 'alert-success' : ''});
+		callMsg({message: 'System: Tipping ' + tipTo + ' ' + tipAmount + message ? '(message: ' + tipMsg + ')' : '', type: 'alert-success'});
 		socket.emit("tip", {room: currentRoom, user: tipTo, tip: tipAmount, message: tipMsg});
 		return;
 	    }
