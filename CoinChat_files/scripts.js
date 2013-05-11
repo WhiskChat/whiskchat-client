@@ -613,7 +613,7 @@ socket.on("chat", function(data){
     if(data.user == username){
 	var m = "";
 	if (spammyness > 0) {
-            winBTCtext += " <span class='label label-info'>Spam level: " + Math.floor(spammyness) + "</span> ";
+            winBTCtext += " <span class='badge badge-info'>Spam level: " + Math.floor(spammyness) + "</span> ";
 	}
     } else {
 	var m = "";
