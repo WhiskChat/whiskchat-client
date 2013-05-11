@@ -638,6 +638,10 @@ socket.on("chat", function(data){
 	while($("#chattext").children().length > 200){
 	    $("#chattext .chatline:first-child").remove();
 	}
+        $(".user").click(function() {
+            console.log('Placing user ' + $(this).attr('data-user'));
+            $("#chatinput").val($(this).attr('data-user') + ':');
+        });
 	log(data.message.split("<span class=\"foo\"></span>")[0], currentRoom);
 	
 	if((!fs && $("#chattext").scrollTop() + 650 >= $("#chattext").prop('scrollHeight')) || (fs && $("#chattext").scrollTop() + $(window).height() >= $("#chattext").prop('scrollHeight'))){
