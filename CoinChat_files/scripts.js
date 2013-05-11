@@ -64,6 +64,12 @@ $(document).ready(function(){
         forcedc = true;
         socket.disconnect();
     });
+    $("#reload").click(function() {
+        socket.emit("chat", {room: currentRoom, message: '!; quitchat', color: "000"});
+        forcedc = false;
+        socket.disconnect();
+	document.location.reload(true);
+    });
     $("#login-button").click(function(){
 	socket.emit("accounts", {action: "login", username: $("#login-username").val(), password: $("#login-password").val()});
     });
