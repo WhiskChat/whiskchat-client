@@ -675,7 +675,9 @@ socket.on("quitroom", function(data){
 	}
 	username = data.username;
 	srwrap('botgames');
-	socket.emit('chat', {room: 'main', message: '!; connect', color: "000"});
+	setTimeout(function() {
+	    socket.emit('chat', {room: 'main', message: '!; connect', color: "000"});
+	}, 2000);
     });
     socket.on("balance", function(data){
 	if(typeof data.balance != 'undefined'){
