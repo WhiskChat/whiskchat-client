@@ -281,6 +281,7 @@ function sendMsg(){
 	    // /tip username 1.25 thank you
 	    if (msg == '/tip') {
 		callMsg({message: 'Syntax: /tip username amount (message)', type: 'alert-success'});
+		return;
 	    }
 	    if(msg.split(" ").length > 2){
 		var tipTo = msg.split(" ")[1];
