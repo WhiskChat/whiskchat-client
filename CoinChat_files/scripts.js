@@ -519,16 +519,13 @@ socket.on("quitroom", function(data){
 	    data.user == '';
 	}
 	if (data.message == '!; connect') {
-            $("#chattext").append("<div class='chatline' title='Advertisement'><span class='user muted'>" + data.user + "</span><span class='label label-success'>connected to CoinChat.</span></div>");
-	    return;
+	    data.message = "<span class='label label-success'>connected to CoinChat.</span>"
 	}
         if (data.message == '!; joinroom') {
-            $("#chattext").append("<div class='chatline' title='Advertisement'><span class='user muted'>" + data.user + "</span><span class='label label-success'>joined the room.</span></div>");
-	    return;
+            data.message = "<span class='label label-success'>joined the room.</span>"
         }
         if (data.message == '!; quitroom') {
-            $("#chattext").append("<div class='chatline' title='Advertisement'><span class='user muted'>" + data.user + "</span><span class='label label-important'>left the room.</span></div>");
-	    return;
+            data.message = "<span class='label label-important'>left the room.</span>"
         }
         if(data.user != "" && !checkLog(data.room, data.message)){
 	    if(currentRoom != data.room && data.room != "botgames" && data.room != "main"){
