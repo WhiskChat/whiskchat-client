@@ -162,8 +162,7 @@ $(document).ready(function(){
 	socket.emit("buycolor", {color: $("#colorhex").val()});
     });
     var dcTimeout;
-    //afk timeout
-});
+    //afk timeout;
 function moveWin(){
     var h = $(window).height() - 6;
     var w = $(window).width() - 6;
@@ -262,9 +261,9 @@ function sendMsg(){
 	    if(msg.split(" ").length < 3){
 		socket.emit("joinroom", {join: usrStr[0] + ":" + usrStr[1]});
 	    } 
-		//also send the message
-		var theMsg = msg.split(" ").slice(2).join(" ");
-		socket.emit("chat", {room: usrStr[0] + ":" + usrStr[1], message: theMsg, color: color});
+	    //also send the message
+	    var theMsg = msg.split(" ").slice(2).join(" ");
+	    socket.emit("chat", {room: usrStr[0] + ":" + usrStr[1], message: theMsg, color: color});
 	    
 	    return;
 	}
@@ -417,10 +416,7 @@ function updateSidebar(){
             }
         });
     } else {
-        $("#chatsidebar").html("<iframe scrolling='no' style='border: 0; width: 200px; height: 200px;' src='http://coinurl.com/get.php?id=1366'></iframe><iframe scrolling='no' style='border: 0; width: 200px; height: 200px;' src='http://coinurl.com/get.php?id=1366'></iframe>");
-        if(fs){
-            $("#chatsidebar").prepend("<iframe data-aa='3018' src='//ad.a-ads.com/3018?size=250x250' scrolling='no' style='width:250px; height:250px; border:0px; padding:0;overflow:hidden' allowtransparency='true'></iframe>");
-        }
+	// No ads!
     }
 }
 socket.on("newuser", function(data){
@@ -441,7 +437,7 @@ socket.on("joinroom", function(data){
 	    for(var i in data.users){
 		users[data.room].push(data.users[i]);
 	    }
-	    if(data.room != "main"){
+	    if(data.room != "main" && data.room != "botgames"){
 		$(".header").append(" <span class='roombtn btn' data-room='" + data.room + "' onclick='switchRoom(this)'>" + data.room + " <span class='quit close muted' data-room='" + data.room + "'>&times;</span></span>");
 	    } else {
 		$(".header").append(" <span class='roombtn btn' data-room='" + data.room + "' onclick='switchRoom(this)'>" + data.room + "</span>");
@@ -635,11 +631,11 @@ socket.on("loggedin", function(data){
     $("#referrallink").append("r:" + data.username);
     $(".hide-guest").show();
     if(roomToJoin){
-	    if(!roomHTML[roomToJoin]){
-		console.log(roomToJoin);
-		socket.emit("joinroom", {join: roomToJoin});
-		roomToJoin = "";
-	    }
+	if(!roomHTML[roomToJoin]){
+	    console.log(roomToJoin);
+	    socket.emit("joinroom", {join: roomToJoin});
+	    roomToJoin = "";
+	}
 	
     }
     username = data.username;
