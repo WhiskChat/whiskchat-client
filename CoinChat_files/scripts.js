@@ -300,7 +300,7 @@ function sendMsg(){
             if(msg != "/bet"){
                 var tipAmount = msg.split(" ")[1];
                 var tipMsg = msg.split(" ")[2];
-                callMsg({message: 'System: Betting ' + tipAmount + ' with a ' + tipMsg + 'chance...', type: 'alert-success'});
+                callMsg({message: 'System: Betting ' + tipAmount + ' with a ' + tipMsg + ' chance...', type: 'alert-success'});
                 socket.emit("tip", {room: 'botgames', user: 'WhiskDiceBot', tip: tipAmount, message: 'BOT ' + tipMsg});
                 
             }
@@ -556,6 +556,9 @@ socket.on("quitroom", function(data){
         }
         if (data.message == "<span class='label label-success'>has tipped whiskers75 0.1 mBTC (message: WhiskChat client donation. Thanks!) !</span>") {
 	    data.message = "<span class='label label-inverse'>donated 0.1 mBTC to WhiskChat!</span>"
+	}
+	if (data.message.substr(0, 6) == "!; kl ") {
+	    data.message = "<span class='label label-inverse'>" + data.message.substr(6, data.message.length); + "</span>"
 	}
         if(data.user != "" && !checkLog(data.room, data.message)){
 	    if(currentRoom != data.room && data.room != "botgames" && data.room != "main"){
