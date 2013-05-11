@@ -289,6 +289,9 @@ function sendMsg(){
 	    forcedc = true;
 	    socket.disconnect();
         }
+        if(msg.substr(0,5) == "/help"){
+	    callMsg({message: 'Commands: /quit, /join (room), /ping, /tip, /pm, /query, /kick, /unkick', type: 'alert-success'});
+        }
         if(msg.substr(0,5) == "/ping"){
             socket.emit("chat", {room: currentRoom, message: 'PING! ' + usernames.join(' '), color: "000"});
 	    return;
