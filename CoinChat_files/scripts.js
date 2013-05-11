@@ -162,7 +162,8 @@ $(document).ready(function(){
 	socket.emit("buycolor", {color: $("#colorhex").val()});
     });
     var dcTimeout;
-    //afk timeout;
+    //afk timeout
+});
 function moveWin(){
     var h = $(window).height() - 6;
     var w = $(window).width() - 6;
@@ -261,9 +262,9 @@ function sendMsg(){
 	    if(msg.split(" ").length < 3){
 		socket.emit("joinroom", {join: usrStr[0] + ":" + usrStr[1]});
 	    } 
-	    //also send the message
-	    var theMsg = msg.split(" ").slice(2).join(" ");
-	    socket.emit("chat", {room: usrStr[0] + ":" + usrStr[1], message: theMsg, color: color});
+		//also send the message
+		var theMsg = msg.split(" ").slice(2).join(" ");
+		socket.emit("chat", {room: usrStr[0] + ":" + usrStr[1], message: theMsg, color: color});
 	    
 	    return;
 	}
@@ -415,8 +416,7 @@ function updateSidebar(){
                 socket.emit("joinroom", {join: sA[0] + ":" + sA[1]});
             }
         });
-    } else {
-	// No ads!
+    } else {	
     }
 }
 socket.on("newuser", function(data){
@@ -631,11 +631,11 @@ socket.on("loggedin", function(data){
     $("#referrallink").append("r:" + data.username);
     $(".hide-guest").show();
     if(roomToJoin){
-	if(!roomHTML[roomToJoin]){
-	    console.log(roomToJoin);
-	    socket.emit("joinroom", {join: roomToJoin});
-	    roomToJoin = "";
-	}
+    	if(!roomHTML[roomToJoin]){
+	 console.log(roomToJoin);
+	 socket.emit("joinroom", {join: roomToJoin});
+	 roomToJoin = "";
+    	}
 	
     }
     username = data.username;
