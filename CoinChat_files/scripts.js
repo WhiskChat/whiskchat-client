@@ -486,12 +486,14 @@ socket.on("joinroom", function(data){
 	    var otherUser = (data.room.split(":")[0].toLowerCase() == username.toLowerCase() ? data.room.split(":")[1] : data.room.split(":")[0]); 
 	    $(".header").append(" <span class='roombtn btn' data-room='" + data.room + "' onclick='switchRoom(this)'>" + otherUser + " <span class='quit close muted' data-room='" + data.room + "'>&times;</span></span>");
 	}
-            $(".quit[data-room='" + data.room + "']").click(function(event){
+        $(".quit[data-room='" + data.room + "']").click(function(event){
+            if($(this).attr("data-room").indexOf(":") == -1){
                 socket.emit("chat", {room: $(this).attr("data-room"), message: '!; quitroom', color: '000'});
-                socket.emit("quitroom", {room: $(this).attr("data-room")});
-                event.stopPropagation();
-            });
-	if(currentRoom == ""){
+            }
+            socket.emit("quitroom", {room: $(this).attr("data-room")});
+            event.stopPropagation();
+        });
+        if(currentRoom == ""){
 	    //let's switch to this room
 	    currentRoom = data.room;
 	    $("#chattext").html(roomHTML[data.room]);
@@ -584,17 +586,17 @@ socket.on("chat", function(data){
     }
     if(data.winbtc > 0){
 	if(data.winbtc == 0.01){
-	    var label = "label-warning";
+	    var label = "badge-warning";
 	} else if(data.winbtc == 0.02){
-	    var label = "label-success";
+	    var label = "badge-success";
 	    data.winbtc = data.winbtc + " (nice) ";
 	} else {
-	    var label = "label-important";
+	    var label = "badge-important";
 	    data.winbtc = data.winbtc + " (wow, congrats!) ";
 	}
-	var winBTCtext = " <span class='label " + label + "'>+" + data.winbtc + " mBTC!</span>";
+	var winBTCtext = " <span class='badge " + label + "'>" + data.winbtc + " mBTC!</span>";
     } else {
-	var label = "label-important";
+	var label = "badge-important";
         var winBTCtext = ""
     }
     if (data.user == "moobot") {
