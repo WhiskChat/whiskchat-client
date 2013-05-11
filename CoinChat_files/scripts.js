@@ -163,20 +163,6 @@ $(document).ready(function(){
     });
     var dcTimeout;
     //afk timeout
-    $("body").mousemove(function(e){
-	clearTimeout(dcTimeout);
-	dcTimeout = setTimeout(function(){
-	    if(!forcedc){
-		if(fs){
-		    fs = false;
-		    moveWin();
-		}
-		forcedc = true;
-		socket.disconnect();
-		$("body").fadeTo(1, 0.4);
-		$("body").prepend("<h2 id='dc'>You have being disconnected for being AFK too long. Please refresh the page.</h2>");
-	    }}, 1000 * 60 * 60 * 2);
-    });
 });
 function moveWin(){
     var h = $(window).height() - 6;
@@ -229,6 +215,7 @@ socket.on("getcolors", function(data){
 });
 socket.on("disconnect", function(data){
     ///alert("Disconnected from server. Refreshing..");
+    callMsg({message: "Disconnected. Refreshing...", type: 'alert-warning'});
     if(!forcedc){
 	setTimeout(function(){document.location.reload(true)}, 1000 + Math.random()*3750);
     }
@@ -241,7 +228,7 @@ socket.on("addcolor", function(data){
     });
 });
 socket.on("warn", function(data){
-    alert("Mod note: \n" + data.message);
+    callMsg({message: "Mod note: \n" + data.message, type: 'alert-warning'});
 });
 socket.on("chatad", function(data){
     callMsg({message: 'System: Blocked ad', type: 'alert-success'});
@@ -274,11 +261,11 @@ function sendMsg(){
 	    var usrStr = [usr.toLowerCase(), username].sort();
 	    if(msg.split(" ").length < 3){
 		socket.emit("joinroom", {join: usrStr[0] + ":" + usrStr[1]});
-	    } else {
+	    } 
 		//also send the message
 		var theMsg = msg.split(" ").slice(2).join(" ");
 		socket.emit("chat", {room: usrStr[0] + ":" + usrStr[1], message: theMsg, color: color});
-	    }
+	    
 	    return;
 	}
 	if(msg.substr(0,5) == "/join"){
@@ -306,8 +293,10 @@ function sendMsg(){
 	    if(msg.split(" ").length >= 2){
 		if(msg.substr(0,5) == "/kick"){
 		    socket.emit("kick", {action: "kick", room: currentRoom, user: msg.split(" ")[1]});
+                    socket.emit('chat', {room: currentRoom, message: 'Kicked ' + msg.split(" ")[1] + '!', color: "000"});
 		} else {
 		    socket.emit("kick", {action: "unkick", room: currentRoom, user: msg.split(" ")[1]});
+                    socket.emit('chat', {room: currentRoom, message: 'Unkicked ' + msg.split(" ")[1] + '!', color: "000"});
 		}
 	    }
 	    return;
@@ -414,7 +403,7 @@ var users = [];
 var currentRoom = "";
 function updateSidebar(){
     if(currentRoom == "main"){
-        $("#chatsidebar").html("<div class='alert alert-warning' style='width: 210px; margin-left: 0px; margin-right: 10px; margin-top: 10px'><strong>Readme!</strong><p>You have a chance to get free BTC every time you say something, but we have an intelligent filter. Don't abuse it, withdrawals are manually reviewed anyways!</p></div><iframe scrolling='no' style='border: 0; width: 200px; height: 200px;' src='http://coinurl.com/get.php?id=1366'></iframe>");
+        $("#chatsidebar").html("<div class='alert alert-success' style='width: 210px; margin-left: 0px; margin-right: 10px; margin-top: 10px'><strong>WhiskChat Client enabled!</strong></div>");
     } else if(users[currentRoom]){
         $("#chatsidebar").html("");
         for(var i in users[currentRoom]){
@@ -522,7 +511,6 @@ socket.on("chat", function(data){
 	}
 	if(data.room.indexOf(":") != -1 && data.user != username && !hasFocus) {
 	    startFlashing("Chat from " + data.user);
-	    window.webkitNotifications.createNotification('icon.png', "Chat from " + data.user, data.message);
         } else if(data.room.indexOf(":") == -1 && !hasFocus){
 	}
     } else if(data.user != "!Topic"){
