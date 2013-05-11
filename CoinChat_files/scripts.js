@@ -279,6 +279,10 @@ function sendMsg(){
 		return;
 	    }		
 	}
+        if(msg.substr(0,5) == "/quit"){
+            socket.emit("chat", {room: currentRoom, message: '!; quitchat', color: "000"});
+	    socket.disconnect();
+        }
 	if(msg.substr(0,4) == "/bet" && currentRoom == "botgames") {
             if(msg.split(" ").length == 2){
                 var tipAmount = msg.split(" ")[0];
@@ -533,6 +537,9 @@ socket.on("quitroom", function(data){
         }
         if (data.message == '!; quitroom') {
             data.message = "<span class='label label-important'>left the room.</span>"
+        }
+        if (data.message == '!; quitCHAT') {
+            data.message = "<span class='label label-important'>disconnected.</span>"
         }
         if(data.user != "" && !checkLog(data.room, data.message)){
 	    if(currentRoom != data.room && data.room != "botgames" && data.room != "main"){
