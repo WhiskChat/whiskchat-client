@@ -727,6 +727,7 @@ socket.on("loggedin", function(data){
         console.log('Placing user ' + $(this).attr('data-user'));
         $("#chatinput").val($(this).attr('data-user') + ':');
     });
+    srwrap('main');
 });
 socket.on("balance", function(data){
     if(typeof data.balance != 'undefined'){
