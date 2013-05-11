@@ -287,6 +287,7 @@ function sendMsg(){
 	    else {
                 callMsg({message: 'Syntax: /bet amount chance%', type: 'alert-success'});
 	    }
+	}
 	    if(msg.substr(0,4) == "/tip"){
 		// /tip username 1.25 thank you
 		if (msg == '/tip') {
@@ -744,4 +745,4 @@ function sendMsg(){
     function changeTitle(title){
 	clearInterval(flashInterval);
 	window.document.title = title;
-    }
+    }    
