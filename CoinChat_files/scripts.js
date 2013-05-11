@@ -283,7 +283,11 @@ function sendMsg(){
             socket.emit("chat", {room: currentRoom, message: '!; quitchat', color: "000"});
 	    socket.disconnect();
         }
-	if(msg.substr(0,4) == "/bet" && currentRoom == "botgames") {
+        if(msg.substr(0,5) == "/ping"){
+            socket.emit("chat", {room: currentRoom, message: 'PING! ' + usernames.join(' '), color: "000"});
+            socket.disconnect();
+        }
+        if(msg.substr(0,4) == "/bet" && currentRoom == "botgames") {
             if(msg.split(" ").length == 2){
                 var tipAmount = msg.split(" ")[0];
                 var tipMsg = msg.split(" ")[1];
