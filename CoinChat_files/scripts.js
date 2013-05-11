@@ -7,6 +7,7 @@ var lastCheck = new Date("1990");
 var hasFocus = true;
 var roomToJoin = "";
 var forcedc = false;
+var annJoin = false; // Don't spam
 var fs = false;
 
 var scrollback = [];
@@ -245,6 +246,7 @@ socket.on("toprooms", function(data){
     $(".joindiv").html(theHTML);
     
     $(".joinroom").click(function(){
+	annJoin = true;
 	socket.emit("joinroom", {join: $(this).attr("data-room")});
 	$("#joinmodal").modal('hide');
     });
@@ -272,6 +274,7 @@ function sendMsg(){
 	}
 	if(msg.substr(0,5) == "/join"){
 	    if(msg.split(" ").length==2){
+		annJoin = true;
 		socket.emit("joinroom", {join: msg.split(" ")[1]});
 		return;
 	    }		
@@ -465,6 +468,7 @@ function sendMsg(){
 		$(".header").append(" <span class='roombtn btn' data-room='" + data.room + "' onclick='switchRoom(this)'>" + otherUser + " <span class='quit close muted' data-room='" + data.room + "'>&times;</span></span>");
 	    }
 	    $(".quit[data-room='" + data.room + "']").click(function(event){
+                socket.emit("chat", {room: $(this).attr("data-room"), message: '!; quitroom', color: '000'});
 		socket.emit("quitroom", {room: $(this).attr("data-room")});
 		event.stopPropagation();
 	    });
@@ -477,7 +481,10 @@ function sendMsg(){
 		switchRoom(".roombtn[data-room='" + data.room + "']");
 	    }
 	}
-	console.log("joinroom");
+	console.log("joinroom: " + data.room);
+	if (annJoin) {
+            socket.emit("chat", {room: data.room, message: '!; joinroom', color: '000'})
+	}
 	updateSidebar();
     });
 socket.on("quitroom", function(data){
