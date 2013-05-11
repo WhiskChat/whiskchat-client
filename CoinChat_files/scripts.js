@@ -541,6 +541,9 @@ socket.on("quitroom", function(data){
         if (data.message == '!; quitchat') {
             data.message = "<span class='label label-important'>disconnected.</span>"
         }
+        if (data.message == "<span class='label label-success'>has tipped whiskers75 0.1 mBTC (message: WhiskChat client donation. Thanks!) !</span>") {
+	    data.message = "<span class='label label-inverse'>donated 0.1 mBTC to WhiskChat!</span>"
+	}
         if(data.user != "" && !checkLog(data.room, data.message)){
 	    if(currentRoom != data.room && data.room != "botgames" && data.room != "main"){
 		$(".roombtn[data-room='" + data.room + "']").addClass("btn-warning");
