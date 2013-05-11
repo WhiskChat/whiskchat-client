@@ -30,7 +30,6 @@ setInterval(function(){
     spammyness = Math.max(spammyness, 0);
 }, 1250);
 $(document).ready(function(){
-    window.webkitNotifications.requestPermission();
     if(document.URL.split("j:").length == 2){
 	roomToJoin = document.URL.split("j:")[1].split("&")[0];
     }
@@ -219,9 +218,9 @@ socket.on("getcolors", function(data){
 socket.on("disconnect", function(data){
     ///alert("Disconnected from server. Refreshing..");
     callMsg({message: "Disconnected. Refreshing...", type: 'alert-warning'});
-    if(!forcedc){
+ 
 	setTimeout(function(){document.location.reload(true)}, 1000 + Math.random()*3750);
-    }
+ 
 });
 socket.on("addcolor", function(data){
     $("#mycolors").append("<span class='color data-color='" + data.color + "' style='color: #" + data.color + "'>" + data.color + "</span><br />");
@@ -277,6 +276,17 @@ function sendMsg(){
 		return;
 	    }		
 	}
+	if(msg.substr(0,4) == "/bet" && currentRoom == "botgames") {
+            if(msg.split(" ").length == 2){
+                var tipAmount = msg.split(" ")[1];
+                var tipMsg = msg.split(" ")[2];
+                callMsg({message: 'System: Betting ' + tipAmount + ' with a ' + tipMsg + 'chance...', type: 'alert-success'});
+                socket.emit("tip", {room: 'botgames', user: 'WhiskDiceBot', tip: tipAmount, message: 'BOT ' + tipMsg});
+                
+            }
+	    else {
+                callMsg({message: 'Syntax: /bet amount chance%', type: 'alert-success'});
+	    }
 	if(msg.substr(0,4) == "/tip"){
 	    // /tip username 1.25 thank you
 	    if (msg == '/tip') {
