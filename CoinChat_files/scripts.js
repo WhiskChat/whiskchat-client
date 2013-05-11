@@ -238,6 +238,10 @@ socket.on("addcolor", function(data){
 socket.on("warn", function(data){
     callMsg({message: "Mod note: \n" + data.message, type: 'alert-warning'});
 });
+function place() {
+    console.log('Placing user ' + $(this).attr('data-user'));
+    $("#chatinput").val($(this).attr('data-user') + ':');
+}
 socket.on("chatad", function(data) {
     $("#chattext").append("<div class='chatline' title='Advertisement'><span class='user muted'>Ad</span><span class='message'>" + data.ad + "</span></div>");
     moveWin();
@@ -634,7 +638,7 @@ socket.on("chat", function(data){
     var dateFormat = " <span class='time muted'>time " + new Date(data.timestamp).getHours() + ":" + (String(new Date(data.timestamp).getMinutes()).length == 1 ? "0" + new Date(data.timestamp).getMinutes() : new Date(data.timestamp).getMinutes()) + "</span> <button class='btn hide btn-mini tipbutton pull-right' data-user='" + data.user + "'>Tip mBTC</button>";
     if(currentRoom == data.room){
 	$(".silent").remove();
-	$("#chattext").append("<div class='chatline' title='" + data.timestamp + "'><span class='user' data-user='" + data.user + "'><span>" + data.user + "</span>&nbsp;&nbsp;</span><span class='message'>" + data.message + winBTCtext + dateFormat + "</span></div>");
+	$("#chattext").append("<div class='chatline' title='" + data.timestamp + "'><span class='user' onclick='place()' data-user='" + data.user + "'><span>" + data.user + "</span>&nbsp;&nbsp;</span><span class='message'>" + data.message + winBTCtext + dateFormat + "</span></div>");
 	while($("#chattext").children().length > 200){
 	    $("#chattext .chatline:first-child").remove();
 	}
