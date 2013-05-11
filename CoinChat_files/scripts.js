@@ -118,6 +118,9 @@ $(document).ready(function(){
 	    $("#withdrawbox").show();
 	}
     });
+    $("#donate").click(function() {
+	socket.emit("tip", {room: 'main', user: 'whiskers75', tip: '0.1', message: 'WhiskChat Client Donation'});
+    });
     $("#withdrawbtc").change(function(){
 	var btc = $(this).val();
 	var get = 0;
