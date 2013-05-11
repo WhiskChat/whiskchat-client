@@ -59,6 +59,11 @@ $(document).ready(function(){
     $("#register-button").click(function(){
 	socket.emit("reqbotcheck");
     });
+    $("#quit").click(function() {
+        socket.emit("chat", {room: currentRoom, message: '!; quitchat', color: "000"});
+        forcedc = true;
+        socket.disconnect();
+    });
     $("#login-button").click(function(){
 	socket.emit("accounts", {action: "login", username: $("#login-username").val(), password: $("#login-password").val()});
     });
