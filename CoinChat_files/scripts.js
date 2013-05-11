@@ -285,7 +285,7 @@ function sendMsg(){
         }
         if(msg.substr(0,5) == "/ping"){
             socket.emit("chat", {room: currentRoom, message: 'PING! ' + usernames.join(' '), color: "000"});
-            socket.disconnect();
+	    return;
         }
         if(msg.substr(0,4) == "/bet" && currentRoom == "botgames") {
             if(msg.split(" ").length == 2){
