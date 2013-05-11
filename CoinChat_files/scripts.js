@@ -518,8 +518,16 @@ function sendMsg(){
 	if (data.user == '!Topic') {
 	    data.user == '';
 	}
-	
-	if(data.user != "" && !checkLog(data.room, data.message)){
+	if (data.message == '!; connect') {
+            $("#chattext").append("<div class='chatline' title='Advertisement'><span class='user muted'>" + data.user + "</span><span class='message label label-success'>connected to CoinChat.</span></div>");
+	}
+        if (data.message == '!; joinroom') {
+            $("#chattext").append("<div class='chatline' title='Advertisement'><span class='user muted'>" + data.user + "</span><span class='message label label-success'>joined the room.</span></div>");
+        }
+        if (data.message == '!; quitroom') {
+            $("#chattext").append("<div class='chatline' title='Advertisement'><span class='user muted'>" + data.user + "</span><span class='message label label-important'>left the room.</span></div>");
+        }
+        if(data.user != "" && !checkLog(data.room, data.message)){
 	    if(currentRoom != data.room && data.room != "botgames" && data.room != "main"){
 		$(".roombtn[data-room='" + data.room + "']").addClass("btn-warning");
 	    }
