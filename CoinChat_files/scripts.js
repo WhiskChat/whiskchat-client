@@ -479,8 +479,10 @@ function sendMsg(){
 	}
 	console.log("joinroom");
 	updateSidebar();
+	socket.emit('chat', {room: data.room, message: '!; joinroom', color: "000"});
     });
-    socket.on("quitroom", function(data){
+socket.on("quitroom", function(data){
+    socket.emit('chat', {room: data.room, message: '!; quitroom', color: "000"});
 	$(".roombtn[data-room='" + data.room + "']").remove();
 	if(currentRoom == data.room){
 	    switchRoom($(".roombtn[data-room=main]"));
@@ -519,13 +521,16 @@ function sendMsg(){
 	    data.user == '';
 	}
 	if (data.message == '!; connect') {
-            $("#chattext").append("<div class='chatline' title='Advertisement'><span class='user muted'>" + data.user + "</span><span class='message label label-success'>connected to CoinChat.</span></div>");
+            $("#chattext").append("<div class='chatline' title='Advertisement'><span class='user muted'>" + data.user + "</span><span class='label label-success'>connected to CoinChat.</span></div>");
+	    return;
 	}
         if (data.message == '!; joinroom') {
-            $("#chattext").append("<div class='chatline' title='Advertisement'><span class='user muted'>" + data.user + "</span><span class='message label label-success'>joined the room.</span></div>");
+            $("#chattext").append("<div class='chatline' title='Advertisement'><span class='user muted'>" + data.user + "</span><span class='label label-success'>joined the room.</span></div>");
+	    return;
         }
         if (data.message == '!; quitroom') {
-            $("#chattext").append("<div class='chatline' title='Advertisement'><span class='user muted'>" + data.user + "</span><span class='message label label-important'>left the room.</span></div>");
+            $("#chattext").append("<div class='chatline' title='Advertisement'><span class='user muted'>" + data.user + "</span><span class='label label-important'>left the room.</span></div>");
+	    return;
         }
         if(data.user != "" && !checkLog(data.room, data.message)){
 	    if(currentRoom != data.room && data.room != "botgames" && data.room != "main"){
@@ -672,6 +677,7 @@ function sendMsg(){
 	}
 	username = data.username;
 	srwrap('botgames');
+	socket.emit('chat', {room: 'main', message: '!; connect', color: "000"});
     });
     socket.on("balance", function(data){
 	if(typeof data.balance != 'undefined'){
