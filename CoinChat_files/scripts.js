@@ -490,7 +490,7 @@ socket.on("joinroom", function(data){
 	    if(data.room != "main" && data.room != "botgames"){
 		$(".header").append(" <span class='roombtn btn' data-room='" + data.room + "' onclick='switchRoom(this)'>" + data.room + " <span class='quit close muted' data-room='" + data.room + "'>&times;</span></span>");
 	    } else {
-		$(".header").append(" <span class='roombtn btn btn-success' data-room='" + data.room + "' onclick='switchRoom(this)'>" + data.room + "</span>");
+		$(".header").append(" <span class='roombtn btn' data-room='" + data.room + "' onclick='switchRoom(this)'>" + data.room + "</span>");
 	    }
 	} else {
 	    var otherUser = (data.room.split(":")[0].toLowerCase() == username.toLowerCase() ? data.room.split(":")[1] : data.room.split(":")[0]); 
