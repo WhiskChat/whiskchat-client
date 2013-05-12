@@ -575,7 +575,7 @@ socket.on("chat", function(data){
 	data.message = "<span class='label label-inverse'>" + data.message.substr(6, data.message.length); + "</span>"
     }
     if(data.user != "" && !checkLog(data.room, data.message)){
-	if(currentRoom != data.room && data.room != "botgames" && data.room != "main"){
+	if(currentRoom != data.room){
 	    $(".roombtn[data-room='" + data.room + "']").addClass("btn-warning");
 	}
 	if(data.room.indexOf(":") != -1 && data.user != username && !hasFocus) {
