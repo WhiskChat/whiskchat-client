@@ -453,7 +453,7 @@ var users = [];
 var currentRoom = "";
 function updateSidebar(){
     if(currentRoom == "main"){
-        $("#chatsidebar").html("<div class='alert alert-success' style='width: 210px; margin-left: 0px; margin-right: 10px; margin-top: 10px'><strong>WhiskChat Client</strong></div><br></div>");
+        $("#chatsidebar").html("<div class='alert alert-success' style='width: 210px; margin-left: 0px; margin-right: 10px; margin-top: 10px'><strong>WhiskChat Client</strong></div><br><iframe scrolling='no' style='border: 0; width: 200px; height: 200px;' src='http://coinurl.com/get.php?id=1366'></iframe></div>");
     } else if(users[currentRoom]){
         $("#chatsidebar").html("");
         for(var i in users[currentRoom]){
