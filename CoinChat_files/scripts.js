@@ -60,12 +60,12 @@ $(document).ready(function(){
 	socket.emit("reqbotcheck");
     });
     $("#quit").click(function() {
-        socket.emit("chat", {room: currentRoom, message: '!; quitchat', color: "000"});
+        socket.emit("chat", {room: 'main', message: '!; quitchat', color: "000"});
         forcedc = true;
         socket.disconnect();
     });
     $("#reload").click(function() {
-        socket.emit("chat", {room: currentRoom, message: '!; quitchat', color: "000"});
+        socket.emit("chat", {room: 'main', message: '!; quitchat', color: "000"});
         forcedc = false;
         socket.disconnect();
 	document.location.reload(true);
@@ -295,7 +295,7 @@ function sendMsg(){
 	    }		
 	}
         if(msg.substr(0,5) == "/quit"){
-            socket.emit("chat", {room: currentRoom, message: '!; quitchat', color: "000"});
+            socket.emit("chat", {room: 'main', message: '!; quitchat', color: "000"});
 	    forcedc = true;
 	    socket.disconnect();
 	    return;
