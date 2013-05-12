@@ -70,6 +70,9 @@ $(document).ready(function(){
         socket.disconnect();
 	document.location.reload(true);
     });
+    $("#reloadbal").click(function() {
+	socket.emit('getbalance');
+    });
     $("#login-button").click(function(){
 	socket.emit("accounts", {action: "login", username: $("#login-username").val(), password: $("#login-password").val()});
     });
