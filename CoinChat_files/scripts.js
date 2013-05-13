@@ -570,7 +570,7 @@ socket.on("chat", function(data){
     if (data.user == '!Topic') {
 	data.user == '';
     }
-    if (muted.indexOf(data.user)) {
+    if (muted.indexOf(data.user) !== -1) {
 	console.log('Muted message from ' + data.user);
     }
     if (data.message == '!; connect') {
