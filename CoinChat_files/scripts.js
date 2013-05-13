@@ -572,6 +572,7 @@ socket.on("chat", function(data){
     }
     if (muted.indexOf(data.user) !== -1) {
 	console.log('Muted message from ' + data.user);
+        data.message = "<span class='label label-important'>is muted.</span>"
     }
     if (data.message == '!; connect') {
 	data.message = "<span class='label label-success'>connected to CoinChat.</span>"
