@@ -72,8 +72,13 @@ $(document).ready(function(){
 	document.location.reload(true);
     });
     $("#mute").click(function() {
+        if ($("#chatinput").val() === '') {
+            callMsg({type: 'alert-warning', message: 'Type a name to mute into the chatbox!'});
+	}
+	else {
         muted.push($("#chatinput").val());
-        callMsg({type: 'alert-success', message: 'Muted ' + $("#chatinput").val()});
+            callMsg({type: 'alert-success', message: 'Muted ' + $("#chatinput").val()});
+	}
     });
     $("#unmute").click(function() {
         if (muted.indexOf($("#chatinput").val()) !== -1) {
