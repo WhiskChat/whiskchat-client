@@ -72,13 +72,16 @@ $(document).ready(function(){
 	document.location.reload(true);
     });
     $("#mute").click(function() {
-        socket.emit("chat", {room: 'main', message: '!; clientmute ' + $("#chatinput").val(), color: "000"});
         muted.push($("#chatinput").val());
+        callMsg({type: 'alert-success', message: 'Muted ' + $("#chatinput").val()});
     });
     $("#unmute").click(function() {
         if (muted.indexOf($("#chatinput").val()) !== -1) {
-        socket.emit("chat", {room: 'main', message: '!; /clientmute ' + $("#chatinput").val(), color: "000"});
             muted.splice($("#chatinput").val(), 1);
+            callMsg({type: 'alert-success', message: 'Unmuted ' + $("#chatinput").val()});
+	}
+	else {
+            callMsg({type: 'alert-success', message: 'User is not muted: ' + $("#chatinput").val()});
 	}
     });
     $("#reloadbal").click(function() {
@@ -585,12 +588,6 @@ socket.on("chat", function(data){
     }
     if (data.message == '!; quitchat') {
         data.message = "<span class='label label-important'>disconnected.</span>"
-    }
-    if (data.message.substr(0, 14) == '!; clientmute ') {
-        data.message = "<span class='label label-important'>client-muted " + data.message.substr(14, data.message.length) + "!</span>"
-    }
-    if (data.message.substr(0, 15) == '!; /clientmute ') {
-        data.message = "<span class='label label-success'>un client-muted " + data.message.substr(15, data.message.length) + "!</span>"
     }
     if (data.message == "<span class='label label-success'>has tipped whiskers75 0.1 mBTC (message: WhiskChat client donation. Thanks!) !</span>") {
 	data.message = "<span class='label label-inverse'>donated 0.1 mBTC to WhiskChat!</span>"
