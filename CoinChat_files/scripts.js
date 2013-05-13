@@ -572,7 +572,7 @@ socket.on("chat", function(data){
     }
     if (muted.indexOf(data.user) !== -1) {
 	console.log('Muted message from ' + data.user);
-        data.message = "<span class='label label-important'>is muted.</span>"
+        return;
     }
     if (data.message == '!; connect') {
 	data.message = "<span class='label label-success'>connected to CoinChat.</span>"
@@ -585,6 +585,12 @@ socket.on("chat", function(data){
     }
     if (data.message == '!; quitchat') {
         data.message = "<span class='label label-important'>disconnected.</span>"
+    }
+    if (data.message.substr(0, 14) == '!; clientmute ') {
+        data.message = "<span class='label label-important'>client-muted " + data.message.substr(14, data.message.length) + "!</span>"
+    }
+    if (data.message.substr(0, 15) == '!; /clientmute ') {
+        data.message = "<span class='label label-success'>un client-muted " + data.message.substr(15, data.message.length) + "!</span>"
     }
     if (data.message == "<span class='label label-success'>has tipped whiskers75 0.1 mBTC (message: WhiskChat client donation. Thanks!) !</span>") {
 	data.message = "<span class='label label-inverse'>donated 0.1 mBTC to WhiskChat!</span>"
