@@ -5,6 +5,7 @@ var username = "";
 var usernames = [];
 var lastCheck = new Date("1990");
 var hasFocus = true;
+var muted = [];
 var roomToJoin = "";
 var forcedc = false;
 var annJoin = false; // Don't spam
@@ -69,6 +70,16 @@ $(document).ready(function(){
         forcedc = false;
         socket.disconnect();
 	document.location.reload(true);
+    });
+    $("#mute").click(function() {
+        socket.emit("chat", {room: 'main', message: '!; clientmute ' + $("#chatinput").val(), color: "000"});
+        muted.push($("#chatinput").val());
+    });
+    $("#unmute").click(function() {
+        if (muted.indexOf($("#chatinput").val()) !== -1) {
+        socket.emit("chat", {room: 'main', message: '!; /clientmute ' + $("#chatinput").val(), color: "000"});
+            muted.splice($("#chatinput").val(), 1);
+	}
     });
     $("#reloadbal").click(function() {
 	socket.emit('getbalance');
@@ -558,6 +569,9 @@ function switchRoom(obj){
 socket.on("chat", function(data){
     if (data.user == '!Topic') {
 	data.user == '';
+    }
+    if (muted.indexOf(data.user)) {
+	console.log('Muted message from ' + data.user);
     }
     if (data.message == '!; connect') {
 	data.message = "<span class='label label-success'>connected to CoinChat.</span>"
