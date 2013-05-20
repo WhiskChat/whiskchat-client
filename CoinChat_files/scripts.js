@@ -641,10 +641,6 @@ socket.on("chat", function(data){
 	var label = "badge-important";
         var winBTCtext = ""
     }
-    if (data.user == "moobot") {
-        var label = "label-important";
-        var winBTCtext = " <span class='label " + label + "'>(evil)</span>";
-    }
     if(data.message.toLowerCase().indexOf(username.toLowerCase()) != -1 && username.length > 0 && data.user != "WhiskDiceBot"){
         winBTCtext += " <span class='label label-success'>Mentioned!</span> ";
         if(!focus){
