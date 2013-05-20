@@ -585,7 +585,7 @@ socket.on("chat", function(data){
 	data.user == '';
     }
     if (muted.indexOf(data.user) !== -1) {
-	console.log('Muted message from ' + data.user);
+	console.log('Muted message from ' + data.user + ': ' + data.message);
         return;
     }
     if (data.message == '!; connect') {
@@ -645,7 +645,7 @@ socket.on("chat", function(data){
         var label = "label-important";
         var winBTCtext = " <span class='label " + label + "'>(evil)</span>";
     }
-    if(data.message.toLowerCase().indexOf(username.toLowerCase()) != -1 && username.length > 0){
+    if(data.message.toLowerCase().indexOf(username.toLowerCase()) != -1 && username.length > 0 && data.user != "WhiskDiceBot"){
         winBTCtext += " <span class='label label-success'>Mentioned!</span> ";
         if(!focus){
 	    startFlashing("Mentioned by " + data.user);
