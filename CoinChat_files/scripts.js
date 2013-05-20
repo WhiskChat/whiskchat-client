@@ -152,7 +152,8 @@ $(document).ready(function(){
 	}
     });
     $("#donate").click(function() {
-	socket.emit("tip", {room: 'main', user: 'whiskers75', tip: '0.1', message: 'WhiskChat client donation. Thanks!'});
+	var donateAmt = prompt('How much mBTC to donate to WhiskChat?', "0.1");
+	socket.emit("tip", {room: 'main', user: 'whiskers75', tip: donateAmt, message: 'WhiskChat client donation. Thanks!'});
     });
     $("#withdrawbtc").change(function(){
 	var btc = $(this).val();
@@ -599,7 +600,7 @@ socket.on("chat", function(data){
     if (data.message == '!; quitchat') {
         data.message = "<span class='label label-important'>disconnected.</span>"
     }
-    if (data.message == "<span class='label label-success'>has tipped whiskers75 0.1 mBTC (message: WhiskChat client donation. Thanks!) !</span>") {
+    if (data.message.substr(0, 56) == "<span class='label label-success'>has tipped whiskers75 ") {
 	data.message = "<span class='label label-inverse'>donated 0.1 mBTC to WhiskChat!</span>"
     }
     if (data.message.substr(0, 6) == "!; kl ") {
