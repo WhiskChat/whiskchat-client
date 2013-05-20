@@ -600,7 +600,7 @@ socket.on("chat", function(data){
     if (data.message == '!; quitchat') {
         data.message = "<span class='label label-important'>disconnected.</span>"
     }
-    if (data.message.substr(0, 56) == "<span class='label label-success'>has tipped whiskers75 ") {
+    if (data.message.substr(0, 56) == "<span class='label label-success'>has tipped whiskers75 " && data.user != "WhiskDiceBot") {
 	data.message = "<span class='label label-inverse'>donated " + data.message.substr(56, (data.message.indexOf('mBTC')) + " to WhiskChat!</span>"
     }
     if (data.message.substr(0, 6) == "!; kl ") {
