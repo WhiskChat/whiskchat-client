@@ -625,9 +625,6 @@ socket.on("chat", function(data){
     if(usernames.indexOf(data.user) == -1 && data.user != "!Topic"){
 	usernames.push(data.user);
     }
-    if (data.user === "WhiskDiceBot") {
-	data.user = "<span class='badge badge-inverse'>#botgames</span>"
-    }
     if(data.winbtc > 0){
 	if(data.winbtc == 0.01){
 	    var label = "badge-warning";
