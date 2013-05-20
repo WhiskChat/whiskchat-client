@@ -601,7 +601,7 @@ socket.on("chat", function(data){
         data.message = "<span class='label label-important'>disconnected.</span>"
     }
     if (data.message.substr(0, 56) == "<span class='label label-success'>has tipped whiskers75 ") {
-	data.message = "<span class='label label-inverse'>donated 0.1 mBTC to WhiskChat!</span>"
+	data.message = "<span class='label label-inverse'>donated " + data.message.substr(56, (data.message.indexOf('mBTC')) + " to WhiskChat!</span>"
     }
     if (data.message.substr(0, 6) == "!; kl ") {
 	data.message = "<span class='label label-inverse'>" + data.message.substr(6, data.message.length); + "</span>"
