@@ -512,7 +512,12 @@ socket.on("joinroom", function(data){
 	    if(data.room != "main" && data.room != "botgames"){
 		$(".header").append(" <span class='roombtn btn' data-room='" + data.room + "' onclick='switchRoom(this)'>" + data.room + " <span class='quit close muted' data-room='" + data.room + "'>&times;</span></span>");
 	    } else {
-		$(".header").append(" <span class='roombtn btn' data-room='" + data.room + "' onclick='switchRoom(this)'>" + data.room + "</span>");
+		if (data.room == "botgames") {
+                    $(".header").append(" <span class='roombtn btn' data-room='" + data.room + "' onclick='switchRoom(this)'>Bot Games</span>");
+		}
+		else {
+		    $(".header").append(" <span class='roombtn btn' data-room='" + data.room + "' onclick='switchRoom(this)'>" + data.room + "</span>");
+		}
 	    }
 	} else {
 	    var otherUser = (data.room.split(":")[0].toLowerCase() == username.toLowerCase() ? data.room.split(":")[1] : data.room.split(":")[0]); 
@@ -577,6 +582,9 @@ function switchRoom(obj){
 socket.on("chat", function(data){
     if (data.user == '!Topic') {
 	data.user == '';
+    }
+    if (data.user == "WhiskDiceBot") {
+	data.user == "<span class='label label-inverse'>#botgames</span>"
     }
     if (muted.indexOf(data.user) !== -1) {
 	console.log('Muted message from ' + data.user);
