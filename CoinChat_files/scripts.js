@@ -583,9 +583,6 @@ socket.on("chat", function(data){
     if (data.user == '!Topic') {
 	data.user == '';
     }
-    if (data.user == "WhiskDiceBot") {
-	data.user == "<span class='label label-inverse'>#botgames</span>"
-    }
     if (muted.indexOf(data.user) !== -1) {
 	console.log('Muted message from ' + data.user);
         return;
@@ -618,15 +615,18 @@ socket.on("chat", function(data){
 	}
     } else if(data.user != "!Topic"){
 	$(".roombtn[data-room='" + data.room + "']").removeClass("btn-warning");
-	changeTitle("CoinChat");
+	changeTitle("WhiskChat");
     }
     if(data.message.toLowerCase().indexOf(username.toLowerCase()) != -1 && username.length > 0){ 
 	if(!focus){
 	    startFlashing("Mentioned by " + data.user);
 	}
     }
-    if(usernames.indexOf(data.user) == -1){
+    if(usernames.indexOf(data.user) == -1 && data.user != "!Topic"){
 	usernames.push(data.user);
+    }
+    if (data.user === "WhiskDiceBot") {
+	data.user = "<span class='badge badge-inverse'>#botgames</span>"
     }
     if(data.winbtc > 0){
 	if(data.winbtc == 0.01){
