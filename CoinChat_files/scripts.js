@@ -43,7 +43,7 @@ $(document).ready(function(){
 	    roomToJoin = "";
 	}
     }
-    $(".COINWIDGET_BUTTON").children()[0].style.display = "none";
+    
     $("#fullscreen").click(function(){
 	fs = !fs;
 	if(fs){
@@ -763,6 +763,7 @@ socket.on("loggedin", function(data){
     	}
 	
     }
+    $(".COINWIDGET_BUTTON").children()[0].style.display = "none";
     username = data.username;
     srwrap('botgames');
     setTimeout(function() {
