@@ -45,7 +45,7 @@ $(document).ready(function(){
     }
     setTimeout(function() {
         $(".COINWIDGET_BUTTON").children()[0].style.display = "none";
-    }, 10000);
+    }, 3000);
     $("#fullscreen").click(function(){
 	fs = !fs;
 	if(fs){
