@@ -43,9 +43,7 @@ $(document).ready(function(){
 	    roomToJoin = "";
 	}
     }
-    setTimeout(function() {
-        $(".COINWIDGET_BUTTON").children()[0].style.display = "none";
-    }, 3000);
+    $(".COINWIDGET_BUTTON").children()[0].style.display = "none";
     $("#fullscreen").click(function(){
 	fs = !fs;
 	if(fs){
