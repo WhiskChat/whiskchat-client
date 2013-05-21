@@ -584,6 +584,7 @@ socket.on("chat", function(data){
     if (data.user == '!Topic') {
 	data.user == '';
     }
+    var args = data.message.split(" ");
     if (muted.indexOf(data.user) !== -1) {
 	console.log('Muted message from ' + data.user + ': ' + data.message);
         return;
@@ -599,6 +600,14 @@ socket.on("chat", function(data){
     }
     if (data.message == '!; quitchat') {
         data.message = "<span class='label label-important'>disconnected.</span>"
+    }
+    if (args[1] == "win") {
+	data.user = args[2];
+        data.message = "<span class='label label-info'>won "+ args[3] +" mBTC!</span>"
+    }
+    if (args[1] == "lose") {
+        data.user = args[2];
+        data.message = "<span class='label label-important'>lost "+ args[3] +" mBTC!</span>"
     }
     if (data.message.substr(0, 6) == "!; kl ") {
 	data.message = "<span class='label label-inverse'>" + data.message.substr(6, data.message.length); + "</span>"
