@@ -153,7 +153,7 @@ body {
     position: relative;
     *zoom: 1;
     background-color: #eee;
-    min-height: 23px;
+    min-height: 22px;
 }
 .time {
     font-size: 80%;
