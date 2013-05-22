@@ -149,27 +149,10 @@ body {
     margin-right: 4px;
     padding-left: 8px;
 }
-.chatline .user:hover span {
-    display: none;
-}
-.chatline .user:hover:before {
-    content: "Click to insert";
-}
-.chatline .user:hover:active:before {
-    content: "Inserting...";
-    font-weight: bold;
-}
-.chatline:before, .chatline:after {
-    content: " ";
-    display: table;
-}
-.chatline:after {
-    clear: both;
-}
 .chatline {
     position: relative;
     *zoom: 1;
-    min-height: 22px;
+    min-height: 28px;
 }
 .time {
     font-size: 80%;

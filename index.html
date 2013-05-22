@@ -30,7 +30,8 @@
       </div>
       
       <div class="alert alert-success hide" id="user">
-        <h4 style="display: inline;">Welcome back <span id="username">..</span>!</h4>  <p style="display: inline;" class="badge badge-warning"><span class="gold" id="balance">0</span> mBTC <span id="update"></span></p><p>
+        <h4 style="display: inline;">Welcome back <span id="username">..</span>!</h4>  <p style="display: inline;" class="badge badge-warning"><span class="gold" id="balance">0</span> mBTC <span id="update" style="display: none;"></span></p><p>
+	  <br>
 	  <a id="withdraw" class="label label-success">Withdraw</a> <a id="donate" class="label label-inverse">donate (coinchat)</a>  <script>
             var CoinWidget_Config = {
             address : '178bN5qjAVpn8MCqH7NiH6FTTCQXsBVGV8',
@@ -38,11 +39,9 @@
             text_label : 'Donation address: (Thanks!)'
             };
           </script>
+          <a id="quit" class="label label-important">Disconnect</a> <a id="reload" class="label label-info">Reload page</a> <a href="http://www.reddit.com/r/Bitcoin/comments/1e911n/coinchat_free_bitcoins_for_chatting_custom_client/" class="label">Upvote on Reddit</a> <a href="http://www.youtube.com/watch?v=20mrEtabOLM" class="label label-important">Cats!</a> <a id="reloadbal" class="label label-warning">Update balance</a> <a id="mute" class="label label-important">Mute username in chatbox</a> <a id="unmute" class="label label-success">Unmute</a>
           <button class="bitcoinate" data-size="20" data-address="178bN5qjAVpn8MCqH7NiH6FTTCQXsBVGV8"><span></span>bitcoinate</button>
           <script src="http://c.coinwidget.com/widget.js"></script>
-	  <br>
-          <a id="quit" class="label label-important">Disconnect</a> <a id="reload" class="label label-info">Reload page</a> <a href="http://www.reddit.com/r/Bitcoin/comments/1e911n/coinchat_free_bitcoins_for_chatting_custom_client/" class="label">Upvote on Reddit</a> <a href="http://www.youtube.com/watch?v=20mrEtabOLM" class="label label-important">Cats!</a> <a id="reloadbal" class="label label-warning">Update balance</a> <a id="mute" class="label label-important">Mute username in chatbox</a> <a id="unmute" class="label label-success">Unmute</a>
-	  
 	  <div id="withdrawbox" class="hide">
 	    <h3>Withdraw your bitcoins</h3>
 	    <p>CoinChat charges outrageous fees! Min withdrawal: 13 mBTC (but we suggest withdrawing more for less fees)</p>
