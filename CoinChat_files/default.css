@@ -152,6 +152,7 @@ body {
 .chatline {
     position: relative;
     *zoom: 1;
+    background-color: #eee;
     min-height: 23px;
 }
 .time {
