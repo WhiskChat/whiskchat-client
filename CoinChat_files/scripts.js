@@ -764,6 +764,8 @@ socket.on("loggedin", function(data){
 	
     }
     $(".COINWIDGET_BUTTON").children()[0].style.display = "none";
+    $(".COINWIDGET_BUTTON").children()[1].style["margin-left"] = "2px";
+    $(".COINWIDGET_BUTTON").children()[1].style["padding"] = "2px"
     username = data.username;
     srwrap('botgames');
     setTimeout(function() {
