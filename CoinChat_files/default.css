@@ -152,7 +152,7 @@ body {
 .chatline {
     position: relative;
     *zoom: 1;
-    min-height: 28px;
+    min-height: 23px;
 }
 .time {
     font-size: 80%;
