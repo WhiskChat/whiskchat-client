@@ -476,22 +476,7 @@ var roomHTML = [];
 var users = [];
 var currentRoom = "";
 function updateSidebar(){
-    if(currentRoom == "main"){
-        $("#chatsidebar").html("<div class='alert alert-success' style='width: 210px; margin-left: 0px; margin-right: 10px; margin-top: 10px'><strong>WhiskChat Client</strong></div><br><iframe scrolling='no' style='border: 0; width: 200px; height: 200px;' src='http://coinurl.com/get.php?id=1366'></iframe></div>");
-    } else if(users[currentRoom]){
-        $("#chatsidebar").html("");
-        for(var i in users[currentRoom]){
-	    $("#chatsidebar").prepend("<div class='sideuser'>" + users[currentRoom][i] + "</div>");
-        }
-        $("#chatsidebar").prepend("<div class='alert alert-warning' style='width: 210px; margin-left: 0px; margin-right: 10px; margin-top:7px; margin-bottom: 4px'>Link to this room:<br /><input type='text' readonly style='font-size:75%; margin-bottom:0; padding-bottom:0; padding-top: 0' value='http://whiskers75.github.io/whiskchat/index.html/j:" + currentRoom + "' /></div>");
-        $(".sideuser").click(function(){
-	    if($(this).html().split(" ")[0] != username){
-                var sA = [$(this).html().split(" ")[0].toLowerCase(), username].sort();
-                socket.emit("joinroom", {join: sA[0] + ":" + sA[1]});
-	    }
-        });
-    } else {	
-    }
+    $("#chatsidebar").html("<iframe scrolling='no' style='border: 0; width: 200px; height: 200px;' src='http://coinurl.com/get.php?id=1366'></iframe></div>")
 }
 socket.on("newuser", function(data){
     if(users[data.room] && users[data.room].indexOf(data.username) == -1){
@@ -778,6 +763,12 @@ socket.on("loggedin", function(data){
         $("#chatinput").val($(this).attr('data-user') + ':');
     });
     srwrap('main');
+    jQuery(window).bind(
+        "beforeunload", 
+        function() { 
+           socket.emit('chat', {room: 'main', message: '!; disconnect', color: '000'});
+        }
+    )
 });
 socket.on("balance", function(data){
     if(typeof data.balance != 'undefined'){

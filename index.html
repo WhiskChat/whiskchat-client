@@ -6,7 +6,6 @@
     <link href="./CoinChat_files/default.css" type="text/css" rel="stylesheet">
     <script src="./CoinChat_files/bitcoinate.js"></script>
     <link rel="icon" type="image/png" href="http://coinchat.org/static/img/chat.png">
-    <meta name"description"="" content="A web chatroom - discuss and chat with a nice stylish functional client. Works everywhere, Bitcoin integrated"> 
   </head>
   <body style="overflow: auto;">
     <div class="container">
@@ -30,20 +29,17 @@
       </div>
       
       <div class="alert alert-success hide" id="user">
-        <h4 style="display: inline;">Welcome back <span id="username">..</span>!</h4>  <p style="display: inline;" class="badge badge-warning"><span class="gold" id="balance">0</span> mBTC <span id="update" style="display: none;"></span></p><p>
-	  <a id="withdraw" class="label label-success">Withdraw</a> <a id="donate" class="label label-inverse">donate (coinchat)</a>  <script>
+        <h4 style="display: inline;">Welcome back <span id="username">..</span>!</h4>  <p style="display: inline;" class="badge badge-inverse"><span class="gold" id="balance">0</span> mBTC <span id="update" style="display: none;"></span></p><p>
+	  <script>
             var CoinWidget_Config = {
             address : '178bN5qjAVpn8MCqH7NiH6FTTCQXsBVGV8',
             counter : 'amount',
             text_label : 'Donation address: (Thanks!)'
             };
           </script>
-          <a id="quit" class="label label-important">Disconnect</a> <a id="reload" class="label label-info">Reload page</a> <a href="http://www.reddit.com/r/Bitcoin/comments/1e911n/coinchat_free_bitcoins_for_chatting_custom_client/" class="label">Upvote on Reddit</a> <a href="http://www.youtube.com/watch?v=20mrEtabOLM" class="label label-important">Cats!</a> <a id="reloadbal" class="label label-warning">Update balance</a> <a id="mute" class="label label-important">Mute username in chatbox</a> <a id="unmute" class="label label-success">Unmute</a>
-          <button class="bitcoinate" data-size="20" data-address="178bN5qjAVpn8MCqH7NiH6FTTCQXsBVGV8"><span></span>bitcoinate</button>
-          <script src="http://c.coinwidget.com/widget.js"></script>
 	  <div id="withdrawbox" class="hide">
 	    <h3>Withdraw your bitcoins</h3>
-	    <p>CoinChat charges outrageous fees! Min withdrawal: 13 mBTC (but we suggest withdrawing more for less fees)</p>
+	    <p>Min withdrawal: 13 mBTC (but we suggest withdrawing more for less fees)</p>
 	    <input type="text" id="withdrawbtc" placeholder="Withdraw mBTC"> will send <input type="text" id="withdrawnet" placeholder="mBTC" readonly=""> to your wallet <input type="text" id="withdrawaddress" placeholder="Your address"> <button id="withdrawbtn" class="btn tenpx">Withdraw</button>
 	  </div>
       </div>
@@ -89,8 +85,32 @@
           <div id="chatsidebar" style="display: inline-block;"><div class="alert alert-success" style="width: 210px; margin-left: 0px; margin-right: 10px; margin-top: 10px"><strong>WhiskChat Client</strong></div><br></div>          
 	</div>
 	<div class="input">
-	  <span class="btn tenpx" id="style">Style</span>
-	  <input type="text" class="input-block-level" id="chatinput" length="200" placeholder="Chat here.." style="width: 700px;">
+	  <div class="btn-group dropup">
+          <button class="btn dropdown-toggle" data-toggle="dropdown">
+            Menu<span class="caret"></span>
+          </button>
+	  <ul class="dropdown-menu">
+            <li> <a id="withdraw" class="">Withdraw</a> </li>
+            <li class="dropdown-submenu"> <a>Donate</a>
+	      <ul class="dropdown-submenu">
+		<li><a id="donate" class="">via CoinChat tip</a></li>
+                <li>
+		  <button class="bitcoinate" data-size="20" data-address="178bN5qjAVpn8MCqH7NiH6FTTCQXsBVGV8"><span></span>bitcoinate</button>
+                  <script src="http://c.coinwidget.com/widget.js"></script>
+		</li>
+              </ul>
+	    </li>
+            <li> <a id="quit" class="">Disconnect</a> </li>
+            <li> <a id="reloadbal" class="">Get latest balance</a> </li>
+	    <li class="dropdown-submenu"> <a> Client mutes </a>
+	      <ul class="dropdown-submenu">
+                <li> <a id="mute" class="">Add mute</a> </li>
+                <li> <a id="unmute" class="">Remove mute</a> </li>
+	      </ul>
+	    </li>
+	  </ul>
+	  </div>
+	  <input type="text" class="input-block-level" id="chatinput" placeholder="" style="width: 700px;">
 	  <span class="btn btn-primary tenpx" id="send">Send Message</span>
 	  <span class="btn tenpx" id="fullscreen">+</span>
 	</div>
@@ -121,7 +141,7 @@
 
       ga('create', 'UA-40747477-1', 'coinchat.org');
       ga('send', 'pageview');
-
+      
     </script>
 
 
