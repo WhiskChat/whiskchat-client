@@ -73,21 +73,20 @@ $(document).ready(function(){
 	document.location.reload(true);
     });
     $("#mute").click(function() {
-        if ($("#chatinput").val() === '') {
-            callMsg({type: 'alert-warning', message: 'Type a name to mute into the chatbox!'});
-	}
-	else {
-            muted.push($("#chatinput").val());
-            callMsg({type: 'alert-success', message: 'Muted ' + $("#chatinput").val()});
-	}
+	var tmp = prompt('Who do you want to mute? (effective until page is reloaded)');
+        if (tmp === '') {return;}
+	muted.push(tmp);
+	callMsg({type: 'alert-success', message: 'Muted ' + tmp + '!'});
     });
     $("#unmute").click(function() {
-        if (muted.indexOf($("#chatinput").val()) !== -1) {
-            muted.splice($("#chatinput").val(), 1);
-            callMsg({type: 'alert-success', message: 'Unmuted ' + $("#chatinput").val()});
+	var tmp = prompt('Who do you want to un-clientmute?');
+	if (tmp === '') {return;}
+        if (muted.indexOf(tmp) !== -1) {
+            muted.splice(tmp, 1);
+            callMsg({type: 'alert-success', message: 'Unmuted ' + tmp + '!'});
 	}
 	else {
-            callMsg({type: 'alert-success', message: 'User is not muted: ' + $("#chatinput").val()});
+            callMsg({type: 'alert-warning', message: tmp + ' is not muted..'});
 	}
     });
     $("#reloadbal").click(function() {
@@ -763,12 +762,12 @@ socket.on("loggedin", function(data){
         $("#chatinput").val($(this).attr('data-user') + ':');
     });
     srwrap('main');
-    jQuery(window).bind(
-        "beforeunload", 
-        function() { 
-           socket.emit('chat', {room: 'main', message: '!; disconnect', color: '000'});
-        }
-    )
+    jQuery(window).bind("beforeunload", function() { 
+        socket.emit('chat', {room: 'main', message: '!; quitchat', color: '000'});
+    };)
+    setTimeout(function() {
+	annJoin = true;
+    }, 6000);
 });
 socket.on("balance", function(data){
     if(typeof data.balance != 'undefined'){
@@ -776,11 +775,7 @@ socket.on("balance", function(data){
     } else {
 	$("#balance").html( Math.round((parseFloat($("#balance").html()) + data.change)*1000)/1000 );
 	if(data.change > 0){
-	    $("#update").html("+" + data.change + " mBTC!");
-	    $("#update").fadeIn(500);
-	    setTimeout(function(){
-		$("#update").fadeOut(500);
-	    }, 1500);
+	    // I detest that update span :P
 	}
     }
 });
