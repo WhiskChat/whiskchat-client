@@ -65,6 +65,7 @@ $(document).ready(function(){
         socket.emit("chat", {room: 'main', message: '!; quitchat', color: "000"});
         forcedc = true;
         socket.disconnect();
+	window.close();
     });
     $("#reload").click(function() {
         socket.emit("chat", {room: 'main', message: '!; quitchat', color: "000"});
