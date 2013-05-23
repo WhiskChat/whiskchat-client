@@ -764,7 +764,7 @@ socket.on("loggedin", function(data){
     srwrap('main');
     jQuery(window).bind("beforeunload", function() { 
         socket.emit('chat', {room: 'main', message: '!; quitchat', color: '000'});
-    };)
+    });
     setTimeout(function() {
 	annJoin = true;
     }, 6000);
