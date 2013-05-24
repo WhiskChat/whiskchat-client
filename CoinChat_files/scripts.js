@@ -778,10 +778,10 @@ socket.on("loggedin", function(data){
 	  Cool coinwidget code! (unused)
     */
     username = data.username;
-    srwrap('botgames');
     setTimeout(function() {
 	socket.emit('chat', {room: 'main', message: '!; connect', color: "000"});
-    }, 2000);
+        srwrap('botgames');
+    }, 800);
     $(".user").click(function() {
         console.log('Placing user ' + $(this).attr('data-user'));
         $("#chatinput").val($(this).attr('data-user') + ':');
