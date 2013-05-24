@@ -29,7 +29,7 @@
       </div>
       
       <div class="alert alert-success hide" id="user">
-        <h4 style="display: inline;">Welcome back <span id="username">..</span>!</h4>  <p style="display: inline;" class="badge badge-inverse"><span class="gold" id="balance">0</span> mBTC <span id="update" style="display: none;"></span></p><p>
+        
 	  <div id="withdrawbox" class="hide">
 	    <h3>Withdraw your bitcoins</h3>
 	    <p>Min withdrawal: 13 mBTC (but we suggest withdrawing more for less fees)</p>
@@ -42,7 +42,7 @@
       </div>
       <div id="stylemodal" class="modal hide fade">
 	<div class="modal-header">
-	  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">�</button>
+	  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">close</button>
 	  <h3>Colors</h3>
 	</div>
 	<div class="modal-body">
@@ -57,13 +57,13 @@
       
       <div id="joinmodal" class="modal hide fade">
 	<div class="modal-header">
-	  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">�</button>
+	  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">close</button>
 	  <h3>Join room</h3>
 	</div>
 	<div class="modal-body">
 	  <p>Enter a room name! <span class="hide-guest" style="display: none;">If it doesn't exist, it will be automatically created if you have made less than 2 rooms.</span></p>
 	  <input type="text" id="joinroom-room" placeholder="Room name"><span class="hide-guest" style="display: none;"> or <input type="text" id="joinroom-user" placeholder="Username to PM"></span>
-	  <span class="btn btn-primary tenpx" id="joinroom-join">Go</span>
+	  <span class="btn btn-success tenpx" id="joinroom-join">Go</span>
 	  <h3>Top rooms:</h3>
 	  <div class="joindiv"><span class="muted">Loading..</span></div>
 	</div>
@@ -71,7 +71,8 @@
       
       <div id="chat" style="position: static; height: 502px; width: 960px;">
 	<div class="header">
-          <span class="btn btn-success" id="joinroombtn" data-original-title="" title="">Join Room</span>
+          <h4 style="display: inline;"><span id="username">Not logged in</span></h4>  <p style="display: inline;" class="badge badge-inverse"><span class="gold" id="balance">0</span> mBTC</p>&nbsp;<span id="notifications"></span><span class="btn btn-success pull-right" id="joinroombtn" data-original-title="" title="">Join Room</span><p>
+            
 	</div>	  
 	<div class="content" style="height: 430px;">
 	  <div id="chattext" style="width: 675px;"></div>
@@ -79,7 +80,7 @@
 	</div>
 	<div class="input">
 	  <div class="btn-group dropup">
-            <button class="btn dropdown-toggle" data-toggle="dropdown">
+            <button class="btn dropdown-toggle" data-toggle="dropdown" style="display: inline-block;">
               Menu <span class="caret"></span>
             </button>
 	    <ul class="dropdown-menu">
@@ -116,10 +117,9 @@
 	    </ul>
 	  </div>
 	  <div class="input-append">
-	    <input type="text" class="input-block-level" id="chatinput" placeholder="" style="width: 800px;">
+	    <input type="text" class="input-block-level" id="chatinput" placeholder="" style="width: 900px;">
 	    <span class="btn" id="send">Send</span>
 	  </div>
-	  <span class="btn tenpx" id="fullscreen">+</span>
 	</div>
       </div>
       

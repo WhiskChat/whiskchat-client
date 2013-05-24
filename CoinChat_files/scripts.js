@@ -44,18 +44,7 @@ $(document).ready(function(){
 	}
     }
     
-    $("#fullscreen").click(function(){
-	fs = !fs;
-	if(fs){
-	    $("#fullscreen").html("-");
-	    $("#fullscreen").addClass("btn-primary");
-	} else {
-	    $("#fullscreen").html("+");
-	    $("#fullscreen").removeClass("btn-primary");
-	}
-	$("#chattext").scrollTop($("#chattext").prop("scrollHeight"));
-	moveWin();
-    });
+
     $(window).resize(moveWin);
     $(".hide-guest").hide();
     $("#register-button").click(function(){
@@ -777,13 +766,17 @@ socket.on("loggedin", function(data){
     	}
 	
     }
-/*    $(".COINWIDGET_BUTTON").children()[0].style.display = "none";
-    setTimeout(function() {
-	$(".COINWIDGET_BUTTON").children()[1].style["margin-left"] = "2px";
-	$(".COINWIDGET_BUTTON").children()[1].style["padding"] = "2px"
-	}, 2);
-	Cool coinwidget code! (unused)
-	*/
+    $('#user').css('display', 'none');
+    fs = !fs;
+        $("#chattext").scrollTop($("#chattext").prop("scrollHeight"));
+        moveWin();
+    /*    $(".COINWIDGET_BUTTON").children()[0].style.display = "none";
+	  setTimeout(function() {
+	  $(".COINWIDGET_BUTTON").children()[1].style["margin-left"] = "2px";
+	  $(".COINWIDGET_BUTTON").children()[1].style["padding"] = "2px"
+	  }, 2);
+	  Cool coinwidget code! (unused)
+    */
     username = data.username;
     srwrap('botgames');
     setTimeout(function() {
