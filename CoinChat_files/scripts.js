@@ -660,8 +660,8 @@ socket.on("chat", function(data){
     
     if(data.user == username){
 	var m = "";
-	if (spammyness > 10) {
-            winBTCtext += " <span class='badge badge-info'>Spam level: " + Math.floor(spammyness) + "</span> ";
+	if (spammyness > 15) {
+            winBTCtext += " <span class='badge'>spam " + Math.floor(spammyness) + "</span> ";
 	}
     } else {
 	var m = "";
