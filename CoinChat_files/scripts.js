@@ -626,9 +626,10 @@ socket.on("chat", function(data){
 	    data.winbtc = data.winbtc + " (nice) ";
         } else if(data.winbtc == 0.05){
             var label = "badge-info";
+	    data.winbtc = data.winbtc + " (sweet) ";
         } else if(data.winbtc == 0.1){
             var label = "badge-warning";
-            data.winbtc = data.winbtc + " (nice) ";
+            data.winbtc = data.winbtc + " (cool!) ";
         } else {
             var label = "badge-important";
             data.winbtc = data.winbtc + " (wow, congrats!) ";
