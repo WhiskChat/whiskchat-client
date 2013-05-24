@@ -99,6 +99,9 @@ $(document).ready(function(){
         srwrap('botgames');
         $('#chatinput').val('!users');
     });
+    $("#tipmenu").click(function() {
+        $('#chatinput').val('/tip <user> <amount in mBTC> <message (optional)>');
+    });
     $("#unmute").click(function() {
 	var tmp = prompt('Who do you want to un-clientmute?');
 	if (tmp === '') {return;}
