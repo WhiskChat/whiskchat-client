@@ -625,17 +625,13 @@ socket.on("chat", function(data){
 	    var label = "badge-success";
 	    data.winbtc = data.winbtc + " (nice) ";
         } else if(data.winbtc == 0.05){
-            var label = "label-info";
+            var label = "badge-info";
         } else if(data.winbtc == 0.1){
-            var label = "label-warning";
+            var label = "badge-warning";
             data.winbtc = data.winbtc + " (nice) ";
         } else {
-            var label = "label-important";
+            var label = "badge-important";
             data.winbtc = data.winbtc + " (wow, congrats!) ";
-	}
-	else {
-	    var label = "badge-important";
-	    data.winbtc = data.winbtc + " (wow, congrats!) ";
 	}
 	var winBTCtext = " <span class='badge " + label + "'>" + data.winbtc + " mBTC!</span>";
     } else {
