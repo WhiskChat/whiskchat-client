@@ -79,6 +79,26 @@ $(document).ready(function(){
 	muted.push(tmp);
 	callMsg({type: 'alert-success', message: 'Muted ' + tmp + '!'});
     });
+    $("#bottip").click(function() {
+	srwrap('botgames');
+        $('#chatinput').val('/bet (amount) (percentage - max 75%)');
+    });
+    $("#botstate").click(function() {
+        srwrap('botgames');
+        $('#chatinput').val('!state');
+    });
+    $("#bothelp").click(function() {
+        srwrap('botgames');
+        $('#chatinput').val('!help');
+    });
+    $("#lastwinner").click(function() {
+        srwrap('botgames');
+        $('#chatinput').val('!lastwinner');
+    });
+    $("#userlistbot").click(function() {
+        srwrap('botgames');
+        $('#chatinput').val('!users');
+    });
     $("#unmute").click(function() {
 	var tmp = prompt('Who do you want to un-clientmute?');
 	if (tmp === '') {return;}
