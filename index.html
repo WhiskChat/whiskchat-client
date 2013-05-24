@@ -30,13 +30,6 @@
       
       <div class="alert alert-success hide" id="user">
         <h4 style="display: inline;">Welcome back <span id="username">..</span>!</h4>  <p style="display: inline;" class="badge badge-inverse"><span class="gold" id="balance">0</span> mBTC <span id="update" style="display: none;"></span></p><p>
-	  <script>
-            var CoinWidget_Config = {
-            address : '178bN5qjAVpn8MCqH7NiH6FTTCQXsBVGV8',
-            counter : 'amount',
-            text_label : 'Donation address: (Thanks!)'
-            };
-          </script>
 	  <div id="withdrawbox" class="hide">
 	    <h3>Withdraw your bitcoins</h3>
 	    <p>Min withdrawal: 13 mBTC (but we suggest withdrawing more for less fees)</p>
@@ -101,7 +94,7 @@
 		  </li>
 		</ul>
 	      </li>
-              <li> <a id="quit" class="">Disconnect</a> </li>
+              <!-- <li> <a id="quit" class="">Disconnect</a> </li> -->
               <li> <a id="reloadbal" class="">Get latest balance</a> </li>
 	      <li class="dropdown-submenu"> <a> Client mutes </a>
 		<ul class="dropdown-menu">
@@ -119,6 +112,7 @@
 		  <li> <a id="userlistbot" class="">Get user count</a> </li>
                 </ul>
               </li>
+	      <li> <a id="tipmenu"> Tip a user </a> </li>
 	    </ul>
 	  </div>
 	  <div class="input-append">
