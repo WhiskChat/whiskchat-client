@@ -464,7 +464,7 @@ socket.on("message", callMsg);
 
 function callMsg(data){
     var newId = "m" + Math.round(Math.random() * 10000);
-    $("#notifications").html("<div class='inline' display='display: inline-block;' id='" + newId + "'>" + data.message + "</div>");
+    $("#notifications").html("<a class='pull-right btn btn-link disabled' id='" + newId + "'>" + data.message + "</a>");
     $("#" + newId).fadeIn();
     setTimeout(function(){
 	$("#" + newId).fadeOut(500);
