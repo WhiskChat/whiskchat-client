@@ -464,7 +464,7 @@ socket.on("message", callMsg);
 
 function callMsg(data){
     var newId = "m" + Math.round(Math.random() * 10000);
-    $("#messages").append("<div class='alert " + data.type + "' id='" + newId + "'>" + data.message + "</div>");
+    $("#notifications").append("<div class='label' id='" + newId + "'>" + data.message + "</div>");
     $("#" + newId).fadeIn();
     setTimeout(function(){
 	$("#" + newId).fadeOut(500);
@@ -652,7 +652,7 @@ socket.on("chat", function(data){
         var winBTCtext = ""
     }
     if(data.message.toLowerCase().indexOf(username.toLowerCase()) != -1 && username.length > 0 && data.user != "WhiskDiceBot"){
-        winBTCtext += " <span class='label label-success'>Mentioned!</span> ";
+        data.message = '<strong>' + data.message + '</strong>'
         if(!focus){
 	    startFlashing("Mentioned by " + data.user);
         }
