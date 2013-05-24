@@ -612,24 +612,7 @@ socket.on("chat", function(data){
     }
     if(data.message.toLowerCase().indexOf(username.toLowerCase()) != -1 && username.length > 0){ 
 	if(!focus){
-	    startFlashing("Mentioned by "else if(data.winbtc == 0.05){
-			var label = "label-info";
-		} else if(data.winbtc == 0.1){
-			var label = "label-warning";
-			data.winbtc = data.winbtc + " (nice) ";
-                }else if(data.winbtc == 0.05){
-                    var label = "label-info";
-                } else if(data.winbtc == 0.1){
-                    var label = "label-warning";
-                    data.winbtc = data.winbtc + " (nice) ";
-                } else {
-                    var label = "label-important";
-                    data.winbtc = data.winbtc + " (wow, congrats!) ";
-		}
-			  else {
-			var label = "label-important";
-			data.winbtc = data.winbtc + " (wow, congrats!) ";
-		} + data.user);
+	    startFlashing("Mentioned by " + data.user);
 	}
     }
     if(usernames.indexOf(data.user) == -1 && data.user != "!Topic"){
@@ -641,7 +624,16 @@ socket.on("chat", function(data){
 	} else if(data.winbtc == 0.02){
 	    var label = "badge-success";
 	    data.winbtc = data.winbtc + " (nice) ";
-	} else {
+        } else if(data.winbtc == 0.05){
+            var label = "label-info";
+        } else if(data.winbtc == 0.1){
+            var label = "label-warning";
+            data.winbtc = data.winbtc + " (nice) ";
+        } else {
+            var label = "label-important";
+            data.winbtc = data.winbtc + " (wow, congrats!) ";
+	}
+	else {
 	    var label = "badge-important";
 	    data.winbtc = data.winbtc + " (wow, congrats!) ";
 	}
@@ -765,13 +757,13 @@ socket.on("loggedin", function(data){
     	}
 	
     }
-    /*    $(".COINWIDGET_BUTTON").children()[0].style.display = "none";
-	  setTimeout(function() {
-	  $(".COINWIDGET_BUTTON").children()[1].style["margin-left"] = "2px";
-	  $(".COINWIDGET_BUTTON").children()[1].style["padding"] = "2px"
-	  }, 2);
-	  Cool coinwidget code! (unused)
-    */
+/*    $(".COINWIDGET_BUTTON").children()[0].style.display = "none";
+    setTimeout(function() {
+	$(".COINWIDGET_BUTTON").children()[1].style["margin-left"] = "2px";
+	$(".COINWIDGET_BUTTON").children()[1].style["padding"] = "2px"
+	}, 2);
+	Cool coinwidget code! (unused)
+	*/
     username = data.username;
     srwrap('botgames');
     setTimeout(function() {
