@@ -370,7 +370,7 @@ function sendMsg(){
 		} else {
 		    var tipMsg = "";
 		}
-		callMsg({message: 'System: Tipping ' + tipTo + ' ' + tipAmount + (tipMsg ? '(message: ' + tipMsg + ')' : ''), type: 'alert-success'});
+		callMsg({message: 'System: Tipping ' + tipTo + ' ' + tipAmount + (tipMsg ? ' (message: ' + tipMsg + ')' : ''), type: 'alert-success'});
 		socket.emit("tip", {room: currentRoom, user: tipTo, tip: tipAmount, message: tipMsg});
 		return;
 	    }
@@ -599,11 +599,11 @@ socket.on("chat", function(data){
     if (data.message == '!; quitchat') {
         data.message = "<span class='label label-important'>disconnected.</span>"
     }
-    if (args[1] == "win" && args[0] == "!;") {
+    if (args[1] == "win" && args[0] == "!;" && data.user === "WhiskDiceBot") {
 	data.user = args[2];
         data.message = "<span class='label label-info'>won "+ args[3] +" mBTC!</span>"
     }
-    if (args[1] == "lose" && args[0] == "!;") {
+    if (args[1] == "loss" && args[0] == "!;" && data.user === "WhiskDiceBot") {
         data.user = args[2];
         data.message = "<span class='label label-important'>lost "+ args[3] +" mBTC!</span>"
     }
