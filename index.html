@@ -4,7 +4,9 @@
     <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
     <link href="./CoinChat_files/default.css" type="text/css" rel="stylesheet">
-    <script src="./CoinChat_files/bitcoinate.js"></script>ipt>
+    <script src="./CoinChat_files/bitcoinate.js"></script>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="apple-touch-icon" href="http://coinchat.org/static/img/chat.png">
     <link rel="icon" type="image/png" href="http://coinchat.org/static/img/chat.png">
   </head>
   <body style="overflow: auto;">
@@ -30,11 +32,11 @@
       
       <div class="alert alert-success hide" id="user">
         
-	  <div id="withdrawbox" class="hide">
-	    <h3>Withdraw your bitcoins</h3>
-	    <p>Min withdrawal: 13 mBTC (but we suggest withdrawing more for less fees)</p>
-	    <input type="text" id="withdrawbtc" placeholder="Withdraw mBTC"> will send <input type="text" id="withdrawnet" placeholder="mBTC" readonly=""> to your wallet <input type="text" id="withdrawaddress" placeholder="Your address"> <button id="withdrawbtn" class="btn tenpx">Withdraw</button>
-	  </div>
+	<div id="withdrawbox" class="hide">
+	  <h3>Withdraw your bitcoins</h3>
+	  <p>Min withdrawal: 13 mBTC (but we suggest withdrawing more for less fees)</p>
+	  <input type="text" id="withdrawbtc" placeholder="Withdraw mBTC"> will send <input type="text" id="withdrawnet" placeholder="mBTC" readonly=""> to your wallet <input type="text" id="withdrawaddress" placeholder="Your address"> <button id="withdrawbtn" class="btn tenpx">Withdraw</button>
+	</div>
       </div>
       
       <div id="messages">
