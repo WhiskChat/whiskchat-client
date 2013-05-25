@@ -464,7 +464,7 @@ socket.on("message", callMsg);
 
 function callMsg(data){
     var newId = "m" + Math.round(Math.random() * 10000);
-    $("#notifications").html("<a class='pull-right btn btn-link disabled' id='" + newId + "'>" + data.message + "</a>");
+    $("#notifications").html("<a class='pull-right btn btn-link' id='" + newId + "'>" + data.message + "</a>");
     $("#" + newId).fadeIn();
     setTimeout(function(){
 	$("#" + newId).fadeOut(500);
@@ -613,10 +613,8 @@ socket.on("chat", function(data){
     if(data.user != "" && !checkLog(data.room, data.message)){
 	if(currentRoom != data.room){
 	    $(".roombtn[data-room='" + data.room + "']").addClass("btn-warning");
-            if(data.message.toLowerCase().indexOf(username.toLowerCase()) != -1 && username.length > 0){ 
-                if(!focus){
+            if(data.message.toLowerCase().indexOf(username.toLowerCase()) != -1 && username.length > 0){
                     callMsg({message: data.message});
-                }
             }
 	}
 	if(data.room.indexOf(":") != -1 && data.user != username && !hasFocus) {
@@ -773,8 +771,8 @@ socket.on("loggedin", function(data){
     }
     $('#user').css('display', 'none');
     fs = !fs;
-        $("#chattext").scrollTop($("#chattext").prop("scrollHeight"));
-        moveWin();
+    $("#chattext").scrollTop($("#chattext").prop("scrollHeight"));
+    moveWin();
     /*    $(".COINWIDGET_BUTTON").children()[0].style.display = "none";
 	  setTimeout(function() {
 	  $(".COINWIDGET_BUTTON").children()[1].style["margin-left"] = "2px";
