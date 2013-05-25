@@ -614,7 +614,7 @@ socket.on("chat", function(data){
 	if(currentRoom != data.room){
 	    $(".roombtn[data-room='" + data.room + "']").addClass("btn-warning");
             if(data.message.toLowerCase().indexOf(username.toLowerCase()) != -1 && username.length > 0){
-                    callMsg({message: data.message});
+                callMsg({message: data.user + ': ' + data.message});
             }
 	}
 	if(data.room.indexOf(":") != -1 && data.user != username && !hasFocus) {
