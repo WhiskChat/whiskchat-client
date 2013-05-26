@@ -399,11 +399,17 @@ function sendMsg(){
 	}
 	if(msg.substr(0,5) == "/mute"){
 	    if(msg.split(" ").length >= 3){
-		var reason = (msg.split(" ").length > 3 ? msg.split(" ").slice(2).join(" ") : "");
+		var reason = (msg.split(" ").length > 3 ? msg.split(" ").slice(3).join(" ") : "");
 		socket.emit("mute", {mute: msg.split(" ")[2], target: msg.split(" ")[1], room: currentRoom, reason: reason});
 		return;
 	    }
 	}
+        if(msg.substr(0,5) == "/unmute"){
+            if(msg.split(" ").length >= 2){
+                socket.emit("mute", {mute: '0', target: msg.split(" ")[1], room: currentRoom, reason: 'Unmuted!'});
+                return;
+            }
+        }
 	var secs = Math.max(10-(new Date() - lastMsg) / 1000, 1);
 	if(secs > 8){
 	    secs *= 1.5;
