@@ -455,9 +455,6 @@ function checknew(room, message){
     return true;
 }
 socket.on("jointhisroom", function(data){
-    if($(".header").children().length > 15){
-	callMsg({type: 'alert-warning', message: 'Someone is trying to PM you, however you\'re in too many rooms!'});
-    }
     socket.emit("joinroom", {join: data.room});
 });
 socket.on("message", callMsg);
