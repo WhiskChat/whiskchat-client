@@ -404,7 +404,7 @@ function sendMsg(){
 		return;
 	    }
 	}
-        if(msg.substr(0,5) == "/unmute"){
+        if(msg.substr(0,7) == "/unmute"){
             if(msg.split(" ").length >= 2){
                 socket.emit("mute", {mute: '0', target: msg.split(" ")[1], room: currentRoom, reason: 'Unmuted!'});
                 return;
