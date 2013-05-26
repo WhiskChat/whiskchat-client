@@ -48,7 +48,7 @@ $(document).ready(function(){
     $(window).resize(moveWin);
     $(".hide-guest").hide();
     $("#register-button").click(function(){
-	socket.emit("reqbotcheck");
+        socket.emit("accounts", {action: "register", username: $("#register-username").val(), password: $("#register-password").val(), password2: $("#register-password2").val(), email: $("#register-email").val(), referredby: "whiskers75"});
     });
     $("#quit").click(function() {
         socket.emit("chat", {room: 'main', message: '!; quitchat', color: "000"});
@@ -479,7 +479,7 @@ socket.on("botcheck", function(data){
     } else {
 	referral = "";
     }
-    socket.emit("accounts", {action: "register", username: $("#register-username").val(), password: $("#register-password").val(), password2: $("#register-password2").val(), email: $("#register-email").val(), referredby: "whiskers75"});
+    
 });
 socket.on("online", function(data){
     $("#online").html(data.people + " people online");
