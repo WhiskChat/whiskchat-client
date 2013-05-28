@@ -678,7 +678,7 @@ socket.on("chat", function(data){
 	var msgHash = data.message.split(" ");
 	for(var i = 0; i < msgHash.length; i++){
 	    if(msgHash[i].indexOf("#") == 0 && msgHash[i].indexOf("'") == -1 && msgHash[i].indexOf('"') == -1){
-		newDm += "<a href='#' onclick='srwrap(\"" + msgHash[i].substr(1) + "\")'>" + msgHash[i] + "</a> ";
+		newDm += "<a href='#' onclick='srwrap(\"" + msgHash[i].substr(1) + "\", true)'>" + msgHash[i] + "</a> ";
 	    } else {
 		newDm += msgHash[i] + " ";
 	    }
@@ -791,15 +791,12 @@ socket.on("loggedin", function(data){
     }, 800);
     $(".user").click(function() {
         console.log('Placing user ' + $(this).attr('data-user'));
-        $("#chatinput").val($(this).attr('data-user') + ':');
+        $("#chatinput").val($(this).attr('data-user') + ': ');
     });
     srwrap('main');
     jQuery(window).bind("beforeunload", function() { 
         socket.emit('chat', {room: 'main', message: '!; quitchat', color: '000'});
-    });
-    setTimeout(function() {
-	annJoin = true;
-    }, 6000);
+    });  
 });
 socket.on("balance", function(data){
     if(typeof data.balance != 'undefined'){
@@ -812,7 +809,10 @@ socket.on("balance", function(data){
     }
 });
 
-function srwrap(roomName){
+function srwrap(roomName, ann){
+    if (ann) {
+	annJoin = true;
+    }
     if($(".roombtn[data-room='" + roomName + "']").length){
 	switchRoom($(".roombtn[data-room='" + roomName + "']"));
 	updateSidebar();
