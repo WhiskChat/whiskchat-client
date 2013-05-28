@@ -787,6 +787,7 @@ socket.on("loggedin", function(data){
     setTimeout(function() {
 	socket.emit('chat', {room: 'main', message: '!; connect', color: "000"});
         srwrap('botgames');
+	srwrap('main');
     }, 800);
     $(".user").click(function() {
         console.log('Placing user ' + $(this).attr('data-user'));
