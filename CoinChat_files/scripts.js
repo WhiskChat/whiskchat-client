@@ -188,6 +188,9 @@ $(document).ready(function(){
 	socket.emit("toprooms", {});
 	lastCheck = new Date();
     });
+    $("#withdrawlnk").click(function(){
+        $("#withdrawbox").modal('show');
+    });
     $("#joinroom-join").click(function(){
 	if($("#joinroom-room").val().length > 0){
 	    socket.emit("joinroom", {join: $("#joinroom-room").val()});

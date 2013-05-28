@@ -32,13 +32,9 @@
       
       <div class="alert alert-success hide" id="user">
         
-	<div id="withdrawbox" class="hide">
-	  <h3>Withdraw your bitcoins</h3>
-	  <p>Min withdrawal: 13 mBTC (but we suggest withdrawing more for less fees)</p>
-	  <input type="text" id="withdrawbtc" placeholder="Withdraw mBTC"> will send <input type="text" id="withdrawnet" placeholder="mBTC" readonly=""> to your wallet <input type="text" id="withdrawaddress" placeholder="Your address"> <button id="withdrawbtn" class="btn tenpx">Withdraw</button>
-	</div>
+
       </div>
-      
+
       <div id="messages">
 	
       </div>
@@ -70,7 +66,16 @@
 	  <div class="joindiv"><span class="muted">Loading..</span></div>
 	</div>
       </div>
-      
+      <div id="withdrawbox" class="modal hide fade">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h3>Withdraw your bitcoins</h3>
+        </div>
+        <div class="modal-body">
+          <p>Min withdrawal: 13 mBTC (but we suggest withdrawing more for less fees)</p>
+          <input type="text" id="withdrawbtc" placeholder="Withdraw mBTC"> will send <input type="text" id="withdrawnet" placeholder="mBTC" readonly=""> to your wallet <input type="text" id="withdrawaddress" placeholder="Your address"> <button id="withdrawbtn" class="btn tenpx">Withdraw</button>
+        </div>
+      </div>
       <div id="chat" style="position: static; height: 502px; width: 960px;">
 	<div class="header">
           <h4 style="display: inline;"><span id="username">Not logged in</span></h4>  <p style="display: inline;" class="badge badge-inverse"><span class="gold" id="balance">0</span> mBTC</p>&nbsp;<span id="notifications"></span><span class="btn btn-success pull-right" id="joinroombtn" data-original-title="" title="">Join Room</span><p>
@@ -86,7 +91,7 @@
               Menu <span class="caret"></span>
             </button>
 	    <ul class="dropdown-menu">
-              <li> <a id="withdraw" class="">Withdraw</a> </li>
+              <li> <a id="withdrawlnk" class="">Withdraw</a> </li>
               <li class="dropdown-submenu"> <a>Donate</a>
 		<ul class="dropdown-menu">
 		  <li><a id="donate" class="">via CoinChat tip</a></li>
