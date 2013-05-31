@@ -205,10 +205,7 @@ body {
 #cat {
     background-image: url('http://coinchat.org/static/img/cat.png');
     height: 107px;
-    width: 259px;
-    position: relative;
-    top: -35px;
-    left: -15px;
+    width: 259px;    
 }
 #cat:hover {
     background-image: url('http://coinchat.org/static/img/cat_hover.png');
