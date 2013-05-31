@@ -784,7 +784,9 @@ socket.on("loggedin", function(data){
     $('#user').css('display', 'none');
     fs = !fs;
     $("#chattext").scrollTop($("#chattext").prop("scrollHeight"));
-    moveWin();
+    setTimeout(function() {
+	moveWin();
+	}, 800);
     /*    $(".COINWIDGET_BUTTON").children()[0].style.display = "none";
 	  setTimeout(function() {
 	  $(".COINWIDGET_BUTTON").children()[1].style["margin-left"] = "2px";
