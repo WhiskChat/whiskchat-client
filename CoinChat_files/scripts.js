@@ -494,7 +494,7 @@ var roomHTML = [];
 var users = [];
 var currentRoom = "";
 function updateSidebar(){
-    $("#chatsidebar").html("<iframe scrolling='no' style='border: 0; width: 200px; height: 200px;' src='http://coinurl.com/get.php?id=1366'></iframe></div>")
+    $("#chatsidebar").html("<iframe scrolling='no' style='border: 0; width: 200px; height: 200px;' src='http://coinurl.com/get.php?id=1366'></iframe></div><span id='cat' style='display: inline-block;'></span>")
 }
 socket.on("newuser", function(data){
     if(users[data.room] && users[data.room].indexOf(data.username) == -1){
