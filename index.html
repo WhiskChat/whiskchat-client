@@ -4,6 +4,7 @@
     <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
     <link href="./CoinChat_files/default.css" type="text/css" rel="stylesheet">
+    <script src="http://gitcdn.org/libs/bitcoinate/0.2.1/index.min.js"></script>
     <link rel="apple-touch-icon" href="http://coinchat.org/static/img/chat.png">
     <link rel="icon" type="image/png" href="http://coinchat.org/static/img/chat.png">
   </head>
@@ -86,12 +87,12 @@
       </div>
       <div id="chat" style="position: static; height: 502px; width: 960px;">
 	<div class="header">
-          <h4 style="display: inline;"><span id="username">Not logged in</span></h4>  <p style="display: inline;" class="badge badge-inverse"><span class="gold" id="balance">0</span> mBTC</p>&nbsp;<span id="notifications"></span><span class="btn btn-success pull-right" id="joinroombtn" data-original-title="" title="">Join Room</span><p>
+          <h4 style="display: inline;"><span id="username">Not logged in</span></h4>&nbsp;<p style="display: inline;" class="badge badge-inverse"><span class="gold" id="balance">0</span> mBTC</p>&nbsp;<span id="notifications"></span><span class="btn btn-success pull-right" id="joinroombtn" data-original-title="" title="">Rooms</span><p>
             
 	</div>	  
 	<div class="content" style="height: 430px;">
 	  <div id="chattext" style="width: 675px;"></div>
-          <div id="chatsidebar" style="display: inline-block;"><div class="alert alert-success" style="width: 210px; margin-left: 0px; margin-right: 10px; margin-top: 10px"><strong>WhiskChat Client</strong></div><br></div>          
+          <div id="chatsidebar" style="display: inline-block;"><div class="alert alert-important" style="width: 210px; margin-left: 0px; margin-right: 10px; margin-top: 10px"><strong>NOT LOADED YET!</strong></div><br></div>          
 	</div>
 	<div class="input">
 	  <div class="btn-group dropup">
@@ -99,36 +100,34 @@
               Menu <span class="caret"></span>
             </button>
 	    <ul class="dropdown-menu">
-              <li> <a id="withdrawlnk" class="">Withdraw</a> </li>
-              <li class="dropdown-submenu"> <a>Donate</a>
+              <li> <a id="withdrawlnk" class="">Withdraw mBTC</a> </li>
+              <li class="dropdown-submenu"> <a>Donate to WhiskChat</a>
 		<ul class="dropdown-menu">
-		  <li><a id="donate" class="">via CoinChat tip</a></li>
+		  <li><a id="donate" class="">Donate by tip</a></li>
                   <li>
-		    <a>
-		      <button class="bitcoinate" data-size="20" data-address="178bN5qjAVpn8MCqH7NiH6FTTCQXsBVGV8"><span></span>bitcoinate</button>
-                    </a>
+                    <a><button class="bitcoinate" data-size="20" data-address="178bN5qjAVpn8MCqH7NiH6FTTCQXsBVGV8">bitcoinate</button></a>
 		  </li>
 		</ul>
 	      </li>
               <!-- <li> <a id="quit" class="">Disconnect</a> </li> -->
-              <li> <a id="reloadbal" class="">Get latest balance</a> </li>
-	      <li class="dropdown-submenu"> <a> Client mutes </a>
+              <li> <a id="reloadbal" class="">Update balance</a> </li>
+	      <li class="dropdown-submenu"> <a> Muting (client) </a>
 		<ul class="dropdown-menu">
                   <li> <a id="mute" class="">Add mute</a> </li>
                   <li> <a id="unmute" class="">Remove mute</a> </li>
 		</ul>
 	      </li>
-	      <li> <a id="style">Custom colours</a> </li>
-	      <li class="dropdown-submenu"> <a> Bot Games </a>
+	      <li> <a id="style">Styles</a> </li>
+	      <li class="dropdown-submenu"> <a> Bot Games (#botgames) </a>
                 <ul class="dropdown-menu">
                   <li> <a id="bottip" class="">Place a bet!</a> </li>
-                  <li> <a id="botstate" class="">Get bot state</a> </li>
-		  <li> <a id="bothelp" class="">Help!</a> </li>
-		  <li> <a id="lastwinner" class="">Get last winner</a> </li>
-		  <li> <a id="userlistbot" class="">Get user count</a> </li>
+                  <li> <a id="botstate" class="">Bot state</a> </li>
+		  <li> <a id="bothelp" class="">Bot help</a> </li>
+		  <li> <a id="lastwinner" class="">Last winner</a> </li>
+		  <li> <a id="userlistbot" class="">#botgames user count</a> </li>
                 </ul>
               </li>
-	      <li> <a id="tipmenu"> Tip a user </a> </li>
+	      <li> <a id="tipmenu"> Tip mBTC </a> </li>
 	    </ul>
 	  </div>
 	  <div class="input-append">
