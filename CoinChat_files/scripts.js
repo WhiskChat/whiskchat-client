@@ -43,7 +43,7 @@ $(document).ready(function(){
 	    roomToJoin = "";
 	}
     }
-    
+    $('#chat').hide();
 
     $(window).resize(moveWin);
     $(".hide-guest").hide();
@@ -767,6 +767,7 @@ socket.on("loggedin", function(data){
     $("#username").html(data.username);
     $("#referrallink").append("r:" + data.username);
     $(".hide-guest").show();
+    $('#chat').show();
     if(roomToJoin){
     	if(!roomHTML[roomToJoin]){
 	    console.log(roomToJoin);

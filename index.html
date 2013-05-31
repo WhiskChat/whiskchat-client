@@ -4,17 +4,15 @@
     <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
     <link href="./CoinChat_files/default.css" type="text/css" rel="stylesheet">
-    <script src="./CoinChat_files/bitcoinate.js"></script>
-    <meta name="apple-mobile-web-app-capable" content="yes">
     <link rel="apple-touch-icon" href="http://coinchat.org/static/img/chat.png">
     <link rel="icon" type="image/png" href="http://coinchat.org/static/img/chat.png">
   </head>
   <body style="overflow: auto;">
     <div class="container">
-      <span style="float: right" class="muted" id="online">Not connected</span><span id="cat" style="float: right"></span><h3 style="color: rgb(255,255,255);">WhiskChat custom client (for CoinChat)</h3>
+      <h3 style="color: rgb(255,255,255); display: inline;">WhiskChat custom client (for CoinChat)</h3>&nbsp;<span style="display: inline;" class="muted label label-inverse" id="online">Not connected</span>
       
       <div class="alert alert-success" id="login">
-	<h4>Hi!</h4>
+	<h2>Welcome to CoinChat!</h2>
 	Create your own chatrooms, talk about anything you want. Tip and get <strong>free</strong> <a href="http://bitcoin.org/" target="_blank">bitcoins</a>. Stylish and full featured, works on all modern browsers and smartphones. Join in! :)
 	
 	<div class="full"></div>
@@ -28,13 +26,23 @@
 	  <input type="password" id="register-password" placeholder="Password"> <input type="password" id="register-password2" placeholder="Password again">
 	  <button class="btn btn-success tenpx" id="register-button">Sign up!</button>
 	</div>
+        <h2>Rules</h2>
+        <ul>
+          <li>Make sure what you say has some quality to it. Don't spam, post gibberish, frequently post short responses, or random things that don't make sense.</li>
+          <li>Keep a cool head, don't get into flame wars, insult other people personally, or be annoying/offensive to most people</li>
+          <li>The main room is a lot more strictly moderated. Feel free to go into a less crowded room, or make your own and invite some friends to it.</li>
+        </ul>
+        <strong>We manually process and verify all withdrawals. Spamming won't earn you anything other than a ban.</strong> In addition, the free coin bonus has automated quality and antispam filters.
+        <h2>Personal rooms</h2>
+        <p>You can create your own room! You get - <code>/kick [user]</code> and <code>/unkick [user]</code>.</p>
+      </div>
       </div>
       
       <div class="alert alert-success hide" id="user">
         
 
       </div>
-
+      
       <div id="messages">
 	
       </div>
@@ -128,19 +136,7 @@
 	    <span class="btn" id="send">Send</span>
 	  </div>
 	</div>
-      </div>
-      
-      <div id="info" class="alert alert-success">
-	<h2>Rules</h2>
-	<ul>
-	  <li>Make sure what you say has some quality to it. Don't spam, post gibberish, frequently post short responses, or random things that don't make sense.</li>
-	  <li>Keep a cool head, don't get into flame wars, insult other people personally, or be annoying/offensive to most people</li>
-	  <li>The main room is a lot more strictly moderated. Feel free to go into a less crowded room, or make your own and invite some friends to it.</li>
-	</ul>
-	<strong>We manually process and verify all withdrawals. Spamming won't earn you anything other than a ban.</strong> In addition, the free coin bonus has automated quality and antispam filters.
-	<h2>Personal rooms</h2>
-	<p>You can create your own room! You get - <code>/kick [user]</code> and <code>/unkick [user]</code>.</p>
-      </div>
+      </div>     
     </div>
     <script async src="./CoinChat_files/analytics.js"></script>
     <script src="./CoinChat_files/jquery.min.js"></script>
