@@ -648,11 +648,13 @@ socket.on("chat", function(data){
 	    $(".roombtn[data-room='" + data.room + "']").addClass("btn-warning");
             if(data.message.toLowerCase().indexOf(username.toLowerCase()) != -1 && username.length > 0){
                 $("#chattext").append("<div class='chatline' title='Advertisement'><span class='user muted'>" + data.user + "</span><span class='message'><strong>" + data.message + "  <span class='label label-info'>#" + data.room + "</span></strong></span></div>");
+		chatNotify(data.user, data.message, data.room);
 		moveWin();
             }
 	}
 	if(data.room.indexOf(":") != -1 && data.user != username && !hasFocus) {
 	    startFlashing("Chat from " + data.user);
+            chatNotify(data.user, data.message, data.room);
         } else if(data.room.indexOf(":") == -1 && !hasFocus){
 	}
     } else if(data.user != "!Topic"){
@@ -897,10 +899,13 @@ function startFlashing(title){
 	    window.document.title = title;
 	}
     }, 550);
-    if (window.webkitNotifications && window.webkitNotifications.checkPermission() == 0) {
-        window.webkitNotifications.createNotification('http://coinchat.org/static/img/chat.png', 'WhiskChat', title).show();
-    }
+
 }
+function chatNotify(user, message, room) {
+if (window.webkitNotifications && window.webkitNotifications.checkPermission() == 0) {
+    window.webkitNotifications.createNotification('http://coinchat.org/static/img/chat.png', user, '#' + room + ': ' message).show();
+}
+    }
 function startLightFlashing(title){
     clearInterval(flashInterval);
     flashInterval = setInterval(function(){
