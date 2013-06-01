@@ -648,7 +648,9 @@ socket.on("chat", function(data){
 	    $(".roombtn[data-room='" + data.room + "']").addClass("btn-warning");
             if(data.message.toLowerCase().indexOf(username.toLowerCase()) != -1 && username.length > 0){
                 $("#chattext").append("<div class='chatline' title='Advertisement'><span class='user muted'>" + data.user + "</span><span class='message'><strong>" + data.message + "  <span class='label label-info'>#" + data.room + "</span></strong></span></div>");
+		if (!hasFocus) {
 		chatNotify(data.user, data.message, data.room);
+		}
 		moveWin();
             }
 	}
