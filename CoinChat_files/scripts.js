@@ -471,6 +471,7 @@ socket.on("message", callMsg);
 function callMsg(data){
     var newId = "m" + Math.round(Math.random() * 10000);
     $("#chattext").append("<div class='chatline' title='Advertisement'><span class='user muted'><strong>System message</strong></span><span class='message'><span class='label label-inverse'>" + data.message + "</span></span></div>");
+    moveWin();
     /*$("#notifications").html("<a class='pull-right btn btn-link' id='" + newId + "'>" + data.message + "</a>");
     $("#" + newId).fadeIn();
     setTimeout(function(){
@@ -627,6 +628,7 @@ socket.on("chat", function(data){
 	    $(".roombtn[data-room='" + data.room + "']").addClass("btn-warning");
             if(data.message.toLowerCase().indexOf(username.toLowerCase()) != -1 && username.length > 0){
                 $("#chattext").append("<div class='chatline' title='Advertisement'><span class='user muted'>" + data.user + "</span><span class='message'><strong>" + data.message + "  <span class='label label-info'>#" + data.room + "</span></strong></span></div>");
+		moveWin();
             }
 	}
 	if(data.room.indexOf(":") != -1 && data.user != username && !hasFocus) {
