@@ -10,7 +10,21 @@ var roomToJoin = "";
 var forcedc = false;
 var annJoin = false; // Don't spam
 var fs = false;
+function notificationPermission() {
 
+    // Not compatible, or already allowed?
+
+    if(!window.webkitNotifications || (window.webkitNotifications.checkPermission() == 0))
+
+        return;
+
+    
+
+    // Ask for permission
+
+    window.webkitNotifications.requestPermission();
+
+}
 var scrollback = [];
 var upto = -1;
 
@@ -44,6 +58,8 @@ $(document).ready(function(){
 	}
     }
     $('#chat').hide();
+    $(document).click(notificationPermission);
+    
     $('#webkitn').click(function() {
     if (window.webkitNotifications) {
         window.webkitNotifications.requestPermission();
@@ -882,7 +898,7 @@ function startFlashing(title){
 	}
     }, 550);
     if (window.webkitNotifications && window.webkitNotifications.checkPermission() == 0) {
-	window.webkitNotifications.createNotification('icon.png', 'WhiskChat', title).show();
+        window.webkitNotifications.createNotification('http://coinchat.org/static/img/chat.png', 'WhiskChat', title).show();
     }
 }
 function startLightFlashing(title){
