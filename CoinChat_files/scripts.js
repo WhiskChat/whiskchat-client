@@ -32,7 +32,7 @@ setInterval(function(){
     spammyness = Math.max(spammyness, 0);
 }, 1250);
 $(document).ready(function(){
-    if(document.URL.split("j:").length == 2){
+    if(document.URL.split("index.html?j:").length == 2){
 	roomToJoin = document.URL.split("j:")[1].split("&")[0];
     }
     if(getCookie("session")){
