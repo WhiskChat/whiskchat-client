@@ -548,7 +548,7 @@ socket.on("joinroom", function(data){
                     }
                     else {
 			if (data.room == "vip") {
-                            $(".header").append(" <span class='roombtn btn btn-small' data-room='" + data.room + "' onclick='switchRoom(this)'>VIP Room</span>");
+                            $(".header").append(" <span class='roombtn btn btn-small' data-room='" + data.room + "' onclick='switchRoom(this)'>VIP Room</span> <span class='quit close muted' data-room='" + data.room + "'>&times;</span>");
 			}
 			else {
 			    $(".header").append(" <span class='roombtn btn btn-small' data-room='" + data.room + "' onclick='switchRoom(this)'>#" + data.room + "</span>");
