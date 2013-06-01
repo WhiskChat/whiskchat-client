@@ -536,8 +536,8 @@ socket.on("joinroom", function(data){
 	    for(var i in data.users){
 		users[data.room].push(data.users[i]);
 	    }
-	    if(data.room != "main" && data.room != "botgames"){
-		$(".header").append(" <span class='roombtn btn btn-small' data-room='" + data.room + "' onclick='switchRoom(this)'>" + data.room + " <span class='quit close muted' data-room='" + data.room + "'>&times;</span></span>");
+	    if(data.room != "main" && data.room != "botgames" && data.room != "vip"){
+		$(".header").append(" <span class='roombtn btn btn-small' data-room='" + data.room + "' onclick='switchRoom(this)'>#" + data.room + " <span class='quit close muted' data-room='" + data.room + "'>&times;</span></span>");
 	    } else {
 		if (data.room == "botgames") {
                     $(".header").append(" <span class='roombtn btn btn-small' data-room='" + data.room + "' onclick='switchRoom(this)'>Bot Games</span>");
