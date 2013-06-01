@@ -905,7 +905,10 @@ function startFlashing(title){
 }
 function chatNotify(user, message, room) {
 if (window.webkitNotifications && window.webkitNotifications.checkPermission() == 0) {
-    window.webkitNotifications.createNotification('http://coinchat.org/static/img/chat.png', user, '#' + room + ': ' + message).show();
+    var notif = webkitNotifications.createNotification('http://coinchat.org/static/img/chat.png', user, '#' + room + ': ' + message).show();
+    setTimeout(function() {
+	notif.cancel()
+    }, 10000);
 }
     }
 function startLightFlashing(title){
