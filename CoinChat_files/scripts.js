@@ -632,6 +632,9 @@ socket.on("chat", function(data){
     if (data.message == '!; quitchat') {
         data.message = "<span class='label label-important'>disconnected.</span>"
     }
+    if ((args[0] == "!hint" || args[0] == "!ahint") && data.room == "20questions") {
+	return;
+    }
     if (args[1] == "win" && args[0] == "!;" && data.user === "WhiskDiceBot") {
 	data.user = args[2];
         data.message = "<span class='label label-info'>won "+ args[3] +" mBTC!</span>"
