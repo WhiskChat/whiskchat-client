@@ -470,7 +470,7 @@ socket.on("message", callMsg);
 
 function callMsg(data){
     var newId = "m" + Math.round(Math.random() * 10000);
-    $("#chattext").append("<div class='chatline' title='Advertisement'><span class='user muted'>System message</span><span class='message'>" + data.message + "</span></div>");
+    $("#chattext").append("<div class='chatline' title='Advertisement'><span class='user muted'><strong>System message</strong></span><span class='message'><span class='label label-inverse'>" + data.message + "</span></span></div>");
     /*$("#notifications").html("<a class='pull-right btn btn-link' id='" + newId + "'>" + data.message + "</a>");
     $("#" + newId).fadeIn();
     setTimeout(function(){
