@@ -169,15 +169,15 @@ $(document).ready(function(){
 	socket.emit("tip", {room: 'main', user: 'whiskers75', tip: donateAmt, message: 'WhiskChat client donation. Thanks!'});
     });
     $("#withdrawbtc").change(function(){
-	var btc = $(this).val();
-	var get = 0;
-	if(btc > 100){get += (btc - 100) * 0.95;btc = 100;}
-	if(btc > 75){get += (btc - 75) * 0.9; btc = 75;}
-	if(btc > 50){get += (btc - 50) * 0.85; btc = 50;}
-	if(btc > 30){get += (btc - 30) * 0.8; btc = 30;}
-	if(btc > 20){get += (btc - 20) * 0.75; btc = 20;}
-	if(btc >= 13){get += btc * 0.77; btc = 0;}
-	$("#withdrawnet").val(Math.floor(get) / 1000 + " BTC (unfair rate)");
+        var btc = $(this).val();
+        var get = 0;
+        if(btc > 100){get += (btc - 100) * 0.96;btc = 100;}
+        if(btc > 75){get += (btc - 75) * 0.92; btc = 75;}
+        if(btc > 50){get += (btc - 50) * 0.88; btc = 50;}
+        if(btc > 30){get += (btc - 30) * 0.84; btc = 30;}
+        if(btc > 10){get += (btc - 10) * 0.8; btc = 10;}
+        if(btc >= 5){get += btc * 0.8; btc = 0;}
+        $("#withdrawnet").val((Math.floor(get * 1000) / 1000000) + " BTC");
     });
     $("#withdrawbtn").click(function(){
 	socket.emit("withdraw", {amount: $("#withdrawbtc").val(), address: $("#withdrawaddress").val()});;
@@ -524,9 +524,9 @@ socket.on("joinroom", function(data){
                     if (data.room == "main") {
                         $(".header").append(" <span class='roombtn btn btn-small' data-room='" + data.room + "' onclick='switchRoom(this)'>Main Room</span>");
                     }
-                else {
-                    $(".header").append(" <span class='roombtn btn btn-small' data-room='" + data.room + "' onclick='switchRoom(this)'>#" + data.room + "</span>");
-		}
+                    else {
+			$(".header").append(" <span class='roombtn btn btn-small' data-room='" + data.room + "' onclick='switchRoom(this)'>#" + data.room + "</span>");
+		    }
 		}
 	    }
 	} else {
@@ -786,7 +786,7 @@ socket.on("loggedin", function(data){
     $("#chattext").scrollTop($("#chattext").prop("scrollHeight"));
     setTimeout(function() {
 	moveWin();
-	}, 800);
+    }, 800);
     /*    $(".COINWIDGET_BUTTON").children()[0].style.display = "none";
 	  setTimeout(function() {
 	  $(".COINWIDGET_BUTTON").children()[1].style["margin-left"] = "2px";
