@@ -44,7 +44,11 @@ $(document).ready(function(){
 	}
     }
     $('#chat').hide();
-
+    $('#webkitn').click(function() {
+    if (window.webkitNotifications) {
+        window.webkitNotifications.requestPermission();
+    }
+	});
     $(window).resize(moveWin);
     $(".hide-guest").hide();
     $("#register-button").click(function(){
@@ -877,6 +881,9 @@ function startFlashing(title){
 	    window.document.title = title;
 	}
     }, 550);
+    if (window.webkitNotifications && window.webkitNotifications.checkPermission() == 0) {
+	window.webkitNotifications.createNotification('icon.png', 'WhiskChat', title).show();
+    }
 }
 function startLightFlashing(title){
     clearInterval(flashInterval);
