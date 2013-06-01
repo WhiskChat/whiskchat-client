@@ -61,10 +61,10 @@ $(document).ready(function(){
     $(document).click(notificationPermission);
     
     $('#webkitn').click(function() {
-    if (window.webkitNotifications) {
-        window.webkitNotifications.requestPermission();
-    }
-	});
+	if (window.webkitNotifications) {
+            window.webkitNotifications.requestPermission();
+	}
+    });
     $(window).resize(moveWin);
     $(".hide-guest").hide();
     $("#register-button").click(function(){
@@ -493,10 +493,10 @@ function callMsg(data){
     $("#chattext").append("<div class='chatline' title='Advertisement'><span class='user muted'><strong>System message</strong></span><span class='message'><span class='label label-inverse'>" + data.message + "</span></span></div>");
     moveWin();
     /*$("#notifications").html("<a class='pull-right btn btn-link' id='" + newId + "'>" + data.message + "</a>");
-    $("#" + newId).fadeIn();
-    setTimeout(function(){
-	$("#" + newId).fadeOut(500);
-    }, 5000);*/
+      $("#" + newId).fadeIn();
+      setTimeout(function(){
+      $("#" + newId).fadeOut(500);
+      }, 5000);*/
 }
 socket.on("botcheck", function(data){
     var response = prompt(data.prompt);
@@ -547,7 +547,12 @@ socket.on("joinroom", function(data){
                         $(".header").append(" <span class='roombtn btn btn-small' data-room='" + data.room + "' onclick='switchRoom(this)'>Main Room</span>");
                     }
                     else {
-			$(".header").append(" <span class='roombtn btn btn-small' data-room='" + data.room + "' onclick='switchRoom(this)'>#" + data.room + "</span>");
+			if (data.room == "vip") {
+                            $(".header").append(" <span class='roombtn btn btn-small' data-room='" + data.room + "' onclick='switchRoom(this)'>VIP Room</span>");
+			}
+			else {
+			    $(".header").append(" <span class='roombtn btn btn-small' data-room='" + data.room + "' onclick='switchRoom(this)'>#" + data.room + "</span>");
+			}
 		    }
 		}
 	    }
@@ -652,7 +657,7 @@ socket.on("chat", function(data){
             if(data.message.toLowerCase().indexOf(username.toLowerCase()) != -1 && username.length > 0){
                 $("#chattext").append("<div class='chatline' title='Advertisement'><span class='user muted'>" + data.user + "</span><span class='message'><strong>" + data.message + "  <span class='label label-info'>#" + data.room + "</span></strong></span></div>");
 		if (!hasFocus) {
-		chatNotify(data.user, data.message, data.room);
+		    chatNotify(data.user, data.message, data.room);
 		}
 		moveWin();
             }
@@ -908,14 +913,14 @@ function startFlashing(title){
 
 }
 function chatNotify(user, message, room) {
-if (window.webkitNotifications && window.webkitNotifications.checkPermission() == 0) {
-    var notif = webkitNotifications.createNotification('http://coinchat.org/static/img/chat.png', user, '#' + room + ': ' + message)
-    notif.show();
-    setTimeout(function() {
-	notif.cancel()
-    }, 5000);
-}
+    if (window.webkitNotifications && window.webkitNotifications.checkPermission() == 0) {
+	var notif = webkitNotifications.createNotification('http://coinchat.org/static/img/chat.png', user, '#' + room + ': ' + message)
+	notif.show();
+	setTimeout(function() {
+	    notif.cancel()
+	}, 5000);
     }
+}
 function startLightFlashing(title){
     clearInterval(flashInterval);
     flashInterval = setInterval(function(){
