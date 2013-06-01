@@ -800,6 +800,7 @@ socket.on("loggedin", function(data){
     $("#referrallink").append("r:" + data.username);
     $(".hide-guest").show();
     $('#chat').show();
+    socket.emit('getcolors');
     if(roomToJoin){
     	if(!roomHTML[roomToJoin]){
 	    console.log(roomToJoin);
