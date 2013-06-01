@@ -493,6 +493,9 @@ function callMsg(data){
     var newId = "m" + Math.round(Math.random() * 10000);
     $("#chattext").append("<div class='chatline' title='Advertisement'><span class='user muted'><strong>System message</strong></span><span class='message'><span class='label label-inverse'>" + data.message + "</span></span></div>");
     moveWin();
+    if((!fs && $("#chattext").scrollTop() + 650 >= $("#chattext").prop('scrollHeight')) || (fs && $("#chattext").scrollTop() + $(window).height() >= $("#chattext").prop('scrollHeight'))){
+        $("#chattext").animate({ scrollTop:$("#chattext").prop('scrollHeight') }, "slow");
+    }
     /*$("#notifications").html("<a class='pull-right btn btn-link' id='" + newId + "'>" + data.message + "</a>");
       $("#" + newId).fadeIn();
       setTimeout(function(){
