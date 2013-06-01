@@ -515,8 +515,30 @@ socket.on("online", function(data){
 var roomHTML = [];
 var users = [];
 var currentRoom = "";
+socket.on("userquit", function(data){
+    if(users[data.room] && users[data.room].indexOf(data.username) != -1){
+        users[data.room].splice(users[data.room].indexOf(data.username), 1);
+    }
+    updateSidebar();
+});
 function updateSidebar(){
-    $("#chatsidebar").html("<iframe scrolling='no' style='border: 0; width: 200px; height: 200px;' src='http://coinurl.com/get.php?id=1366'></iframe></div><span id='cat' style='display: inline-block;'></span>")
+    if(currentRoom == "main"){
+        $("#chatsidebar").html("<div class='alert alert-warning' style='width: 210px; margin-left: 0px; margin-right: 10px; margin-top: 10px'><strong>Readme!</strong><p>You have a chance to get free BTC every time you say something, but we have an intelligent filter. Don't abuse it, withdrawals are manually reviewed anyways!</p></div><iframe scrolling='no' style='border: 0; width: 200px; height: 200px;' src='http://coinurl.com/get.php?id=1366'></iframe>");
+    } else if(users[currentRoom]){
+        $("#chatsidebar").html("");
+        for(var i in users[currentRoom]){
+            $("#chatsidebar").append("<div class='sideuser'>" + users[currentRoom][i] + "</div>");
+        }
+        $(".sideuser").click(function(){
+            if($(this).html().split(" ")[0] != username){
+                var sA = [$(this).html().split(" ")[0].toLowerCase(), username].sort();
+                socket.emit("joinroom", {join: sA[0] + ":" + sA[1]});
+            }
+        });
+    } else {
+        $("#chatsidebar").html("<iframe scrolling='no' style='border: 0; width: 200px; height: 200px;' src='http://coinurl.com/get.php?id=1366'></iframe><iframe scrolling='no' style='border: 0; width: 200px; height: 200px;' src='http://coinurl.com/get.php?id=1366'></iframe>");
+        var theUser = (currentRoom.split(":")[0].toLowerCase() == username.toLowerCase() ? currentRoom.split(":")[1] : currentRoom.split(":")[0]).toLowerCase();
+    }
 }
 socket.on("newuser", function(data){
     if(users[data.room] && users[data.room].indexOf(data.username) == -1){
