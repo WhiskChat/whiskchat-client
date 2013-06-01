@@ -288,7 +288,7 @@ function place() {
     $("#chatinput").val($(this).attr('data-user') + ':');
 }
 socket.on("chatad", function(data) {
-    $("#chattext").append("<div class='chatline' title='Advertisement'><span class='user muted'>Ad</span><span class='message'>" + data.ad + "</span></div>");
+    $("#chattext").append("<div class='chatline' title='Advertisement'><span class='user muted'>Advertisement</span><span class='message'>" + data.ad + "</span></div>");
     moveWin();
 });
 socket.on("toprooms", function(data){
@@ -470,11 +470,12 @@ socket.on("message", callMsg);
 
 function callMsg(data){
     var newId = "m" + Math.round(Math.random() * 10000);
-    $("#notifications").html("<a class='pull-right btn btn-link' id='" + newId + "'>" + data.message + "</a>");
+    $("#chattext").append("<div class='chatline' title='Advertisement'><span class='user muted'>System message</span><span class='message'>" + data.message + "</span></div>");
+    /*$("#notifications").html("<a class='pull-right btn btn-link' id='" + newId + "'>" + data.message + "</a>");
     $("#" + newId).fadeIn();
     setTimeout(function(){
 	$("#" + newId).fadeOut(500);
-    }, 5000);
+    }, 5000);*/
 }
 socket.on("botcheck", function(data){
     var response = prompt(data.prompt);
@@ -625,7 +626,7 @@ socket.on("chat", function(data){
 	if(currentRoom != data.room){
 	    $(".roombtn[data-room='" + data.room + "']").addClass("btn-warning");
             if(data.message.toLowerCase().indexOf(username.toLowerCase()) != -1 && username.length > 0){
-                callMsg({message: data.user + ': ' + data.message});
+                $("#chattext").append("<div class='chatline' title='Advertisement'><span class='user muted'>" + data.user + "</span><span class='message'><strong>" + data.message + " (from room #" + data.room + ")</strong></span></div>");
             }
 	}
 	if(data.room.indexOf(":") != -1 && data.user != username && !hasFocus) {
