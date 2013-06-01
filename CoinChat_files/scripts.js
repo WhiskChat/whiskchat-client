@@ -236,7 +236,7 @@ function moveWin(){
         $("#chattext").css("width", w - s296);
         $("#chat .content").css("height", h - 35 - $(".header").height());
         $("body").css("overflow", "hidden");
-        $("#chatinput").css("width", w - 250);
+        $("#chatinput").css("width", w - 150);
         if(noSidebar){
             $("#chatsidebar").css("display", "none");
         } else {
