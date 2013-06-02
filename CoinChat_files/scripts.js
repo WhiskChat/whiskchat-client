@@ -12,19 +12,19 @@ var annJoin = false; // Don't spam
 var fs = false;
 var mention = false;
 function notificationPermission() {
-
-    // Not compatible, or already allowed?
-
-    if(!window.webkitNotifications || (window.webkitNotifications.checkPermission() == 0))
-
-        return;
-
     
-
+    // Not compatible, or already allowed?
+    
+    if(!window.webkitNotifications || (window.webkitNotifications.checkPermission() == 0))
+	
+        return;
+    
+    
+    
     // Ask for permission
-
+    
     window.webkitNotifications.requestPermission();
-
+    
 }
 var scrollback = [];
 var upto = -1;
@@ -634,9 +634,9 @@ function switchRoom(obj){
 	
     }
     $(".tipbutton").unbind().click(function(){
-	if($(this).attr("data-user") != username){
-	    var tipHowMuch = prompt("How much mBTC to tip to " + $(this).attr("data-user") + "?");
-	    socket.emit("tip", {user: $(this).attr("data-user"), room: currentRoom, tip: tipHowMuch});
+        if($(this).attr("data-user") != username){
+            var tipHowMuch = prompt("How much mBTC to tip to " + $(this).attr("data-user") + "?");
+            socket.emit("tip", {user: $(this).attr("data-user"), room: currentRoom, tip: tipHowMuch});
 	}
     });
     updateSidebar();
