@@ -780,11 +780,10 @@ socket.on("chat", function(data){
 	    $(this).find(".tipbutton").hide();
 	});
 	$(".tipbutton").unbind().click(function(){
-	    if($(this).attr("data-user") != username){
-		callMsg({message: "System: Use the /tip command.", type: 'alert-warning'});
-		moveWin();
-	    }
-	    
+            if($(this).attr("data-user") != username){
+                var tipHowMuch = prompt("How much mBTC to tip to " + $(this).attr("data-user") + "?");
+                socket.emit("tip", {user: $(this).attr("data-user"), room: currentRoom, tip: tipHowMuch});
+            }
 	});
     } else if(roomHTML[data.room] != undefined || data.room.indexOf(":") == -1){
 	if(!roomHTML[data.room]){
