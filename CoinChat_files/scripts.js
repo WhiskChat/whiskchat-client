@@ -11,6 +11,13 @@ var forcedc = false;
 var annJoin = false; // Don't spam
 var fs = false;
 var mention = false;
+
+// iOS
+
+document.ontouchstart = function(e){ 
+    e.preventDefault(); // Prevent scrolling!
+}
+
 function notificationPermission() {
     
     // Not compatible, or already allowed?
