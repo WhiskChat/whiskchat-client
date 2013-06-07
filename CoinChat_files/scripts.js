@@ -29,7 +29,7 @@ window.addEventListener('load', function(e) {
             // Manifest didn't changed. Nothing new to server.
         }
     }, false);
-
+    
 }, false);
 
 function notificationPermission() {
@@ -673,16 +673,24 @@ socket.on("chat", function(data){
         return;
     }
     if (data.message == '!; connect') {
-	data.message = "<span class='label label-success'>connected to CoinChat.</span>"
+        $("#chattext").append("<div class='chatline'><span class='user' onclick='place()'><span></span>&nbsp;&nbsp;</span><span class='message muted'> * " + data.user + " connected to CoinChat (WhiskChat Client)</span></div>");
+	moveWin();
+	return;
     }
     if (data.message == '!; joinroom') {
-        data.message = "<span class='label label-success'>joined the room.</span>"
+        $("#chattext").append("<div class='chatline'><span class='user' onclick='place()'><span></span>&nbsp;&nbsp;</span><span class='message muted'> * " + data.user + " joined #" + data.room + "<span></div>");
+        moveWin();
+        return;
     }
     if (data.message == '!; quitroom') {
-        data.message = "<span class='label label-important'>left the room.</span>"
+        $("#chattext").append("<div class='chatline'><span class='user' onclick='place()'><span></span>&nbsp;&nbsp;</span><span class='message muted'> * " + data.user + " left #" + data.room + "</span></div>");
+        moveWin();
+        return;
     }
     if (data.message == '!; quitchat') {
-        data.message = "<span class='label label-important'>disconnected.</span>"
+        $("#chattext").append("<div class='chatline'><span class='user' onclick='place()'><span></span>&nbsp;&nbsp;</span><span class='message muted'> * " + data.user + " disconnected</span></div>");
+        moveWin();
+        return;
     }
     if ((args[0] == "!hint" || args[0] == "!ahint") && data.room == "20questions") {
 	return;
