@@ -673,22 +673,22 @@ socket.on("chat", function(data){
         return;
     }
     if (data.message == '!; connect') {
-        $("#chattext").append("<div class='chatline'><span class='user' onclick='place()'><span></span>&nbsp;&nbsp;</span><span class='message muted' style='background: #eee'> * " + data.user + " connected to CoinChat (WhiskChat Client)</span></div>");
+        $("#chattext").append("<div class='chatline'><span class='user' onclick='place()' style='background: #eee'><span></span>&nbsp;&nbsp;</span><span class='message muted' style='background: #eee'> * " + data.user + " connected to CoinChat (WhiskChat Client)</span></div>");
 	moveWin();
 	return;
     }
     if (data.message == '!; joinroom') {
-        $("#chattext").append("<div class='chatline'><span class='user' onclick='place()'><span></span>&nbsp;&nbsp;</span><span class='message muted' style='background: #eee'> * " + data.user + " joined #" + data.room + "<span></div>");
+        $("#chattext").append("<div class='chatline'><span class='user' onclick='place()' style='background: #eee'><span></span>&nbsp;&nbsp;</span><span class='message muted' style='background: #eee'> * " + data.user + " joined #" + data.room + "<span></div>");
         moveWin();
         return;
     }
     if (data.message == '!; quitroom') {
-        $("#chattext").append("<div class='chatline'><span class='user' onclick='place()'><span></span>&nbsp;&nbsp;</span><span class='message muted' style='background: #eee'> * " + data.user + " left #" + data.room + "</span></div>");
+        $("#chattext").append("<div class='chatline'><span class='user' onclick='place()' style='background: #eee'><span></span>&nbsp;&nbsp;</span><span class='message muted' style='background: #eee'> * " + data.user + " left #" + data.room + "</span></div>");
         moveWin();
         return;
     }
     if (data.message == '!; quitchat') {
-        $("#chattext").append("<div class='chatline'><span class='user' onclick='place()'><span></span>&nbsp;&nbsp;</span><span class='message muted' style='background: #eee'> * " + data.user + " disconnected</span></div>");
+        $("#chattext").append("<div class='chatline'><span class='user' onclick='place()' style='background: #eee'><span></span>&nbsp;&nbsp;</span><span class='message muted' style='background: #eee'> * " + data.user + " disconnected</span></div>");
         moveWin();
         return;
     }
