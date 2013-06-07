@@ -1,4 +1,4 @@
-// WhiskChat v0.1beta
+// WhiskChat v2
 
 var socket = io.connect('http://192.155.86.153:8888',{resource: 'socket.io', reconnect: false});
 var username = "";
@@ -7,6 +7,7 @@ var lastCheck = new Date("1990");
 var hasFocus = true;
 var muted = [];
 var roomToJoin = "";
+var mods = ['admin', 'Dayne', 'randomcloud', 'vivabitcoin', 'OdinH', 'lordsonkit', 'whiskers75']; // Update with latest moderators
 var forcedc = false;
 var annJoin = false; // Don't spam
 var fs = false;
@@ -688,7 +689,7 @@ socket.on("chat", function(data){
 	if(currentRoom != data.room){
 	    $(".roombtn[data-room='" + data.room + "']").addClass("btn-warning");
             if(data.message.toLowerCase().indexOf(username.toLowerCase()) != -1 && username.length > 0 && mention){
-                $("#chattext").append("<div class='chatline' title='Advertisement'><span class='user muted'>" + data.user + "</span><span class='message'><strong>" + data.message + "  <span class='label label-info'>#" + data.room + "</span></strong></span></div>");
+                $("#chattext").append("<div class='chatline' title='Notification'><span class='user muted'>" + data.user + "</span><span class='message'><strong>" + data.message + "  <span class='label label-info'>#" + data.room + "</span></strong></span></div>");
 		if (!hasFocus) {
 		    chatNotify(data.user, data.message, data.room);
 		}
@@ -767,7 +768,12 @@ socket.on("chat", function(data){
 	if (data.user != "WhiskDiceBot") {
 	    $("#chattext").append("<div class='chatline' title='" + data.timestamp + "'><span class='user' onclick='place()' data-user='" + data.user + "'><span>" + data.user + "</span>&nbsp;&nbsp;</span><span class='message'>" + data.message + winBTCtext + dateFormat + "</span></div>");
 	} else {
-            $("#chattext").append("<div class='chatline' title='" + data.timestamp + "'><span class='user' onclick='place()' data-user='" + data.user + "'><span><span class='label label-inverse'>#botgames bot</span></span>&nbsp;&nbsp;</span><span class='message'>" + data.message + winBTCtext + dateFormat + "</span></div>");
+	    if (mods.indexOf(data.user) !== -1) {
+                $("#chattext").append("<div class='chatline' title='" + data.timestamp + "'><span class='user' onclick='place()' data-user='" + data.user + "'><span>" + data.user + " </span><span class='label label-important'>Mod</span>&nbsp;&nbsp;</span><span class='message'>" + data.message + winBTCtext + dateFormat + "</span></div>");
+	    }
+	    else {
+		$("#chattext").append("<div class='chatline' title='" + data.timestamp + "'><span class='user' onclick='place()' data-user='" + data.user + "'><span><span class='label label-inverse'>#botgames bot</span></span>&nbsp;&nbsp;</span><span class='message'>" + data.message + winBTCtext + dateFormat + "</span></div>");
+	    }
 	}
 	while($("#chattext").children().length > 200){
 	    $("#chattext .chatline:first-child").remove();
