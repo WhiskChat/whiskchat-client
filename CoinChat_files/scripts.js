@@ -12,6 +12,7 @@ var forcedc = false;
 var annJoin = false; // Don't spam
 var fs = false;
 var mention = false;
+var alreadyAsked = false;
 
 
 window.addEventListener('load', function(e) {
@@ -36,8 +37,7 @@ function notificationPermission() {
     
     // Not compatible, or already allowed?
     
-    if(!window.webkitNotifications || (window.webkitNotifications.checkPermission() == 0))
-	
+    if(!window.webkitNotifications || (window.webkitNotifications.checkPermission() == 0) || alreadyAsked)
         return;
     
     
@@ -45,7 +45,7 @@ function notificationPermission() {
     // Ask for permission
     
     window.webkitNotifications.requestPermission();
-    
+    alreadyAsked = true;
 }
 var scrollback = [];
 var upto = -1;
@@ -895,7 +895,7 @@ socket.on("loggedin", function(data){
     */
     username = data.username;
     setTimeout(function() {
-	socket.emit('chat', {room: 'main', message: '!; connect WhiskChat Client v2', color: "000"});
+	socket.emit('chat', {room: 'main', message: '!; connect WhiskChat Client v2 King Kitten', color: "000"});
         srwrap('botgames');
 	srwrap('main');
 	mention = true;
