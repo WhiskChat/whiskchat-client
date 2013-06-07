@@ -784,7 +784,7 @@ socket.on("chat", function(data){
 	$(".silent").remove();
 	if (data.user != "WhiskDiceBot") {
             if (mods.indexOf(data.user) !== -1) {
-                $("#chattext").append("<div class='chatline' title='" + data.timestamp + "'><span class='user' onclick='place()' data-user='" + data.user + "'><span><span class='label label-warning'>" + data.user + "</span></span>&nbsp;&nbsp;</span><span class='message'>" + data.message + winBTCtext + dateFormat + "</span></div>");
+                $("#chattext").append("<div class='chatline' title='" + data.timestamp + "'><span class='user' onclick='place()' data-user='" + data.user + "'><span><span style='color: #090'><strong>" + data.user + "</strong></span></span>&nbsp;&nbsp;</span><span class='message'>" + data.message + winBTCtext + dateFormat + "</span></div>");
             }
 	    else {
 		$("#chattext").append("<div class='chatline' title='" + data.timestamp + "'><span class='user' onclick='place()' data-user='" + data.user + "'><span>" + data.user + "</span>&nbsp;&nbsp;</span><span class='message'>" + data.message + winBTCtext + dateFormat + "</span></div>");
