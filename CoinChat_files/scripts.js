@@ -670,12 +670,16 @@ socket.on("chat", function(data){
 	return;
     }
     if (args[1] == "win" && args[0] == "!;" && data.user === "WhiskDiceBot") {
-	data.user = args[2];
-        data.message = "<span class='label label-info'>won "+ args[3] +" mBTC!</span>"
+	return;
     }
     if (args[1] == "loss" && args[0] == "!;" && data.user === "WhiskDiceBot") {
-        data.user = args[2];
-        data.message = "<span class='label label-important'>lost "+ args[3] +" mBTC!</span>"
+	return;
+    }
+    if (data.message.indexOf('<span class="label label-success">has tipped WhiskDiceBot ') !== -1) {
+	return;
+    }
+    if (data.message.indexOf('<span class="label label-success">has tipped ') !== -1 && data.user === "WhiskDiceBot") {
+        return;
     }
     if (data.message.substr(0, 6) == "!; kl ") {
 	data.message = "<span class='label label-inverse'>" + data.message.substr(6, data.message.length); + "</span>"
