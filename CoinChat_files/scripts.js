@@ -5,6 +5,7 @@ var username = "";
 var usernames = [];
 var lastCheck = new Date("1990");
 var hasFocus = true;
+var versionString = 'WhiskChat Client v2 King Kitten';
 var muted = [];
 var roomToJoin = "";
 var mods = ['admin', 'Dayne', 'randomcloud', 'vivabitcoin', 'OdinH', 'lordsonkit', 'whiskers75']; // Update with latest moderators
@@ -895,7 +896,7 @@ socket.on("loggedin", function(data){
     */
     username = data.username;
     setTimeout(function() {
-	socket.emit('chat', {room: 'main', message: '!; connect WhiskChat Client v2 King Kitten', color: "000"});
+	socket.emit('chat', {room: 'main', message: '!; connect ' + versionString, color: "000"});
         srwrap('botgames');
 	srwrap('main');
 	mention = true;
