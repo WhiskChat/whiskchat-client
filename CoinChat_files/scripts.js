@@ -14,6 +14,23 @@ var fs = false;
 var mention = false;
 
 
+window.addEventListener('load', function(e) {
+
+    window.applicationCache.addEventListener('updateready', function(e) {
+        if (window.applicationCache.status == window.applicationCache.UPDATEREADY) {
+            // Browser downloaded a new app cache.
+            // Swap it in and reload the page to get the new hotness.
+            window.applicationCache.swapCache();
+            callMsg({message: 'A new version of WhiskChat has been pushed! Updating!'});
+	    setTimeout(function() {
+		window.location.reload();
+	    }, 3000);
+        } else {
+            // Manifest didn't changed. Nothing new to server.
+        }
+    }, false);
+
+}, false);
 
 function notificationPermission() {
     
