@@ -5,7 +5,7 @@ var username = "";
 var usernames = [];
 var lastCheck = new Date("1990");
 var hasFocus = true;
-var versionString = 'WhiskChat Client v2 King Kitten';
+var versionString = 'WhiskChat Client v2 - King Kitten';
 var muted = [];
 var roomToJoin = "";
 var mods = ['admin', 'Dayne', 'randomcloud', 'vivabitcoin', 'OdinH', 'lordsonkit', 'whiskers75']; // Update with latest moderators
@@ -383,12 +383,16 @@ function sendMsg(){
 	    return;
         }
         if(msg.substr(0,5) == "/help"){
-	    callMsg({message: 'Commands: /quit, /join (room), /ping, /tip, /pm, /query, /kick, /unkick', type: 'alert-success'});
+	    callMsg({message: 'Commands: /quit, /join (room), /ping, /tip, /pm, /query, /kick, /unkick, /version, /mute, /unmute, /bet', type: 'alert-success'});
 	    return;
         }
         if(msg.substr(0,5) == "/ping"){
             socket.emit("chat", {room: currentRoom, message: 'PING! ' + usernames.join(' '), color: "000"});
 	    return;
+        }
+        if(msg.substr(0,8) == "/version"){
+            callMsg({message: 'Version ' + versionString});
+            return;
         }
         if(msg.substr(0,4) == "/bet" && currentRoom == "botgames") {
             if(msg != "/bet"){
