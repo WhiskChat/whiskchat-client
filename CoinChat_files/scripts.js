@@ -375,9 +375,9 @@ function sendMsg(){
             if(msg != "/bet"){
                 var tipAmount = msg.split(" ")[1];
                 var tipMsg = msg.split(" ")[2];
-                callMsg({message: 'System: Betting ' + tipAmount + ' with a ' + tipMsg + ' chance...', type: 'alert-success'});
+                callMsg({message: 'Betting ' + tipAmount + ' with a ' + tipMsg + ' chance...', type: 'alert-success'});
                 socket.emit("tip", {room: 'botgames', user: 'WhiskDiceBot', tip: tipAmount, message: 'BOT ' + tipMsg});
-                
+                return;
             }
 	    else {
                 callMsg({message: 'Syntax: /bet amount chance%', type: 'alert-success'});
