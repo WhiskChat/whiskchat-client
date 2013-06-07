@@ -672,8 +672,8 @@ socket.on("chat", function(data){
 	console.log('Muted message from ' + data.user + ': ' + data.message);
         return;
     }
-    if (data.message == '!; connect') {
-        $("#chattext").append("<div class='chatline'><span class='user' onclick='place()' style='background: #eee'><span></span>&nbsp;&nbsp;</span><span class='message muted' style='background: #eee'> * " + data.user + " connected to CoinChat (WhiskChat Client)</span></div>");
+    if (data.message.substr(0, 10) == '!; connect') {
+        $("#chattext").append("<div class='chatline'><span class='user' onclick='place()' style='background: #eee'><span></span>&nbsp;&nbsp;</span><span class='message muted' style='background: #eee'> * " + data.user + " connected to CoinChat (" + data.message.substr(10, data.message.length) + ")</span></div>");
 	moveWin();
 	return;
     }
@@ -895,7 +895,7 @@ socket.on("loggedin", function(data){
     */
     username = data.username;
     setTimeout(function() {
-	socket.emit('chat', {room: 'main', message: '!; connect', color: "000"});
+	socket.emit('chat', {room: 'main', message: '!; connect' + ipaddr, color: "000"});
         srwrap('botgames');
 	srwrap('main');
 	mention = true;
