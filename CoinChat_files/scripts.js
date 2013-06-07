@@ -80,6 +80,7 @@ $(document).ready(function(){
 	    roomToJoin = "";
 	}
     }
+    $('#version').html(versionString);
     $('#chat').hide();
     $(document).click(notificationPermission);
     
