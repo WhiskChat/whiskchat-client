@@ -895,7 +895,7 @@ socket.on("loggedin", function(data){
     */
     username = data.username;
     setTimeout(function() {
-	socket.emit('chat', {room: 'main', message: '!; connect WhiskChat Client', color: "000"});
+	socket.emit('chat', {room: 'main', message: '!; connect WhiskChat Client v2', color: "000"});
         srwrap('botgames');
 	srwrap('main');
 	mention = true;
