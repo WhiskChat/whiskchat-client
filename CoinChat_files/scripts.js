@@ -615,7 +615,7 @@ socket.on("joinroom", function(data){
 	}
         $(".quit[data-room='" + data.room + "']").click(function(event){
             if($(this).attr("data-room").indexOf(":") == -1){
-                socket.emit("chat", {room: $(this).attr("data-room"), message: '!; quitroom', color: '000'});
+                socket.emit("chat", {room: $(this).attr("data-room"), message: '!; quitroom Left: Tab closed', color: '000'});
             }
             socket.emit("quitroom", {room: $(this).attr("data-room")});
             event.stopPropagation();
@@ -679,7 +679,7 @@ socket.on("chat", function(data){
         return;
     }
     if (data.message.substr(0, 10) == '!; connect') {
-        $("#chattext").append("<div class='chatline'><span class='user' onclick='place()' style='background: #eee'><span></span>&nbsp;&nbsp;</span><span class='message muted' style='background: #eee'><strong>" + data.user + "</strong> connected to CoinChat (" + data.message.substr(11, data.message.length) + ")</span></div>");
+        $("#chattext").append("<div class='chatline'><span class='user' onclick='place()' style='background: #eee'><span></span>&nbsp;&nbsp;</span><span class='message muted' style='background: #eee'><strong>" + data.user + "</strong> connected to CoinChat [" + data.message.substr(11, data.message.length) + "]</span></div>");
 	moveWin();
 	return;
     }
@@ -689,12 +689,12 @@ socket.on("chat", function(data){
         return;
     }
     if (data.message == '!; quitroom') {
-        $("#chattext").append("<div class='chatline'><span class='user' onclick='place()' style='background: #eee'><span></span>&nbsp;&nbsp;</span><span class='message muted' style='background: #eee'><strong>" + data.user + "</strong> left #" + data.room + "</span></div>");
+        $("#chattext").append("<div class='chatline'><span class='user' onclick='place()' style='background: #eee'><span></span>&nbsp;&nbsp;</span><span class='message muted' style='background: #eee'><strong>" + data.user + "</strong> left #" + data.room + " [" + data.message.substr(12, data.message.length) + "]</span></div>");
         moveWin();
         return;
     }
-    if (data.message == '!; quitchat') {
-        $("#chattext").append("<div class='chatline'><span class='user' onclick='place()' style='background: #eee'><span></span>&nbsp;&nbsp;</span><span class='message muted' style='background: #eee'><strong>" + data.user + "</strong> disconnected</span></div>");
+    if (data.message.substr(0, 11)  == '!; quitchat') {
+        $("#chattext").append("<div class='chatline'><span class='user' onclick='place()' style='background: #eee'><span></span>&nbsp;&nbsp;</span><span class='message muted' style='background: #eee'><strong>" + data.user + "</strong> has quit [" + data.message.substr(12, data.message.length) + "]</span></div>");
         moveWin();
         return;
     }
@@ -912,7 +912,7 @@ socket.on("loggedin", function(data){
     });
     srwrap('main');
     jQuery(window).bind("beforeunload", function() { 
-        socket.emit('chat', {room: 'main', message: '!; quitchat', color: '000'});
+        socket.emit('chat', {room: 'main', message: '!; quitchat Quit: Client Quit', color: '000'});
     });  
 });
 socket.on("balance", function(data){
