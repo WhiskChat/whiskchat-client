@@ -74,16 +74,6 @@ body {
     margin-right: 4px;
     padding-left: 8px;
 }
-.chatline .user:hover span {
-    display: none;
-}
-.chatline .user:hover:before {
-    content: "Click to insert";
-}
-.chatline .user:hover:active:before {
-    content: "Inserting...";
-    font-weight: bold;
-}
 .chatline:before, .chatline:after {
     content: " ";
     display: table;

@@ -328,8 +328,7 @@ socket.on("warn", function(data){
     callMsg({message: "Mod note: \n" + data.message, type: 'alert-warning'});
 });
 function place() {
-    console.log('Placing user ' + $(this).attr('data-user'));
-    $("#chatinput").val($(this).attr('data-user') + ':');
+    // shut up.
 }
 socket.on("chatad", function(data) {
     $("#chattext").append("<div class='chatline' title='Advertisement'><span class='user muted'>Advertisement</span><span class='message'>" + data.ad + "</span></div>");
