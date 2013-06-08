@@ -5,7 +5,7 @@ var username = "";
 var usernames = [];
 var lastCheck = new Date("1990");
 var hasFocus = true;
-var versionString = 'WhiskChat Client v2.1 - King Kitten';
+var versionString = 'WhiskChat Client v2.1.1 - King Kitten';
 var muted = [];
 var roomToJoin = "";
 var mods = ['admin', 'Dayne', 'randomcloud', 'vivabitcoin', 'OdinH', 'lordsonkit', 'whiskers75']; // Update with latest moderators
@@ -381,7 +381,7 @@ function sendMsg(){
 	    }		
 	}
         if(msg.substr(0,5) == "/quit"){
-            socket.emit("chat", {room: 'main', message: '!; quitchat', color: "000"});
+            socket.emit("chat", {room: 'main', message: '!; quitchat ' + msg.substr(6, msg.length), color: "000"});
 	    forcedc = true;
 	    socket.disconnect();
 	    return;
@@ -424,7 +424,7 @@ function sendMsg(){
 		} else {
 		    var tipMsg = "";
 		}
-		callMsg({message: 'System: Tipping ' + tipTo + ' ' + tipAmount + (tipMsg ? ' (message: ' + tipMsg + ')' : ''), type: 'alert-success'});
+		callMsg({message: 'Tipping ' + tipTo + ' ' + tipAmount + (tipMsg ? ' (message: ' + tipMsg + ')' : ''), type: 'alert-success'});
 		socket.emit("tip", {room: currentRoom, user: tipTo, tip: tipAmount, message: tipMsg});
 		return;
 	    }
