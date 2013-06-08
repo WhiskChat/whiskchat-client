@@ -97,6 +97,14 @@ body {
     min-height: 22px;
     background-color: #eee;
 }
+#chatsidebar .sideuser {
+    display: inline-block;
+    height: 20px;
+    font-size: 110%;
+    width: 100%;
+    padding: 2px 0 2px 3px;
+    background: #e5e5e4;
+}
 .time {
     font-size: 80%;
 }

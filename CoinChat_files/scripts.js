@@ -17,7 +17,7 @@ var alreadyAsked = false;
 
 
 window.addEventListener('load', function(e) {
-
+    
     window.applicationCache.addEventListener('updateready', function(e) {
         if (window.applicationCache.status == window.applicationCache.UPDATEREADY) {
             // Browser downloaded a new app cache.
@@ -804,7 +804,7 @@ socket.on("chat", function(data){
 		$("#chattext").append("<div class='chatline' title='" + data.timestamp + "'><span class='user' onclick='place()' data-user='" + data.user + "'><span>" + data.user + "</span>&nbsp;&nbsp;</span><span class='message'>" + data.message + winBTCtext + dateFormat + "</span></div>");
 	    }
 	} else {
-		$("#chattext").append("<div class='chatline' title='" + data.timestamp + "'><span class='user' onclick='place()' data-user='" + data.user + "'><span><span class='label label-inverse'>#botgames bot</span></span>&nbsp;&nbsp;</span><span class='message'>" + data.message + winBTCtext + dateFormat + "</span></div>");
+	    $("#chattext").append("<div class='chatline' title='" + data.timestamp + "'><span class='user' onclick='place()' data-user='" + data.user + "'><span><span class='label label-inverse'>#botgames bot</span></span>&nbsp;&nbsp;</span><span class='message'>" + data.message + winBTCtext + dateFormat + "</span></div>");
 	}
 	while($("#chattext").children().length > 200){
 	    $("#chattext .chatline:first-child").remove();
