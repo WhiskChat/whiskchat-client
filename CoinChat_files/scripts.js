@@ -679,7 +679,7 @@ socket.on("chat", function(data){
         return;
     }
     if (data.message.substr(0, 10) == '!; connect') {
-        $("#chattext").append("<div class='chatline'><span class='user' onclick='place()' style='background: #eee'><span></span>&nbsp;&nbsp;</span><span class='message muted' style='background: #eee'><strong>" + data.user + "</strong> connected to CoinChat [" + data.message.substr(11, data.message.length) + "]</span></div>");
+        $("#chattext").append("<div class='chatline'><span class='user' onclick='place()' style='background: #eee'><span></span>&nbsp;&nbsp;</span><span class='message muted' style='background: #eee'><strong>" + data.user + "</strong> connected to CoinChat (" + data.message.substr(11, data.message.length) + ")</span></div>");
 	moveWin();
 	return;
     }
@@ -689,12 +689,12 @@ socket.on("chat", function(data){
         return;
     }
     if (data.message == '!; quitroom') {
-        $("#chattext").append("<div class='chatline'><span class='user' onclick='place()' style='background: #eee'><span></span>&nbsp;&nbsp;</span><span class='message muted' style='background: #eee'><strong>" + data.user + "</strong> left #" + data.room + " [" + data.message.substr(12, data.message.length) + "]</span></div>");
+        $("#chattext").append("<div class='chatline'><span class='user' onclick='place()' style='background: #eee'><span></span>&nbsp;&nbsp;</span><span class='message muted' style='background: #eee'><strong>" + data.user + "</strong> left #" + data.room + " (" + data.message.substr(12, data.message.length) + ")/span></div>");
         moveWin();
         return;
     }
     if (data.message.substr(0, 11)  == '!; quitchat') {
-        $("#chattext").append("<div class='chatline'><span class='user' onclick='place()' style='background: #eee'><span></span>&nbsp;&nbsp;</span><span class='message muted' style='background: #eee'><strong>" + data.user + "</strong> has quit [" + data.message.substr(12, data.message.length) + "]</span></div>");
+        $("#chattext").append("<div class='chatline'><span class='user' onclick='place()' style='background: #eee'><span></span>&nbsp;&nbsp;</span><span class='message muted' style='background: #eee'><strong>" + data.user + "</strong> has quit (" + data.message.substr(12, data.message.length) + ")</span></div>");
         moveWin();
         return;
     }
