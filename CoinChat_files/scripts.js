@@ -12,6 +12,7 @@ var mods = ['admin', 'Dayne', 'randomcloud', 'vivabitcoin', 'OdinH', 'lordsonkit
 var forcedc = false;
 var annJoin = false; // Don't spam
 var fs = false;
+var friendsonline = [];
 var mention = false;
 var alreadyAsked = false;
 
@@ -88,6 +89,9 @@ $(document).ready(function(){
 	if (window.webkitNotifications) {
             window.webkitNotifications.requestPermission();
 	}
+    });
+    socket.on("onlineFriends", function(data){
+        onlineFriends = data.online;
     });
     $(window).resize(moveWin);
     $(".hide-guest").hide();
@@ -517,7 +521,7 @@ socket.on("message", callMsg);
 
 function callMsg(data){
     var newId = "m" + Math.round(Math.random() * 10000);
-    $("#chattext").append("<div class='chatline'><span class='user' onclick='place()' style='background: rgba(238, 144, 136, 0.64);'><span></span>&nbsp;&nbsp;</span><span class='message' style='background: #eee'><strong>" + data.message + "</strong></span></div>");
+    $("#chattext").append("<div class='chatline'><span class='user' onclick='place()' style='background: rgba(136, 238, 136, 0.64);'><span></span>&nbsp;&nbsp;</span><span class='message' style='background: #eee'><strong>" + data.message + "</strong></span></div>");
     moveWin();
     if((!fs && $("#chattext").scrollTop() + 650 >= $("#chattext").prop('scrollHeight')) || (fs && $("#chattext").scrollTop() + $(window).height() >= $("#chattext").prop('scrollHeight'))){
         $("#chattext").animate({ scrollTop:$("#chattext").prop('scrollHeight') }, "slow");
