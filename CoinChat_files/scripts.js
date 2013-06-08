@@ -611,7 +611,7 @@ socket.on("joinroom", function(data){
 	    }
 	} else {
 	    var otherUser = (data.room.split(":")[0].toLowerCase() == username.toLowerCase() ? data.room.split(":")[1] : data.room.split(":")[0]); 
-	    $(".header").append(" <span class='roombtn btn btn-small' data-room='" + data.room + "' onclick='switchRoom(this)'>" + otherUser + " <span class='quit close muted' data-room='" + data.room + "'>&times;</span></span>");
+	    $(".header").append(" <span class='roombtn btn btn-small' data-room='" + data.room + "' onclick='switchRoom(this)'>PM " + otherUser + " <span class='quit close muted' data-room='" + data.room + "'>&times;</span></span>");
 	}
         $(".quit[data-room='" + data.room + "']").click(function(event){
             if($(this).attr("data-room").indexOf(":") == -1){
