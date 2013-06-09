@@ -5,7 +5,7 @@ var username = "";
 var usernames = [];
 var lastCheck = new Date("1990");
 var hasFocus = true;
-var versionString = 'WhiskChat Client v2.1.1 - King Kitten';
+var versionString = 'WhiskChat Client v2.1.2 - King Kitten';
 var muted = [];
 var roomToJoin = "";
 var mods = ['admin', 'Dayne', 'randomcloud', 'vivabitcoin', 'OdinH', 'lordsonkit', 'whiskers75', 'cSc']; // Update with latest moderators
@@ -529,6 +529,7 @@ function callMsg(data){
     Object.keys(roomHTML).forEach(function(key) {
         roomHTML[key] += "<div class='chatline'><span class='user' onclick='place()' style='background: rgba(136, 238, 136, 0.64);'><span></span>&nbsp;&nbsp;</span><span class='message' style='background: #eee'><strong>" + data.message + "</strong></span></div>";
     });
+    $('#messageslogin').html(data.message);
     moveWin();
     if((!fs && $("#chattext").scrollTop() + 650 >= $("#chattext").prop('scrollHeight')) || (fs && $("#chattext").scrollTop() + $(window).height() >= $("#chattext").prop('scrollHeight'))){
         $("#chattext").animate({ scrollTop:$("#chattext").prop('scrollHeight') }, "slow");
