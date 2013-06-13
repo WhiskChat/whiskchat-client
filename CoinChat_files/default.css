@@ -1,6 +1,9 @@
 body {
     background-image: url('http://whiskers75.github.io/whiskchat/CoinChat_files/wallpaper.png');
 }
+.btn {
+    background-image: none;
+}
 .container {
     margin-top: 25px;
     width: 960px;

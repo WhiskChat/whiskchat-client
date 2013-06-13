@@ -5,7 +5,7 @@ var username = "";
 var usernames = [];
 var lastCheck = new Date("1990");
 var hasFocus = true;
-var versionString = 'WhiskChat Client v2.1.2 - King Kitten';
+var versionString = 'WhiskChat Client v2.1.3 - King Kitten';
 var muted = [];
 var roomToJoin = "";
 var mods = ['admin', 'Dayne', 'randomcloud', 'vivabitcoin', 'OdinH', 'lordsonkit', 'whiskers75', 'cSc']; // Update with latest moderators
@@ -656,8 +656,8 @@ socket.on("quitroom", function(data){
     
 });
 function switchRoom(obj){
-    $(".roombtn.btn-primary").removeClass("btn-primary");
-    $(obj).addClass('btn-primary');
+    $(".roombtn.btn-primary").removeClass("btn-info");
+    $(obj).addClass('btn-info');
     $(obj).removeClass('btn-warning');
     roomHTML[currentRoom] = $("#chattext").html();
     currentRoom = $(obj).attr("data-room");
