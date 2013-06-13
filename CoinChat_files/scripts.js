@@ -635,7 +635,7 @@ socket.on("joinroom", function(data){
 	    //let's switch to this room
 	    currentRoom = data.room;
 	    $("#chattext").html(roomHTML[data.room]);
-	    $(".roombtn[data-room='" + data.room + "']").addClass('btn-primary');
+	    $(".roombtn[data-room='" + data.room + "']").addClass('btn-info');
 	} else if(typeof data.switch == "undefined"){
 	    switchRoom(".roombtn[data-room='" + data.room + "']");
 	}
@@ -656,7 +656,7 @@ socket.on("quitroom", function(data){
     
 });
 function switchRoom(obj){
-    $(".roombtn.btn-primary").removeClass("btn-info");
+    $(".roombtn.btn-info").removeClass("btn-info");
     $(obj).addClass('btn-info');
     $(obj).removeClass('btn-warning');
     roomHTML[currentRoom] = $("#chattext").html();
