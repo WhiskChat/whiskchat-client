@@ -658,7 +658,7 @@ socket.on("quitroom", function(data){
 function switchRoom(obj){
     $(".roombtn.btn-info").removeClass("btn-info");
     $(obj).addClass('btn-info');
-    $(obj).removeClass('btn-warning');
+    $(obj).removeClass('btn-danger');
     roomHTML[currentRoom] = $("#chattext").html();
     currentRoom = $(obj).attr("data-room");
     $("#chattext").html(roomHTML[currentRoom]);
@@ -739,7 +739,10 @@ socket.on("chat", function(data){
     }
     if(data.user != "" && !checkLog(data.room, data.message)){
 	if(currentRoom != data.room){
-	    $(".roombtn[data-room='" + data.room + "']").addClass("btn-warning");
+	    $(".roombtn[data-room='" + data.room + "']").addClass("btn-danger");
+	    setTimeout(function() {
+                $(".roombtn[data-room='" + data.room + "']").removeClass("btn-danger");
+	    }, 5000);
             if(data.message.toLowerCase().indexOf(username.toLowerCase()) != -1 && username.length > 0 && mention){
                 $("#chattext").append("<div class='chatline' title='Notification'><span class='user muted'>" + data.user + "</span><span class='message'><strong>" + data.message + "  <span class='label label-info'>#" + data.room + "</span></strong></span></div>");
 		if (!hasFocus) {
@@ -754,7 +757,7 @@ socket.on("chat", function(data){
         } else if(data.room.indexOf(":") == -1 && !hasFocus){
 	}
     } else if(data.user != "!Topic"){
-	$(".roombtn[data-room='" + data.room + "']").removeClass("btn-warning");
+	$(".roombtn[data-room='" + data.room + "']").removeClass("btn-danger");
 	changeTitle("WhiskChat");
     }
     if(data.message.toLowerCase().indexOf(username.toLowerCase()) != -1 && username.length > 0){ 
