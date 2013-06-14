@@ -604,11 +604,11 @@ socket.on("joinroom", function(data){
 		$(".header").append(" <span class='roombtn btn btn-small' data-room='" + data.room + "' onclick='switchRoom(this)'>#" + data.room + " <span class='quit close muted' data-room='" + data.room + "'>&times;</span></span>");
 	    } else {
 		if (data.room == "botgames") {
-                    $(".header").append(" <span class='roombtn btn btn-small' data-room='" + data.room + "' onclick='switchRoom(this)'>Bot Games</span>");
+                    $(".header").append(" <span class='roombtn btn btn-small' data-room='" + data.room + "' onclick='switchRoom(this)'>Bot Games</span><span class='quit close muted' data-room='" + data.room + "'>&times;</span>");
 		}
 		else {
                     if (data.room == "main") {
-                        $(".header").append(" <span class='roombtn btn btn-small' data-room='" + data.room + "' onclick='switchRoom(this)'>Main Room</span>");
+                        $(".header").append(" <span class='roombtn btn btn-small' data-room='" + data.room + "' onclick='switchRoom(this)'>Main Room</span><span class='quit close muted' data-room='" + data.room + "'>&times;</span>");
                     }
                     else {
 			if (data.room == "vip") {
