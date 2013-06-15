@@ -8,6 +8,9 @@ body {
     margin-top: 25px;
     width: 960px;
 }
+.notwhitelisted {
+    font-style: italic;
+}
 .tenpx {
     margin-bottom: 10px !important;
 }
