@@ -332,7 +332,7 @@ socket.on("addcolor", function(data){
     });
 });
 socket.on("warn", function(data){
-    callMsg({message: "Mod note: " + data, type: 'alert-warning'});
+    callMsg({message: "Mod note: " + data.message, type: 'alert-warning'});
 });
 function place() {
     // shut up.
