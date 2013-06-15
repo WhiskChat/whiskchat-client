@@ -664,7 +664,7 @@ socket.on("joinroom", function(data){
 	}
     }
     console.log("joinroom: " + data.room);
-    if (annJoin) {
+    if (annJoin && data.room.indexOf(":") == -1) {
         socket.emit("chat", {room: data.room, message: '!; joinroom', color: '000'})
     }
     updateSidebar();
@@ -751,12 +751,6 @@ socket.on("chat", function(data){
     if (args[1] == "loss" && args[0] == "!;" && data.user === "WhiskDiceBot") {
 	return;
     }
-    if (data.message.indexOf('<span class="label label-success">has tipped WhiskDiceBot ') !== -1) {
-	return;
-    }
-    if (data.message.indexOf('<span class="label label-success">has tipped ') !== -1 && data.user === "WhiskDiceBot") {
-        return;
-    }
     if (data.message.substr(0, 6) == "!; kl ") {
 	data.message = "<span class='label label-inverse'>" + data.message.substr(6, data.message.length); + "</span>"
     }
@@ -803,7 +797,7 @@ socket.on("chat", function(data){
 	if(data.winbtc <= 0.04){
 	    var label = "badge-warning";
 	} else if(data.winbtc <= 0.14){
-	    var label = "badge-success";
+	    var label = "badge-inverse";
 	    data.winbtc = data.winbtc + " (nice) ";
         } else if(data.winbtc <= 0.25){
             var label = "badge-info";
