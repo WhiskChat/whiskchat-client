@@ -128,6 +128,9 @@ $(document).ready(function(){
         srwrap('botgames');
         $('#chatinput').val('!help');
     });
+    $("#getcolors").click(function() {
+	socket.emit('getcolors');
+    });
     $("#lastwinner").click(function() {
         srwrap('botgames');
         $('#chatinput').val('!lastwinner');
