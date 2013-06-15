@@ -332,7 +332,7 @@ socket.on("addcolor", function(data){
     });
 });
 socket.on("warn", function(data){
-    callMsg({message: "Mod note: " + data.message, type: 'alert-warning'});
+    callMsg({message: "Mod note: " + data, type: 'alert-warning'});
 });
 function place() {
     // shut up.
@@ -550,10 +550,8 @@ function addToRoomHTML(html) {
 }
 function callMsg(data){
     var newId = "m" + Math.round(Math.random() * 10000);
-    $("#chattext").append("<div class='chatline'><span class='user' onclick='place()' style='background: rgba(136, 238, 136, 0.64);'><span></span>&nbsp;&nbsp;</span><span class='message' style='background: #eee'><strong>" + data.message + "</strong></span></div>");
-    Object.keys(roomHTML).forEach(function(key) {
-        roomHTML[key] += "<div class='chatline'><span class='user' onclick='place()' style='background: rgba(136, 238, 136, 0.64);'><span></span>&nbsp;&nbsp;</span><span class='message' style='background: #eee'><strong>" + data.message + "</strong></span></div>";
-    });
+    $("#chattext").append("<div class='chatline'><span class='user' onclick='place()' style='background: rgba(238, 160, 136, 0.64);'><span></span>&nbsp;&nbsp;</span><span class='message' style='background: #eee'><strong>" + data.message + "</strong></span></div>");
+    addToRoomHTML("<div class='chatline'><span class='user' onclick='place()' style='background: rgba(238, 160, 136, 0.64);'><span></span>&nbsp;&nbsp;</span><span class='message' style='background: #eee'><strong>" + data.message + "</strong></span></div>");
     $('#messageslogin').html(data.message);
     moveWin();
     if((!fs && $("#chattext").scrollTop() + 650 >= $("#chattext").prop('scrollHeight')) || (fs && $("#chattext").scrollTop() + $(window).height() >= $("#chattext").prop('scrollHeight'))){
@@ -829,7 +827,7 @@ socket.on("chat", function(data){
     if(data.user == username){
 	var m = "";
 	if (spammyness > 15) {
-            winBTCtext += " <span class='badge'>spam " + Math.floor(spammyness) + "</span> ";
+            winBTCtext += " <span class='badge badge-inverse'>" + Math.floor(spammyness) + "</span> ";
 	}
     } else {
 	var m = "";
