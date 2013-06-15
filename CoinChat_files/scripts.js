@@ -332,7 +332,7 @@ socket.on("addcolor", function(data){
     });
 });
 socket.on("warn", function(data){
-    callMsg({message: "Mod note: \n" + data.message, type: 'alert-warning'});
+    callMsg({message: "Mod note: " + data.message, type: 'alert-warning'});
 });
 function place() {
     // shut up.
@@ -513,18 +513,18 @@ function sendMsg(){
 }
 function checkSpam(){
     if(warningLevel < 1 && spammyness > 30){
-	alert("Hi!\nWe are a chat network with rewards, not a faucet with chat. Please keep this in mind, it is not about saying as many lines as you can.\n\nOur reward algorithm takes in many things into account, and your chances of getting a reward may drop as low as 0%.\n\nThanks.");
+	callMsg({message: "Hi! We are a chat network with rewards, not a faucet with chat. Please keep this in mind, it is not about saying as many lines as you can. Our reward algorithm takes in many things into account, and your chances of getting a reward may drop as low as 0%. Thanks."});
 	spammyness = 15;
 	warningLevel++;
 	return true;
     } else if(warningLevel < 2 && spammyness > 25){
-	alert("Please do not spam. Say everything you want to say in one line, not multiple lines.");
+	callMsg({message: "Please do not spam. Say everything you want to say in one line, not multiple lines."});
 	spammyness = 15;
 	warningLevel++;
 	return true;
     } else if(spammyness > 35){
 	spammyness = 20;
-	alert("Seriously, don't spam. Cut down on the amount of lines you're saying.");
+	callMsg({message: "Seriously, don't spam. Cut down on the amount of lines you're saying."});
 	return true;
     }
     return false;
