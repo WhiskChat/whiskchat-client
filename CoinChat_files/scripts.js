@@ -5,7 +5,7 @@ var username = "";
 var usernames = [];
 var lastCheck = new Date("1990");
 var hasFocus = true;
-var versionString = 'WhiskChat Client v2.2.1 - King Kitten';
+var versionString = 'WhiskChat Client v2.2.2 - King Kitten';
 var muted = [];
 var roomToJoin = "";
 var mods = ['admin', 'Dayne', 'randomcloud', 'lordsonkit', 'OdinH', 'lordsonkit', 'whiskers75', 'cSc', 'lurkwingduck', 'Boelens']; // Update with latest moderators
@@ -626,7 +626,7 @@ socket.on("joinroom", function(data){
 		$(".header").append(" <span class='roombtn btn btn-small' data-room='" + data.room + "' onclick='switchRoom(this)'>#" + data.room + " <span class='quit close muted' data-room='" + data.room + "'>&times;</span></span>");
 	    } else {
 		if (data.room == "botgames") {
-                    $(".header").append(" <span class='roombtn btn btn-small' data-room='" + data.room + "' onclick='switchRoom(this)'>Bot Games<span class='quit close muted' data-room='" + data.room + "'>&times;</span></span>");
+                    $(".header").append(" <span class='roombtn btn btn-small' data-room='" + data.room + "' onclick='switchRoom(this)'>Bot Games <span class='quit close muted' data-room='" + data.room + "'>&times;</span></span>");
 		}
 		else {
                     if (data.room == "main") {
