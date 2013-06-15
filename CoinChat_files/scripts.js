@@ -74,7 +74,18 @@ $(document).ready(function(){
 	roomToJoin = document.URL.split("j:")[1].split("&")[0];
     }
     if(getCookie("session")){
-	socket.emit("login", {session: getCookie("session")});
+	console.log('Logging in in 5 seconds...');
+	$('#loginstate').html('<strong>Logging in!</strong>');
+	var i = 5;
+	var inter = setInterval(function() {
+	    i = i - 1;
+            $('#loginstate').html('<strong>Logging in: <span class="badge badge-inverse">' + i + '</span> seconds!</strong>');
+	    if (i == 0) {
+		clearInterval(inter);
+                socket.emit("login", {session: getCookie("session")});
+                $('#loginstate').html('<strong>Logged in!</strong>');
+	    }
+	}, 1000);
     } else {
 	if(roomToJoin){
 	    socket.emit("joinroom", {join: roomToJoin});
