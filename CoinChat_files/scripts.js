@@ -771,7 +771,8 @@ socket.on("chat", function(data){
 	if(data.room.indexOf(":") != -1 && data.user != username && !hasFocus) {
 	    startFlashing("Chat from " + data.user);
             chatNotify(data.user, data.message, data.room);
-        } else if(data.room.indexOf(":") == -1 && !hasFocus){
+        } else if(data.room.indexOf(":") == -1 && currentRoom != data.room){
+            $("#chattext").append("<div class='chatline' title='Notification'><span class='user muted'>" + data.user + "</span><span class='message'><strong>" + data.message + "  <span class='label label-info'>#" + data.room + "</span></strong></span></div>");
 	}
     } else if(data.user != "!Topic"){
 	$(".roombtn[data-room='" + data.room + "']").removeClass("btn-danger");
