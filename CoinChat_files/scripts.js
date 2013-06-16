@@ -82,6 +82,7 @@ $(document).ready(function(){
 	    if (i == 0) {
 		clearInterval(inter);
                 socket.emit("login", {session: getCookie("session")});
+                $('#loginstate').html('');
 	    }
 	}, 1000);
     } else {
@@ -649,7 +650,7 @@ socket.on("joinroom", function(data){
 			}
 			else {
 			    if (data.room == "whiskchat") {
-                                $(".header").append(" <span class='roombtn btn btn-small' data-room='" + data.room + "' onclick='switchRoom(this)'>WhiskChat Room</span>");
+                                $(".header").append(" <span class='roombtn btn btn-small' data-room='" + data.room + "' onclick='switchRoom(this)'>WhiskChat Client Room</span>");
 			    }
 			    else {
 				$(".header").append(" <span class='roombtn btn btn-small' data-room='" + data.room + "' onclick='switchRoom(this)'>#" + data.room + "</span>");
