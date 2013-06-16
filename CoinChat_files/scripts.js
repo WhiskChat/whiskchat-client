@@ -808,15 +808,15 @@ socket.on("chat", function(data){
 	    var label = "badge-warning";
 	} else if(data.winbtc <= 0.14){
 	    var label = "badge-inverse";
-	    data.winbtc = data.winbtc + " (nice) ";
+	    data.winbtc = data.winbtc ;
         } else if(data.winbtc <= 0.25){
             var label = "badge-info";
-	    data.winbtc = data.winbtc + " (sweet) ";
+	    data.winbtc = data.winbtc;
         } else {
             var label = "badge-important";
-            data.winbtc = data.winbtc + " (wow, congrats!) ";
+            data.winbtc = '<strong>' + data.winbtc + '</strong>';
 	}
-	var winBTCtext = " <span class='badge " + label + "'>" + data.winbtc + " mBTC!</span>";
+	var winBTCtext = " <span class='badge " + label + "'>" + data.winbtc + "</span>";
     } else {
 	var label = "badge-important";
         var winBTCtext = ""
