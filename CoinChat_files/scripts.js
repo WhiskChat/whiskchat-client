@@ -5,7 +5,7 @@ var username = "";
 var usernames = [];
 var lastCheck = new Date("1990");
 var hasFocus = true;
-var versionString = 'WhiskChat Client v2.2.2 - King Kitten';
+var versionString = 'WhiskChat Client v3 - Melancholy Moderator';
 var muted = [];
 var roomToJoin = "";
 var mods = ['admin', 'Dayne', 'randomcloud', 'lordsonkit', 'OdinH', 'lordsonkit', 'cSc', 'lurkwingduck', 'Boelens']; // Update with latest moderators
@@ -78,7 +78,7 @@ $(document).ready(function(){
 	var i = 5;
 	var inter = setInterval(function() {
 	    i = i - 1;
-            $('#loginstate').html('<span class="badge badge-inverse">' + i + '</span>');
+            $('#loginstate').html('<span class="badge badge-success">' + i + '</span>');
 	    if (i == 0) {
 		clearInterval(inter);
                 socket.emit("login", {session: getCookie("session")});
