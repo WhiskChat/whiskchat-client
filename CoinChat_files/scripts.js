@@ -648,6 +648,9 @@ socket.on("joinroom", function(data){
                             $(".header").append(" <span class='roombtn btn btn-small' data-room='" + data.room + "' onclick='switchRoom(this)'>VIP Room <span class='quit close muted' data-room='" + data.room + "'>&times;</span></span>");
 			}
 			else {
+			    if (data.room == "whiskchat") {
+                                $(".header").append(" <span class='roombtn btn btn-small' data-room='" + data.room + "' onclick='switchRoom(this)'>WhiskChat Room</span>");
+			    }
 			    $(".header").append(" <span class='roombtn btn btn-small' data-room='" + data.room + "' onclick='switchRoom(this)'>#" + data.room + "</span>");
 			}
 		    }
@@ -960,6 +963,7 @@ socket.on("loggedin", function(data){
     setTimeout(function() {
 	socket.emit('chat', {room: 'main', message: '!; connect ' + versionString, color: "000"});
         srwrap('botgames');
+	srwrap('whiskchat');
 	srwrap('main');
 	mention = true;
     }, 800);
