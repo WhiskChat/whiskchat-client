@@ -74,8 +74,8 @@ $(document).ready(function(){
 	roomToJoin = document.URL.split("j:")[1].split("&")[0];
     }
     if(getCookie("session")){
-	console.log('Logging in in 5 seconds...');
-	var i = 5;
+	console.log('Logging in in 3 seconds...');
+	var i = 4;
 	var inter = setInterval(function() {
 	    i = i - 1;
             $('#loginstate').html('<span class="badge badge-success">' + i + '</span>');
