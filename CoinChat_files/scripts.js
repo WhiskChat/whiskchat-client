@@ -82,7 +82,6 @@ $(document).ready(function(){
 	    if (i == 0) {
 		clearInterval(inter);
                 socket.emit("login", {session: getCookie("session")});
-                
 	    }
 	}, 1000);
     } else {
