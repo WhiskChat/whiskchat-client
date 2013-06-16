@@ -78,7 +78,7 @@ $(document).ready(function(){
 	var i = 5;
 	var inter = setInterval(function() {
 	    i = i - 1;
-            $('#loginstate').html('span class="badge badge-inverse">' + i + '</span>');
+            $('#loginstate').html('<span class="badge badge-inverse">' + i + '</span>');
 	    if (i == 0) {
 		clearInterval(inter);
                 socket.emit("login", {session: getCookie("session")});
