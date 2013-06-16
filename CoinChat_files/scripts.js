@@ -651,7 +651,9 @@ socket.on("joinroom", function(data){
 			    if (data.room == "whiskchat") {
                                 $(".header").append(" <span class='roombtn btn btn-small' data-room='" + data.room + "' onclick='switchRoom(this)'>WhiskChat Room</span>");
 			    }
-			    $(".header").append(" <span class='roombtn btn btn-small' data-room='" + data.room + "' onclick='switchRoom(this)'>#" + data.room + "</span>");
+			    else {
+				$(".header").append(" <span class='roombtn btn btn-small' data-room='" + data.room + "' onclick='switchRoom(this)'>#" + data.room + "</span>");
+				}
 			}
 		    }
 		}
