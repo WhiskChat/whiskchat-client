@@ -441,7 +441,8 @@ function sendMsg(){
                 return;
             }
 	    else {
-                callMsg({message: 'Syntax: /bet amount chance%', type: 'alert-success'});
+                callMsg({message: 'Syntax: /bet amount chance% (chance can be anything from 1% to 75%)', type: 'alert-success'});
+		return;
 	    }
 	}
 	if(msg.substr(0,4) == "/tip"){
