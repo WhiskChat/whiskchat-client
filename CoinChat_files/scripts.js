@@ -13,6 +13,7 @@ var forcedc = false;
 var annJoin = false; // Don't spam
 var fs = false;
 var friendsonline = [];
+var whitelisted = 0;
 var mention = false;
 var alreadyAsked = false;
 
@@ -278,6 +279,19 @@ $(document).ready(function(){
     var dcTimeout;
     //afk timeout
 });
+socket.on("whitelist", function(data){
+    whitelisted = data.whitelisted;
+    if (whitelisted == 1) {
+	$('whitelisted').html('<span class="badge badge-success">1x</span>');
+    }
+    if (whitelisted == 2) {
+	$('whitelisted').html('<span class="badge badge-success">2x</span>');
+    }
+    if (whitelisted == 3) {
+	$('whitelisted').html('<span class="badge badge-important">0x</span>');
+    }
+});
+
 function moveWin(){
     var h = $(window).height() - 6;
     var w = $(window).width() - 6;
