@@ -282,13 +282,13 @@ $(document).ready(function(){
 socket.on("whitelist", function(data){
     whitelisted = data.whitelisted;
     if (whitelisted == 1) {
-	$('whitelisted').html('<span class="badge badge-success">1x</span>');
+	$('#whitelisted').html('<span class="badge badge-success">1x</span>');
     }
     if (whitelisted == 2) {
-	$('whitelisted').html('<span class="badge badge-success">2x</span>');
+	$('#whitelisted').html('<span class="badge badge-success">2x</span>');
     }
     if (whitelisted == 3) {
-	$('whitelisted').html('<span class="badge badge-important">0x</span>');
+	$('#whitelisted').html('<span class="badge badge-important">0x</span>');
     }
 });
 
