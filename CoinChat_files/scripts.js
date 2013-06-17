@@ -5,7 +5,7 @@ var username = "";
 var usernames = [];
 var lastCheck = new Date("1990");
 var hasFocus = true;
-var versionString = 'WhiskChat Client v3 - Melancholy Moderator';
+var versionString = 'WhiskChat Client v3.1 - Melancholy Moderator';
 var muted = [];
 var roomToJoin = "";
 var mods = ['admin', 'Dayne', 'randomcloud', 'lordsonkit', 'OdinH', 'lordsonkit', 'cSc', 'lurkwingduck', 'Boelens']; // Update with latest moderators
@@ -288,7 +288,7 @@ socket.on("whitelist", function(data){
 	$('#whitelisted').html('<span class="badge badge-success">2x</span>');
     }
     if (whitelisted == 3) {
-	$('#whitelisted').html('<span class="badge badge-important">0x</span>');
+	$('#whitelisted').html('<span class="badge badge-important">0x (unwhitelisted)</span>');
     }
 });
 
