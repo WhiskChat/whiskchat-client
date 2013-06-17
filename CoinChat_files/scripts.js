@@ -814,8 +814,8 @@ socket.on("chat", function(data){
 	if(data.winbtc <= 0.04){
 	    var label = "badge-warning";
 	} else if(data.winbtc <= 0.14){
-	    var label = "badge-inverse";
-	    data.winbtc = data.winbtc ;
+	    var label = "badge-success";
+	    data.winbtc = data.winbtc;
         } else if(data.winbtc <= 0.25){
             var label = "badge-info";
 	    data.winbtc = data.winbtc;
