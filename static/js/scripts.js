@@ -666,7 +666,7 @@ function switchRoom(obj){
     }
     $(".tipbutton").unbind().click(function(){
         if($(this).attr("data-user") != username){
-            var tipHowMuch = prompt("How much mBTC to tip to " + $(this).attr("data-user") + "?");
+            var tipHowMuch = prompt("Tip" + $(this).attr("data-user") + " how much mBTC?", "0.25");
             socket.emit("tip", {user: $(this).attr("data-user"), room: currentRoom, tip: tipHowMuch});
 	}
     });
@@ -675,7 +675,7 @@ function switchRoom(obj){
 }
 socket.on("chat", function(data){
     if (data.user == '!Topic') {
-	data.user == '';
+	data.user == '<span class="badge badge-success">Room topic</span>';
     }
     var args = data.message.split(" ");
     if (muted.indexOf(data.user) !== -1) {
@@ -826,10 +826,6 @@ socket.on("chat", function(data){
 	while($("#chattext").children().length > 200){
 	    $("#chattext .chatline:first-child").remove();
 	}
-        $(".user").click(function() {
-            console.log('Placing user ' + $(this).attr('data-user'));
-            $("#chatinput").val($(this).attr('data-user') + ':');
-        });
 	log(data.message.split("<span class=\"foo\"></span>")[0], currentRoom);
 	
 	if((!fs && $("#chattext").scrollTop() + 650 >= $("#chattext").prop('scrollHeight')) || (fs && $("#chattext").scrollTop() + $(window).height() >= $("#chattext").prop('scrollHeight'))){
@@ -842,7 +838,7 @@ socket.on("chat", function(data){
 	});
 	$(".tipbutton").unbind().click(function(){
             if($(this).attr("data-user") != username){
-                var tipHowMuch = prompt("How much mBTC to tip to " + $(this).attr("data-user") + "?");
+                var tipHowMuch = prompt("Tip " + $(this).attr("data-user") + " how much?", "0.25");
                 socket.emit("tip", {user: $(this).attr("data-user"), room: currentRoom, tip: tipHowMuch});
             }
 	});
