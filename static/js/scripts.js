@@ -1,11 +1,16 @@
-// WhiskChat v2
+/*
+  WhiskChat Reloaded
+  whiskers75
+  Aut viam inveniam aut faciam.
+  Forever open source.
+*/
 
-var socket = io.connect('http://192.155.86.153:8888',{resource: 'socket.io', reconnect: false});
+var socket = io.connect('http://192.155.86.153:8888' ,{resource: 'socket.io', reconnect: false});
 var username = "";
 var usernames = [];
 var lastCheck = new Date("1990");
 var hasFocus = true;
-var versionString = 'WhiskChat Client v3.1 - Melancholy Moderator';
+var versionString = 'WhiskChat Reloaded v1 - whiskers75';
 var muted = [];
 var roomToJoin = "";
 var mods = ['admin', 'Dayne', 'randomcloud', 'lordsonkit', 'OdinH', 'lordsonkit', 'cSc', 'lurkwingduck', 'Boelens']; // Update with latest moderators
@@ -16,26 +21,6 @@ var friendsonline = [];
 var whitelisted = 0;
 var mention = false;
 var alreadyAsked = false;
-
-
-window.addEventListener('load', function(e) {
-    
-    window.applicationCache.addEventListener('updateready', function(e) {
-        if (window.applicationCache.status == window.applicationCache.UPDATEREADY) {
-            // Browser downloaded a new app cache.
-            // Swap it in and reload the page to get the new hotness.
-            window.applicationCache.swapCache();
-            callMsg({message: 'A new version of WhiskChat has been pushed! Updating!'});
-	    setTimeout(function() {
-		window.location.reload();
-	    }, 3000);
-        } else {
-            // Manifest didn't changed. Nothing new to server.
-        }
-    }, false);
-    
-}, false);
-
 function notificationPermission() {
     
     // Not compatible, or already allowed?
@@ -57,8 +42,8 @@ var spammyness = 0;
 var lastMsg = new Date();
 var warningLevel = 0;
 
-$(window).focus(function(){
-    changeTitle("WhiskChat");
+$(window).focus(function() {
+    changeTitle("WhiskChat Reloaded");
     hasFocus = true;
 });
 $(window).blur(function(){
@@ -75,17 +60,8 @@ $(document).ready(function(){
 	roomToJoin = document.URL.split("j:")[1].split("&")[0];
     }
     if(getCookie("session")){
-	console.log('Logging in in 3 seconds...');
-	var i = 4;
-	var inter = setInterval(function() {
-	    i = i - 1;
-            $('#loginstate').html('<span class="badge badge-success">' + i + '</span>');
-	    if (i == 0) {
-		clearInterval(inter);
-                socket.emit("login", {session: getCookie("session")});
-                $('#loginstate').html('');
-	    }
-	}, 1000);
+	$('#loginsignup').html('Login/sign up (cookie detected)');
+        socket.emit("login", {session: getCookie("session")});
     } else {
 	if(roomToJoin){
 	    socket.emit("joinroom", {join: roomToJoin});
@@ -93,7 +69,6 @@ $(document).ready(function(){
 	}
     }
     $('#version').html(versionString);
-    $('#chat').hide();
     $(document).click(notificationPermission);
     
     $('#webkitn').click(function() {
@@ -105,15 +80,14 @@ $(document).ready(function(){
         onlineFriends = data.online;
     });
     $(window).resize(moveWin);
+    moveWin();
+    
     $(".hide-guest").hide();
     $("#register-button").click(function(){
-        socket.emit("accounts", {action: "register", username: $("#register-username").val(), password: $("#register-password").val(), password2: $("#register-password2").val(), email: $("#register-email").val(), referredby: "whiskers75"});
+        socket.emit("accounts", {action: "register", username: $("#login-username").val(), password: $("#login-password").val(), password2: $("#login-password").val(), email: $("#register-email").val(), referredby: "whiskers75"});
     });
-    $("#quit").click(function() {
-        socket.emit("chat", {room: 'main', message: '!; quitchat', color: "000"});
-        forcedc = true;
-        socket.disconnect();
-	window.close();
+    $("#loginsignup").click(function() {
+        $('#login').modal('show');
     });
     $("#reload").click(function() {
         socket.emit("chat", {room: 'main', message: '!; quitchat', color: "000"});
@@ -227,7 +201,7 @@ $(document).ready(function(){
 	}
     });
     $("#donate").click(function() {
-	var donateAmt = prompt('How much mBTC to donate to WhiskChat?', "0.1");
+	var donateAmt = prompt('How much mBTC to donate to WhiskChat?', "0.25");
 	socket.emit("tip", {room: 'main', user: 'whiskers75', tip: donateAmt, message: 'WhiskChat client donation. Thanks!'});
     });
     $("#withdrawbtc").change(function(){
@@ -244,12 +218,7 @@ $(document).ready(function(){
     $("#withdrawbtn").click(function(){
 	socket.emit("withdraw", {amount: $("#withdrawbtc").val(), address: $("#withdrawaddress").val()});;
     });
-    $("#joinroombtn").click(function(){
-	$("#joinroombtn").popover('hide');
-	$("#joinmodal").modal('show');
-	socket.emit("toprooms", {});
-	lastCheck = new Date();
-    });
+    
     $("#withdrawlnk").click(function(){
         $("#withdrawbox").modal('show');
     });
@@ -287,7 +256,7 @@ socket.on("whitelist", function(data){
     if (whitelisted == 2) {
 	$('#whitelisted').html('<span class="badge badge-success">2x</span>');
     }
-    if (whitelisted == 3) {
+    if (whitelisted == 0) {
 	$('#whitelisted').html('<span class="badge badge-important">0x (unwhitelisted)</span>');
     }
 });
@@ -295,12 +264,8 @@ socket.on("whitelist", function(data){
 function moveWin(){
     var h = $(window).height() - 6;
     var w = $(window).width() - 6;
-    var s296 = 296;
-    if(w < 800){
-        var noSidebar = true;
-        s296 = 0;
-    }
-    if(fs){
+    var s296 = 0;
+    
         window.scrollTo(0,0);
         $("#chat").css("position", "absolute");
         $("#chat").css("top", 5);
@@ -312,22 +277,6 @@ function moveWin(){
         $("#chat .content").css("height", h - 35 - $(".header").height());
         $("body").css("overflow", "hidden");
         $("#chatinput").css("width", w - 150);
-        if(noSidebar){
-            $("#chatsidebar").css("display", "none");
-        } else {
-            $("#chatsidebar").css("display", "inline-block");
-        }
-    } else {
-        $("#chat").css("position", "static");
-        $("#chat").height(502);
-        $("#chat").width(960);
-        $(".message").width(525);
-        $("#chattext").width(675);
-        $("#chat .content").height(430);
-        $("body").css("overflow", "auto");
-        $("#chatinput").width(686);
-        $("#chatsidebar").css("display", "inline-block");
-    }
 }
 var color = "000";
 socket.on("getcolors", function(data){
@@ -612,23 +561,7 @@ socket.on("userquit", function(data){
     updateSidebar();
 });
 function updateSidebar(){
-    if(currentRoom == "main"){
-        $("#chatsidebar").html("<span id='cat' style='float: right'></span><iframe scrolling='no' style='border: 0; width: 200px; height: 200px;' src='http://coinurl.com/get.php?id=1366'></iframe>");
-    } else if(users[currentRoom]){
-        $("#chatsidebar").html("");
-        for(var i in users[currentRoom]){
-            $("#chatsidebar").append("<div class='sideuser'>" + users[currentRoom][i] + "</div>");
-        }
-        $(".sideuser").click(function(){
-            if($(this).html().split(" ")[0] != username){
-                var sA = [$(this).html().split(" ")[0].toLowerCase(), username].sort();
-                socket.emit("joinroom", {join: sA[0] + ":" + sA[1]});
-            }
-        });
-    } else {
-        $("#chatsidebar").html("<iframe scrolling='no' style='border: 0; width: 200px; height: 200px;' src='http://coinurl.com/get.php?id=1366'></iframe><iframe scrolling='no' style='border: 0; width: 200px; height: 200px;' src='http://coinurl.com/get.php?id=1366'></iframe>");
-        var theUser = (currentRoom.split(":")[0].toLowerCase() == username.toLowerCase() ? currentRoom.split(":")[1] : currentRoom.split(":")[0]).toLowerCase();
-    }
+    // Sidebars are lame. :D
 }
 socket.on("newuser", function(data){
     if(users[data.room] && users[data.room].indexOf(data.username) == -1){
@@ -656,7 +589,14 @@ socket.on("joinroom", function(data){
 		}
 		else {
                     if (data.room == "main") {
-                        $(".header").append(" <span class='roombtn btn btn-small' data-room='" + data.room + "' onclick='switchRoom(this)'>Main Room <span class='quit close muted' data-room='" + data.room + "'>&times;</span></span>");
+                        $(".header").append("<span class='roombtn btn btn-small btn-link' id='joinroombtn'>Join room</span> <span class='roombtn btn btn-small' data-room=' + data.room + ' onclick='switchRoom(this)'>Main Room <span class='quit close muted' data-room=' + data.room + '>&times;</span></span>");
+                        callMsg({message: 'Welcome to WhiskChat Reloaded! (' + versionString + ')'});
+                        callMsg({message: 'Please login or sign up using the button above.'});
+                        $("#joinroombtn").click(function(){
+                            $("#joinmodal").modal('show');
+                            socket.emit("toprooms", {});
+                            lastCheck = new Date();
+			});
                     }
                     else {
 			if (data.room == "vip") {
@@ -948,10 +888,9 @@ function clickUser(clickUsername){
 var myTimeout;
 socket.on("loggedin", function(data){
     setCookie("session", data.session, 14);
-    $("#login").hide();
+    $("#login").modal('hide');
     $("#user").show();
     $("#username").html(data.username);
-    $("#referrallink").append("r:" + data.username);
     $(".hide-guest").show();
     $('#chat').show();
     socket.emit('getcolors');
@@ -990,7 +929,7 @@ socket.on("loggedin", function(data){
     });
     srwrap('main');
     jQuery(window).bind("beforeunload", function() { 
-        socket.emit('chat', {room: 'main', message: '!; quitchat Quit: Client Quit', color: '000'});
+        socket.emit('chat', {room: 'main', message: '!; quitchat Quit: Window closed!', color: '000'});
     });  
 });
 socket.on("balance", function(data){
