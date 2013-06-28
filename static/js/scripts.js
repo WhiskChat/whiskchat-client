@@ -10,7 +10,7 @@ var username = "";
 var usernames = [];
 var lastCheck = new Date("1990");
 var hasFocus = true;
-var versionString = 'WhiskChat Reloaded v1-hotfix - whiskers75';
+var versionString = 'WhiskChat Reloaded v1.1 - whiskers75';
 var muted = [];
 var roomToJoin = "";
 var mods = ['admin', 'Dayne', 'randomcloud', 'lordsonkit', 'OdinH', 'lordsonkit', 'cSc', 'lurkwingduck', 'Boelens']; // Update with latest moderators
@@ -89,11 +89,18 @@ $(document).ready(function(){
     $("#loginsignup").click(function() {
         $('#login').modal('show');
     });
-    $("#reload").click(function() {
-        socket.emit("chat", {room: 'main', message: '!; quitchat', color: "000"});
-        forcedc = false;
-        socket.disconnect();
-	document.location.reload(true);
+    $("#quit").click(function() {
+        $('#quitmodal').modal('show');
+    });
+    $("#quit-button").click(function() {
+        console.log('Goodbye!');
+        socket.emit('chat', {room: 'main', message: '!; quitchat ' + $('#quitmsg').val(), color: '000'});
+	setTimeout(function() {
+	    forcedc = true;
+	    socket.disconnect();
+	    window.close();
+	    callMsg({message: 'Disconnected from CoinChat. You can now exit the page.'});
+	}, 800);
     });
     $("#mute").click(function() {
 	var tmp = prompt('Who do you want to mute? (effective until page is reloaded)');
@@ -695,7 +702,7 @@ socket.on("chat", function(data){
         return;
     }
     if (data.message.indexOf('<i>') !== -1) {
-        $("#chattext").append("<div class='chatline'><span class='user' onclick='place()' style='background: rgba(136, 238, 136, 0.64);'><span></span>&nbsp;&nbsp;</span><span class='message muted' style='background: #eee'>* <strong>" + data.user + "</strong> " + data.message + "</span></div>");
+        $("#chattext").append("<div class='chatline'><span class='user' onclick='place()' style='background: rgba(136, 238, 136, 0.64);'><span></span>&nbsp;&nbsp;</span><span class='message muted' style='background: #eee'><i>* <strong>" + data.user + "</strong> </i>" + data.message + "</span></div>");
         addToRoomHTML("<div class='chatline'><span class='user' onclick='place()' style='background: rgba(136, 238, 136, 0.64);'><span></span>&nbsp;&nbsp;</span><span class='message muted' style='background: #eee'><strong>" + data.user + "</strong> connected to CoinChat (" + data.message.substr(11, data.message.length) + ")</span></div>");
         moveWin();
         return;

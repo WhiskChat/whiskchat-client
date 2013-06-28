@@ -33,10 +33,22 @@
           Email (signup only): <input type="text" id="register-email" placeholder="Email"><br>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-primary tenpx" id="login-button">Login</button>
-        <button class="btn btn-success tenpx" id="register-button">Sign up</button>
+        <button class="btn btn-primary" id="login-button">Login</button>
+        <button class="btn btn-success" id="register-button">Sign up</button>
       </div>
     </div> <!-- Closes login dialog -->
+    <div class="modal hide fade" id="quitmodal"> <!-- Quit dialog -->
+      <div class="modal-header">
+        <h4>Quit</h4>
+      </div>
+      <div class="modal-body">
+	<p>Goodbye! Hope you enjoyed your time at WhiskChat. Come back soon! </p>
+        Quit message: <input type="text" id="quitmsg" placeholder="Quit message here"><br>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-danger" id="quit-button">Quit</button>
+      </div>
+    </div>
     <div id="chat"> <!-- Welcome to the arena. -->
       <!-- This is the hard part. -->
       <div class="header">
