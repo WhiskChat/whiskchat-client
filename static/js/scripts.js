@@ -10,7 +10,7 @@ var username = "";
 var usernames = [];
 var lastCheck = new Date("1990");
 var hasFocus = true;
-var versionString = 'WhiskChat Reloaded v1.1 - whiskers75';
+var versionString = 'WhiskChat Reloaded v1.2 - whiskers75';
 var muted = [];
 var roomToJoin = "";
 var mods = ['admin', 'Dayne', 'randomcloud', 'lordsonkit', 'OdinH', 'lordsonkit', 'cSc', 'lurkwingduck', 'Boelens']; // Update with latest moderators
@@ -599,6 +599,8 @@ socket.on("joinroom", function(data){
                         $(".header").append("<span class='roombtn btn btn-small btn-link' id='joinroombtn'>Join room</span> <span class='roombtn btn btn-small' data-room=" + data.room + " onclick='switchRoom(this)'>Main Room <span class='quit close muted' data-room=' + data.room + '>&times;</span></span>");
                         callMsg({message: 'Welcome to WhiskChat Reloaded! (' + versionString + ')'});
                         callMsg({message: 'Please login or sign up using the button above.'});
+                        callMsg({message: 'This version, as always, was lovingly made by whiskers75.'});
+                        callMsg({message: 'Aut viam inveniam aut faciam. (Google Translate it)'});
                         $("#joinroombtn").click(function(){
                             $("#joinmodal").modal('show');
                             socket.emit("toprooms", {});
