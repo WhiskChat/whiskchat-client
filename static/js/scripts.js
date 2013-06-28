@@ -589,7 +589,7 @@ socket.on("joinroom", function(data){
 		}
 		else {
                     if (data.room == "main") {
-                        $(".header").append("<span class='roombtn btn btn-small btn-link' id='joinroombtn'>Join room</span> <span class='roombtn btn btn-small' data-room=' + data.room + ' onclick='switchRoom(this)'>Main Room <span class='quit close muted' data-room=' + data.room + '>&times;</span></span>");
+                        $(".header").append("<span class='roombtn btn btn-small btn-link' id='joinroombtn'>Join room</span> <span class='roombtn btn btn-small' data-room=" + data.room + " onclick='switchRoom(this)'>Main Room <span class='quit close muted' data-room=' + data.room + '>&times;</span></span>");
                         callMsg({message: 'Welcome to WhiskChat Reloaded! (' + versionString + ')'});
                         callMsg({message: 'Please login or sign up using the button above.'});
                         $("#joinroombtn").click(function(){
