@@ -257,14 +257,12 @@ $(document).ready(function(){
 });
 socket.on("whitelist", function(data){
     whitelisted = data.whitelisted;
+    $('#whitelisted').html('<span class="badge badge-important">0x (unwhitelisted)</span>');
     if (whitelisted == 1) {
 	$('#whitelisted').html('<span class="badge badge-success">1x</span>');
     }
-    if (whitelisted == 2) {
+    else if (whitelisted == 2) {
 	$('#whitelisted').html('<span class="badge badge-success">2x</span>');
-    }
-    if (whitelisted == 0) {
-	$('#whitelisted').html('<span class="badge badge-important">0x (unwhitelisted)</span>');
     }
 });
 
