@@ -952,7 +952,8 @@ socket.on("loggedin", function(data){
     srwrap('main');
     jQuery(window).bind("beforeunload", function() { 
         socket.emit('chat', {room: 'main', message: '!; quitchat Quit: Window closed!', color: '000'});
-    });  
+    });
+    $("#deposit").attr("href", "https://inputs.io/pay?to=btc%40coinchat.org&amount=&note=" + username);
 });
 socket.on("balance", function(data){
     if(typeof data.balance != 'undefined'){
