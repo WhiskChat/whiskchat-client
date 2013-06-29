@@ -865,7 +865,7 @@ socket.on("chat", function(data){
 	if(!roomHTML[data.room]){
 	    roomHTML[data.room] = "";
 	}
-	if (data.user == "!Topic") {
+	if (data.user !== "!Topic") {
 	    roomHTML[data.room] += "<div class='chatline' title='" + data.timestamp + "'><span class='user' onclick='clickUser($(this).attr(\"data-user\"))' data-user='" + data.user + "'><span>" + data.user + "</span></span><span class='message" + m + "'>" + data.message + "<span class='foo'></span>" + winBTCtext + dateFormat + "</span></div>";
 	}
 	else {
