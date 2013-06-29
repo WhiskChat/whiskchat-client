@@ -28,9 +28,9 @@
         <h4>Login/sign up (<span id="version"></span>)</h4>
       </div>
       <div class="modal-body">
-          Username: <input type="text" id="login-username" placeholder="Username"><br>
-          Password: <input type="password" id="login-password" placeholder="Password"><br>
-          Email (signup only): <input type="text" id="register-email" placeholder="Email"><br>
+        Username: <input type="text" id="login-username" placeholder="Username"><br>
+        Password: <input type="password" id="login-password" placeholder="Password"><br>
+        Email (signup only): <input type="text" id="register-email" placeholder="Email"><br>
       </div>
       <div class="modal-footer">
         <button class="btn btn-primary" id="login-button">Login</button>
@@ -84,16 +84,14 @@
               </ul>
             </li>
             <li> <a id="style">Styles</a> </li>
-            <li> <a class="disabled"> <span class="label label-inverse">Bot Games (Coming soon!)</span></a>
-              <!--<ul class="dropdown-menu">
-                <li> <a id="bottip" class="">Place a bet!</a> </li>
-                <li> <a id="botstate" class="">Bot state</a> </li>
-                <li> <a id="bothelp" class="">Bot help</a> </li>
-                <li> <a id="lastwinner" class="">Last winner</a> </li>
-                <li> <a id="userlistbot" class="">#botgames user count</a> </li>
+            <li class="dropdown-submenu"> <a class="disabled">Bot Games</a>
+              <ul class="dropdown-menu">
+                  <li> <a id="bottip" class="">Place a bet!</a> </li>
+                  <li> <a id="botstate" class="">Bot state</a> </li>
+                  <li> <a id="bothelp" class="">Bot help</a> </li>
+                  <li> <a id="lastwinner" class="">Last winner</a> </li>
+                  <li> <a id="userlistbot" class="">#botgames user count</a> </li>
               </ul>
-	      It's COMING SOON, ok?!
-	      -->
             </li>
             <li> <a id="tipmenu"> Tip mBTC </a> </li>
             <li> <a id="webkitn"> Activate desktop notifications </a> </li>
@@ -108,7 +106,7 @@
     </div>
     <!-- MODALS
 	 These deal with those popup dialogs for styles & stuff.
-	 -->
+      -->
     <div id="stylemodal" class="modal hide fade">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">close</button>

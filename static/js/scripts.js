@@ -273,17 +273,17 @@ function moveWin(){
     var w = $(window).width() - 6;
     var s296 = 0;
     
-        window.scrollTo(0,0);
-        $("#chat").css("position", "absolute");
-        $("#chat").css("top", 5);
-        $("#chat").css("left", 5);
-        $("#chat").css("height", h);
-        $("#chat").css("width", w);
-        $(".message").css("width", w - s296 - 121 - 30);
-        $("#chattext").css("width", w - s296);
-        $("#chat .content").css("height", h - 35 - $(".header").height());
-        $("body").css("overflow", "hidden");
-        $("#chatinput").css("width", w - 150);
+    window.scrollTo(0,0);
+    $("#chat").css("position", "absolute");
+    $("#chat").css("top", 5);
+    $("#chat").css("left", 5);
+    $("#chat").css("height", h);
+    $("#chat").css("width", w);
+    $(".message").css("width", w - s296 - 121 - 30);
+    $("#chattext").css("width", w - s296);
+    $("#chat .content").css("height", h - 35 - $(".header").height());
+    $("body").css("overflow", "hidden");
+    $("#chatinput").css("width", w - 150);
 }
 var color = "000";
 socket.on("getcolors", function(data){
@@ -765,7 +765,7 @@ socket.on("chat", function(data){
 	}
     } else if(data.user != "!Topic"){
 	$(".roombtn[data-room='" + data.room + "']").removeClass("btn-danger");
-	changeTitle("WhiskChat");
+	changeTitle("WhiskChat Reloaded");
     }
     if(data.message.toLowerCase().indexOf(username.toLowerCase()) != -1 && username.length > 0){ 
 	if(!focus){
@@ -865,7 +865,12 @@ socket.on("chat", function(data){
 	if(!roomHTML[data.room]){
 	    roomHTML[data.room] = "";
 	}
-	roomHTML[data.room] += "<div class='chatline' title='" + data.timestamp + "'><span class='user' onclick='clickUser($(this).attr(\"data-user\"))' data-user='" + data.user + "'><span>" + data.user + "</span></span><span class='message" + m + "'>" + data.message + "<span class='foo'></span>" + winBTCtext + dateFormat + "</span></div>";
+	if (data.user == "!Topic") {
+	    roomHTML[data.room] += "<div class='chatline' title='" + data.timestamp + "'><span class='user' onclick='clickUser($(this).attr(\"data-user\"))' data-user='" + data.user + "'><span>" + data.user + "</span></span><span class='message" + m + "'>" + data.message + "<span class='foo'></span>" + winBTCtext + dateFormat + "</span></div>";
+	}
+	else {
+            roomHTML[data.room] += "<div class='chatline' title='" + data.timestamp + "'><span class='user' onclick='clickUser($(this).attr(\"data-user\"))' data-user='" + data.user + "'><span><span class='label label-success'>Topic</span></span></span><span class='message" + m + "'>" + data.message + "<span class='foo'></span>" + winBTCtext + dateFormat + "</span></div>";
+	}
     } else {
 	console.log("Alert: Chat message for room that I am not in! " + data.room);
     }
@@ -933,7 +938,7 @@ socket.on("loggedin", function(data){
     username = data.username;
     setTimeout(function() {
 	socket.emit('chat', {room: 'main', message: '!; connect ' + versionString, color: "000"});
-        //srwrap('botgames');
+        srwrap('botgames');
 	srwrap('whiskchat');
 	srwrap('main');
 	mention = true;
