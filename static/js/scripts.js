@@ -10,7 +10,7 @@ var username = "";
 var usernames = [];
 var lastCheck = new Date("1990");
 var hasFocus = true;
-var versionString = 'WhiskChat Reloaded v1.2 - whiskers75';
+var versionString = 'WhiskChat Reloaded v1.3 - whiskers75';
 var muted = [];
 var roomToJoin = "";
 var mods = ['admin', 'Dayne', 'randomcloud', 'lordsonkit', 'OdinH', 'lordsonkit', 'cSc', 'lurkwingduck', 'Boelens']; // Update with latest moderators
@@ -486,8 +486,12 @@ function sendMsg(){
 	if(checkSpam()){
 	    return;
 	}
-	
-	socket.emit("chat", {room: currentRoom, message: msg, color: color});
+	if (msg[0] == '!') {
+            socket.emit("chat", {room: currentRoom, message: msg, color: "000"});
+	}
+	else {
+	    socket.emit("chat", {room: currentRoom, message: msg, color: color});
+	}
     } else {
 	alert("Please register or log in to chat!");
     }
