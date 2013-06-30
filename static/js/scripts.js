@@ -752,8 +752,8 @@ socket.on("chat", function(data){
 	if(currentRoom != data.room){
 	    if (mention) {
 	    $(".roombtn[data-room='" + data.room + "']").addClass("btn-danger");
-	    if (data.room.indexOf(':') === -1) {
-	    setTimeout(function() {
+                if (data.room.indexOf(':') === -1 && data.message.toLowerCase().indexOf(username.toLowerCase()) == -1) {
+            setTimeout(function() {
                 $(".roombtn[data-room='" + data.room + "']").removeClass("btn-danger");
 	    }, 5000);
 	    }
