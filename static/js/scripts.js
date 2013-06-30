@@ -751,9 +751,11 @@ socket.on("chat", function(data){
     if(data.user != "" && !checkLog(data.room, data.message)){
 	if(currentRoom != data.room){
 	    $(".roombtn[data-room='" + data.room + "']").addClass("btn-danger");
+	    if (data.room.indexOf(':') === -1) {
 	    setTimeout(function() {
                 $(".roombtn[data-room='" + data.room + "']").removeClass("btn-danger");
 	    }, 5000);
+	    }
             if(data.message.toLowerCase().indexOf(username.toLowerCase()) != -1 && username.length > 0 && mention){
                 $("#chattext").append("<div class='chatline' title='Notification'><span class='user muted'>" + data.user + "</span><span class='message'><strong>" + data.message + "  <span class='label label-info'>#" + data.room + "</span></strong></span></div>");
 		if (!hasFocus) {
@@ -761,6 +763,12 @@ socket.on("chat", function(data){
 		}
 		moveWin();
             }
+	    else {
+		if (data.room.indexOf(':') !== -1) {
+                    $("#chattext").append("<div class='chatline' title='Notification'><span class='user muted'>" + data.user + "</span><span class='message'><strong>" + data.message + "  <span class='label label-info'>#" + data.room + "</span></strong></span></div>");
+		    moveWin()
+		}
+	    }
 	}
 	if(data.room.indexOf(":") != -1 && data.user != username && !hasFocus) {
 	    startFlashing("Chat from " + data.user);
