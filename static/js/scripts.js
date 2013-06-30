@@ -55,6 +55,11 @@ setInterval(function(){
     spammyness -= 0.05;
     spammyness = Math.max(spammyness, 0);
 }, 1250);
+setInterval(function() { // Delete old messages
+    $('.expiring').fadeOut("slow", "swing", function() {
+        $('.expiring').remove();
+    });
+}, 5000);
 $(document).ready(function(){
     if(document.URL.split("index.html?j:").length == 2){
 	roomToJoin = document.URL.split("j:")[1].split("&")[0];
@@ -537,11 +542,7 @@ function callMsg(data){
     addToRoomHTML("<div class='chatline expiring'><span class='user' onclick='place()' style='background: rgba(238, 160, 136, 0.64);'><span></span>&nbsp;&nbsp;</span><span class='message' style='background: #eee'><strong>" + data.message + "</strong></span></div>");
     $('#messageslogin').html(data.message);
     moveWin();
-    setTimeout(function() {
-	$('.expiring').fadeOut("slow", "swing", function() {
-	    $('.expiring').remove();
-	});
-    }, 5000);
+    
     if((!fs && $("#chattext").scrollTop() + 650 >= $("#chattext").prop('scrollHeight')) || (fs && $("#chattext").scrollTop() + $(window).height() >= $("#chattext").prop('scrollHeight'))){
         $("#chattext").animate({ scrollTop:$("#chattext").prop('scrollHeight') }, "slow");
     }
