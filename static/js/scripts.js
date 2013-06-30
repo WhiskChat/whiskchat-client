@@ -750,11 +750,13 @@ socket.on("chat", function(data){
     }
     if(data.user != "" && !checkLog(data.room, data.message)){
 	if(currentRoom != data.room){
+	    if (mention) {
 	    $(".roombtn[data-room='" + data.room + "']").addClass("btn-danger");
 	    if (data.room.indexOf(':') === -1) {
 	    setTimeout(function() {
                 $(".roombtn[data-room='" + data.room + "']").removeClass("btn-danger");
 	    }, 5000);
+	    }
 	    }
             if(data.message.toLowerCase().indexOf(username.toLowerCase()) != -1 && username.length > 0 && mention){
                 $("#chattext").append("<div class='chatline' title='Notification'><span class='user muted'>" + data.user + "</span><span class='message'><strong>" + data.message + "  <span class='label label-info'>#" + data.room + "</span></strong></span></div>");
@@ -764,7 +766,7 @@ socket.on("chat", function(data){
 		moveWin();
             }
 	    else {
-		if (data.room.indexOf(':') !== -1) {
+		if (data.room.indexOf(':') !== -1 && mention) {
                     $("#chattext").append("<div class='chatline' title='Notification'><span class='user muted'>" + data.user + "</span><span class='message'><strong>" + data.message + "  <span class='label label-info'>#" + data.room + "</span></strong></span></div>");
 		    moveWin()
 		}
