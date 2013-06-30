@@ -832,7 +832,7 @@ socket.on("chat", function(data){
     if(data.user == username){
 	var m = "";
 	if (spammyness > 15) {
-            winBTCtext += " <span class='badge badge-important'>✗ spam level " + Math.floor(spammyness) + "</span> ";
+            winBTCtext += " <span class='badge badge-important'>spam level " + Math.floor(spammyness) + "</span> ";
 	}
     } else {
 	var m = "";
