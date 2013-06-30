@@ -10,7 +10,7 @@ var username = "";
 var usernames = [];
 var lastCheck = new Date("1990");
 var hasFocus = true;
-var versionString = 'WhiskChat Reloaded v1.4 - whiskers75';
+var versionString = 'WhiskChat Reloaded v1.4.1 - whiskers75';
 var muted = [];
 var roomToJoin = "";
 var mods = ['admin', 'Dayne', 'randomcloud', 'lordsonkit', 'OdinH', 'lordsonkit', 'cSc', 'lurkwingduck', 'Boelens']; // Update with latest moderators
@@ -533,10 +533,15 @@ function addToRoomHTML(html) {
 }
 function callMsg(data){
     var newId = "m" + Math.round(Math.random() * 10000);
-    $("#chattext").append("<div class='chatline'><span class='user' onclick='place()' style='background: rgba(238, 160, 136, 0.64);'><span></span>&nbsp;&nbsp;</span><span class='message' style='background: #eee'><strong>" + data.message + "</strong></span></div>");
-    addToRoomHTML("<div class='chatline'><span class='user' onclick='place()' style='background: rgba(238, 160, 136, 0.64);'><span></span>&nbsp;&nbsp;</span><span class='message' style='background: #eee'><strong>" + data.message + "</strong></span></div>");
+    $("#chattext").append("<div class='chatline expiring'><span class='user' onclick='place()' style='background: rgba(238, 160, 136, 0.64);'><span></span>&nbsp;&nbsp;</span><span class='message' style='background: #eee'><strong>" + data.message + "</strong></span></div>");
+    addToRoomHTML("<div class='chatline expiring'><span class='user' onclick='place()' style='background: rgba(238, 160, 136, 0.64);'><span></span>&nbsp;&nbsp;</span><span class='message' style='background: #eee'><strong>" + data.message + "</strong></span></div>");
     $('#messageslogin').html(data.message);
     moveWin();
+    setTimeout(function() {
+	$('.expiring').fadeOut("slow", "swing", function() {
+	    $('.expiring').remove();
+	});
+    }, 5000);
     if((!fs && $("#chattext").scrollTop() + 650 >= $("#chattext").prop('scrollHeight')) || (fs && $("#chattext").scrollTop() + $(window).height() >= $("#chattext").prop('scrollHeight'))){
         $("#chattext").animate({ scrollTop:$("#chattext").prop('scrollHeight') }, "slow");
     }
