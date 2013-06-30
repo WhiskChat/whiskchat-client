@@ -602,7 +602,8 @@ socket.on("joinroom", function(data){
                         callMsg({message: 'Welcome to WhiskChat Reloaded! (' + versionString + ')'});
                         callMsg({message: 'Please login or sign up using the button above.'});
                         callMsg({message: 'This version, as always, was lovingly made by whiskers75.'});
-                        callMsg({message: 'Aut viam inveniam aut faciam. (Google Translate it)'});
+                       // callMsg({message: 'Aut viam inveniam aut faciam. (Google Translate it)'});
+                        callMsg({message: '<a href="http://www.geekycreeper.pw/">Part of the GeekyCreeper Network!</a'});
                         $("#joinroombtn").click(function(){
                             $("#joinmodal").modal('show');
                             socket.emit("toprooms", {});
