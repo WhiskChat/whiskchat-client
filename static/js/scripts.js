@@ -278,8 +278,8 @@ function moveWin(){
     
     window.scrollTo(0,0);
     $("#chat").css("position", "absolute");
-    $("#chat").css("top", 5);
-    $("#chat").css("left", 5);
+    $("#chat").css("top", 2);
+    $("#chat").css("left", 2);
     $("#chat").css("height", h);
     $("#chat").css("width", w);
     $(".message").css("width", w - s296 - 121 - 30);
