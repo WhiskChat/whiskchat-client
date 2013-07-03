@@ -56,7 +56,7 @@ setInterval(function(){
     spammyness = Math.max(spammyness, 0);
 }, 1250);
 setInterval(function() { // Delete old messages
-    $('.expiring').fadeOut("slow", "swing", function() {
+    $('.expiring').fadeOut(1000, "swing", function() {
         $('.expiring').remove();
     });
 }, 5000);
@@ -609,7 +609,7 @@ socket.on("joinroom", function(data){
                         callMsg({message: 'Welcome to WhiskChat Reloaded! (' + versionString + ')'});
                         callMsg({message: 'Please login or sign up using the button above.'});
                         callMsg({message: 'This version, as always, was lovingly made by whiskers75.'});
-                       // callMsg({message: 'Aut viam inveniam aut faciam. (Google Translate it)'});
+			// callMsg({message: 'Aut viam inveniam aut faciam. (Google Translate it)'});
                         callMsg({message: '<a href="http://www.geekycreeper.pw/">Part of the GeekyCreeper Network!</a'});
                         $("#joinroombtn").click(function(){
                             $("#joinmodal").modal('show');
@@ -758,12 +758,12 @@ socket.on("chat", function(data){
     if(data.user != "" && !checkLog(data.room, data.message)){
 	if(currentRoom != data.room){
 	    if (mention) {
-	    $(".roombtn[data-room='" + data.room + "']").addClass("btn-danger");
+		$(".roombtn[data-room='" + data.room + "']").addClass("btn-danger");
                 if (data.room.indexOf(':') === -1 && data.message.toLowerCase().indexOf(username.toLowerCase()) == -1) {
-            setTimeout(function() {
-                $(".roombtn[data-room='" + data.room + "']").removeClass("btn-danger");
-	    }, 5000);
-	    }
+		    setTimeout(function() {
+			$(".roombtn[data-room='" + data.room + "']").removeClass("btn-danger");
+		    }, 5000);
+		}
 	    }
             if(data.message.toLowerCase().indexOf(username.toLowerCase()) != -1 && username.length > 0 && mention){
                 $("#chattext").append("<div class='chatline' title='Notification'><span class='user muted'>" + data.user + "</span><span class='message'><strong>" + data.message + "  <span class='label label-info'>#" + data.room + "</span></strong></span></div>");
