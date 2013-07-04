@@ -10,7 +10,7 @@ var username = "";
 var usernames = [];
 var lastCheck = new Date("1990");
 var hasFocus = true;
-var versionString = 'WhiskChat Reloaded v1.4.2 - whiskers75';
+var versionString = 'WhiskChat Reloaded v1.5 - whiskers75';
 var muted = [];
 var roomToJoin = "";
 var mods = ['admin', 'Dayne', 'randomcloud', 'lordsonkit', 'OdinH', 'lordsonkit', 'cSc', 'lurkwingduck', 'Boelens']; // Update with latest moderators
@@ -825,16 +825,19 @@ socket.on("chat", function(data){
     }
     if(data.message.toLowerCase().indexOf(username.toLowerCase()) != -1 && username.length > 0 && data.user != "WhiskDiceBot"){
         data.message = '<strong>' + data.message + '</strong>'
-        if(!focus){
-	    startFlashing("Mentioned by " + data.user);
-        }
     }
     
     if(data.user == username){
 	var m = "";
-	if (spammyness > 15) {
-            winBTCtext += " <span class='badge badge-important'>spam level " + Math.floor(spammyness) + "</span> ";
+	if (spammyness > 25) {
+            winBTCtext += " <span class='label label-important notif'>high chat frequency</span> ";
 	}
+        if(data.message.length < 40){
+            winBTCtext += " <span class='label label-important notif'>too short</span>";
+        }
+        if(data.message.indexOf(" u " ) != -1 || data.message.indexOf("youre") != -1 || data.message.indexOf(" im ") != -1){
+            winBTCtext += " <span class='label label-important notif'>texting speak</span>";
+        }
     } else {
 	var m = "";
     }
@@ -1032,7 +1035,7 @@ function getCookie(c_name)
 }
 var flashInterval;
 function startFlashing(title){
-    clearInterval(flashInterval);
+    /*clearInterval(flashInterval);
     flashInterval = setInterval(function(){
 	if(window.document.title == title){
 	    window.document.title = "!! " + title;
@@ -1040,7 +1043,8 @@ function startFlashing(title){
 	    window.document.title = title;
 	}
     }, 550);
-
+    */
+    // Obsolete.
 }
 function chatNotify(user, message, room) {
     if (window.webkitNotifications && window.webkitNotifications.checkPermission() == 0) {
@@ -1052,6 +1056,7 @@ function chatNotify(user, message, room) {
     }
 }
 function startLightFlashing(title){
+    /*
     clearInterval(flashInterval);
     flashInterval = setInterval(function(){
 	if(window.document.title == title){
@@ -1059,7 +1064,9 @@ function startLightFlashing(title){
 	} else {
 	    window.document.title = title;
 	}
-    }, 1250);
+	}, 1250);
+    */
+    // Obsolete.
 }
 function changeTitle(title){
     clearInterval(flashInterval);
