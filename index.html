@@ -3,12 +3,15 @@
     WhiskChat Reloaded
     by whiskers75
     Aut viam inveniam aut faciam.
+
+    9 July 2013: CoinChat v2 comes out.
+    I think we have some recoding to do. :P
   -->
 <html>
   <head>
     <!-- Meta Tags and that -->
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-    <title>WhiskChat Reloaded</title>
+    <title>WhiskChat v2</title>
     <!-- Lovely CSS and JS -->
     <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
@@ -49,14 +52,38 @@
         <button class="btn btn-danger" id="quit-button">Quit</button>
       </div>
     </div>
+    <div class="modal hide fade" id="infomodal"> <!-- Help/info dialog -->
+      <div class="modal-header">
+        <h4>Info</h4>
+      </div>
+      <div class="modal-body">
+        WhiskChat Reloaded v2 has changed a lot of things, and this dialog is here to help.<br>
+	<strong>Functionality questions</strong><br>
+	<i>Where's the room bar gone?</i><br>
+	The room bar now appears when you mouse over the top info bar, in order to give you more chat space.<br>
+	<i>OK, the join room button disappeared!</i><br>
+	It hasn't disappeared, it's the arrow next to the info and quit logos.<br>
+	<strong>Personal questions</strong><br>
+	<i>I don't trust you! You're banned from CoinChat, go away!</i><br>
+	I know it's hard to trust me (I wouldn't) but I open source all my projects. No stealers or exploits!<br>
+	Links:<br>
+	WhiskDiceBot code: <a href="https://github.com/whiskers75/coinchat-bot/">GitHub</a><br>
+        WhiskChat code: <a href="https://github.com/whiskers75/whiskchat/">GitHub</a><br>
+	<i>OK, so you're legit. Why develop for a service that you're banned from?</i><br>
+	Because, however strange it may seem, I <i class="icon-heart"></i> CoinChat, and the vibrant community surrounding it.<br>
+      </div>
+    </div>
     <div id="chat"> <!-- Welcome to the arena. -->
       <!-- This is the hard part. -->
       <div class="header">
         <h4 style="display: inline;">
-	  <span id="username"><button class="btn btn-link btn-small" id="loginsignup"><strong>Login/sign up</strong></button></span></h4>&nbsp; <!-- Username status -->
+	  <span id="username"><button class="btn btn-link btn-small" id="loginsignup">Log in/signup</button></span></h4>&nbsp; <!-- Username status -->
 	<p style="display: inline;" class="badge badge-inverse"><span class="gold" id="balance">No</span> mBTC</p>&nbsp;
 	<span class="gold" id="whitelisted"><span class="badge badge-important">Unknown whitelist status</span></span> <!-- Balance + whitelist -->
-	<span class="btn btn-link pull-right" id="quit"><i class="icon-off"></i></span><p> <!-- Quit -->
+        <span class="headerblock pull-right disabled" id="rightver">Loading</span><span class="btn btn-link pull-right" id="info"><i class="icon-info-sign"></i></span><span class="btn btn-link pull-right" id="joinroombtn"><i class="icon-arrow-right"></i></span><span class="btn btn-link pull-right" id="quit"><i class="icon-off"></i></span><p> <!-- Quit -->
+	  <div class="roomheader">
+	    
+	  </div>
       </div>     
       <div class="content">
 	<div id="chattext">
@@ -156,7 +183,7 @@
 
       ga('create', 'UA-42225203-1', 'whiskers75.github.io');
       ga('send', 'pageview');
-
+      
     </script>
   </body>
 </html>

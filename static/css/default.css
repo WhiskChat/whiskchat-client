@@ -4,6 +4,10 @@ body {
 .btn {
     background-image: none;
 }
+.headerblock {
+    display: inline-block;
+    padding: 4px 12px;
+}
 .container {
     margin-top: 25px;
     width: 960px;
