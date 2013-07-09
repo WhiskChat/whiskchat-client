@@ -10,7 +10,7 @@ var username = "";
 var usernames = [];
 var lastCheck = new Date("1990");
 var hasFocus = true;
-var versionString = 'WhiskChat Reloaded v2/whiskers75';
+var versionString = 'WhiskChat Reloaded v2.1/whiskers75';
 var muted = [];
 var roomToJoin = "";
 var mods = ['admin', 'Dayne', 'randomcloud', 'lordsonkit', 'OdinH', 'lordsonkit', 'cSc', 'lurkwingduck', 'Boelens']; // Update with latest moderators
@@ -127,19 +127,19 @@ $(document).ready(function(){
     });
     $('.header').on('mouseout', function() {
 	var removeTimeout = setTimeout(function() {
-	    $('.roomheader').fadeOut(200);
+	    $('.roomheader').fadeOut(300);
 	    setTimeout(function() {
 		moveWin();
 	    }, 202);
-	}, 1000);
+	}, 3000);
     });
     $('.roomheader').on('mouseout', function() {
         var removeTimeout = setTimeout(function() {
-            $('.roomheader').fadeOut(200);
+            $('.roomheader').fadeOut(300);
             setTimeout(function() {
                 moveWin();
-            }, 202);
-        }, 1000);
+            }, 302);
+        }, 3000);
     });
     $("#mute").click(function() {
 	var tmp = prompt('Who do you want to mute? (effective until page is reloaded)');
