@@ -111,7 +111,7 @@ $(document).ready(function(){
 	    callMsg({message: 'Disconnected from CoinChat. You can now exit the page.'});
 	}, 800);
     });
-    $('.header').on('mouseover', function() {
+    /*$('.header').on('mouseover', function() {
         if (typeof removeTimeout != 'undefined') {
 	    clearTimeout(removeTimeout);
 	}
@@ -140,7 +140,7 @@ $(document).ready(function(){
                 moveWin();
             }, 302);
         }, 3000);
-    });
+    });*/
     $("#mute").click(function() {
 	var tmp = prompt('Who do you want to mute? (effective until page is reloaded)');
         if (tmp === '') {return;}
@@ -696,12 +696,6 @@ socket.on("joinroom", function(data){
         $(".roombtn[data-room='" + data.room + "']").removeClass('btn-danger')
     }, 200);
     updateSidebar();
-    setTimeout(function() {
-	$('.roomheader').fadeOut(500);
-	setTimeout(function() {
-	    moveWin();
-	}, 502); // Same as fadeOut length + 2
-    }, 1500);
 });
 socket.on("quitroom", function(data){
     $(".roombtn[data-room='" + data.room + "']").remove();
