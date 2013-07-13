@@ -81,6 +81,9 @@ $(document).ready(function(){
             window.webkitNotifications.requestPermission();
 	}
     });
+    $('.inputsio-alt').click(function() {
+	$('#menubtn').dropdown('toggle');
+    });
     socket.on("onlineFriends", function(data){
         onlineFriends = data.online;
     });
@@ -112,35 +115,35 @@ $(document).ready(function(){
 	}, 800);
     });
     /*$('.header').on('mouseover', function() {
-        if (typeof removeTimeout != 'undefined') {
-	    clearTimeout(removeTimeout);
-	}
-	$('.roomheader').show();
-	moveWin();
-    });
-    $('.roomheader').on('mouseover', function(){
-        if (typeof removeTimeout != 'undefined') {
-            clearTimeout(removeTimeout);
-        }
-        $('.roomheader').show();
-	moveWin();
-    });
-    $('.header').on('mouseout', function() {
-	var removeTimeout = setTimeout(function() {
-	    $('.roomheader').fadeOut(300);
-	    setTimeout(function() {
-		moveWin();
-	    }, 202);
-	}, 3000);
-    });
-    $('.roomheader').on('mouseout', function() {
-        var removeTimeout = setTimeout(function() {
-            $('.roomheader').fadeOut(300);
-            setTimeout(function() {
-                moveWin();
-            }, 302);
-        }, 3000);
-    });*/
+      if (typeof removeTimeout != 'undefined') {
+      clearTimeout(removeTimeout);
+      }
+      $('.roomheader').show();
+      moveWin();
+      });
+      $('.roomheader').on('mouseover', function(){
+      if (typeof removeTimeout != 'undefined') {
+      clearTimeout(removeTimeout);
+      }
+      $('.roomheader').show();
+      moveWin();
+      });
+      $('.header').on('mouseout', function() {
+      var removeTimeout = setTimeout(function() {
+      $('.roomheader').fadeOut(300);
+      setTimeout(function() {
+      moveWin();
+      }, 202);
+      }, 3000);
+      });
+      $('.roomheader').on('mouseout', function() {
+      var removeTimeout = setTimeout(function() {
+      $('.roomheader').fadeOut(300);
+      setTimeout(function() {
+      moveWin();
+      }, 302);
+      }, 3000);
+      });*/
     $("#mute").click(function() {
 	var tmp = prompt('Who do you want to mute? (effective until page is reloaded)');
         if (tmp === '') {return;}

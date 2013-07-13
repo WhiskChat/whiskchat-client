@@ -3,7 +3,7 @@
     WhiskChat Reloaded
     by whiskers75
     Aut viam inveniam aut faciam.
-
+    
     9 July 2013: CoinChat v2 comes out.
     I think we have some recoding to do. :P
   -->
@@ -92,7 +92,7 @@
       </div>
       <div class="input"> <!-- The input box -->
         <div class="btn-group dropup">
-          <button class="btn dropdown-toggle tenpx" data-toggle="dropdown" style="display: inline-block;">
+          <button class="btn dropdown-toggle tenpx" data-toggle="dropdown" id="menubtn" style="display: inline-block;">
             Menu <span class="caret"></span> <!-- The menu button -->
           </button>
           <ul class="dropdown-menu">
@@ -101,6 +101,8 @@
             <li> <a id="deposit" class="">Deposit mBTC (Inputs.io)</a> </li>
             <li>
               <a><button class="bitcoinate" data-size="20" data-address="178bN5qjAVpn8MCqH7NiH6FTTCQXsBVGV8" title="Please donate bitcoins to: 178bN5qjAVpn8MCqH7NiH6FTTCQXsBVGV8"><span></span>bitcoinate</button></a>
+              <script src="https://inputs.io/js/buttons.js"></script>
+              <a href="https://inputs.io/pay?to=whiskers75" class="inputsio-alt" data-to="whiskers75" data-note="WhiskChat donation">Donate using Inputs.io</a>
             </li>
             <!-- <li> <a id="quit" class="">Disconnect</a> </li> -->
             <li> <a id="reloadbal" class="">Update balance</a> </li>
