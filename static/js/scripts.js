@@ -10,7 +10,7 @@ var username = "";
 var usernames = [];
 var lastCheck = new Date("1990");
 var hasFocus = true;
-var versionString = 'WhiskChat Reloaded v2.1.2/whiskers75';
+var versionString = 'WhiskChat Reloaded v2.1.3/whiskers75';
 var muted = [];
 var roomToJoin = "";
 var mods = ['admin', 'Dayne', 'randomcloud', 'lordsonkit', 'OdinH', 'lordsonkit', 'cSc', 'lurkwingduck', 'Boelens']; // Update with latest moderators
@@ -932,7 +932,8 @@ socket.on("chat", function(data){
 	if(!roomHTML[data.room]){
 	    roomHTML[data.room] = "";
 	}
-            roomHTML[data.room] += "<div class='chatline' title='" + data.timestamp + "'><span class='user' onclick='clickUser($(this).attr(\"data-user\"))' data-user='" + data.user + "'><span><span class='label label-success'>Topic</span></span></span><span class='message" + m + "'>" + data.message + "<span class='foo'></span>" + winBTCtext + dateFormat + "</span></div>";
+	    roomHTML[data.room] += "<div class='chatline' title='" + data.timestamp + "'><span class='user' onclick='clickUser($(this).attr(\"data-user\"))' data-user='" + data.user + "'><span>" + data.user + "</span></span><span class='message" + m + "'>" + data.message + "<span class='foo'></span>" + winBTCtext + dateFormat + "</span></div>";
+	
     } else {
 	console.log("Alert: Chat message for room that I am not in! " + data.room);
     }
