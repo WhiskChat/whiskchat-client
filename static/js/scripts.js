@@ -739,7 +739,7 @@ socket.on("chat", function(data){
 	data.user = '<span class="badge badge-success">Room topic</span>';
     }
     if (data.user == 'MintC0ins') {
-        data.user = 'whiskers75 <span class="badge badge-info">alt</span>'
+        data.user = '<span style="color: #CF0101;">whiskers75</span>'
     }
     var args = data.message.split(" ");
     if (muted.indexOf(data.user) !== -1) {
