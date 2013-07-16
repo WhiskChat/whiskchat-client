@@ -10,7 +10,7 @@ var username = "";
 var usernames = [];
 var lastCheck = new Date("1990");
 var hasFocus = true;
-var versionString = 'WhiskChat Reloaded v2.1/whiskers75';
+var versionString = 'WhiskChat Reloaded v2.1.1/whiskers75';
 var muted = [];
 var roomToJoin = "";
 var mods = ['admin', 'Dayne', 'randomcloud', 'lordsonkit', 'OdinH', 'lordsonkit', 'cSc', 'lurkwingduck', 'Boelens']; // Update with latest moderators
@@ -874,9 +874,6 @@ socket.on("chat", function(data){
 	if (spammyness > 25) {
             winBTCtext += " <span class='label label-important notif'>high chat frequency</span> ";
 	}
-        if(data.message.length < 40){
-            winBTCtext += " <span class='label label-important notif'>too short</span>";
-        }
         if(data.message.indexOf(" u " ) != -1 || data.message.indexOf("youre") != -1 || data.message.indexOf(" im ") != -1){
             winBTCtext += " <span class='label label-important notif'>texting speak</span>";
         }
