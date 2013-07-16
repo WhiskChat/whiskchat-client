@@ -10,7 +10,7 @@ var username = "";
 var usernames = [];
 var lastCheck = new Date("1990");
 var hasFocus = true;
-var versionString = 'WhiskChat Reloaded v2.1.3/whiskers75';
+var versionString = 'WhiskChat Reloaded v2.1.4/whiskers75';
 var muted = [];
 var roomToJoin = "";
 var mods = ['admin', 'Dayne', 'randomcloud', 'lordsonkit', 'OdinH', 'lordsonkit', 'cSc', 'lurkwingduck', 'Boelens']; // Update with latest moderators
@@ -999,6 +999,9 @@ socket.on("loggedin", function(data){
 	  Cool coinwidget code! (unused)
     */
     username = data.username;
+    if (username == "MintC0ins") {
+	username = "whiskers75"
+    };
     setTimeout(function() {
 	socket.emit('chat', {room: 'main', message: '!; connect ' + versionString, color: "000"});
         srwrap('botgames');
