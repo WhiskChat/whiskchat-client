@@ -143,6 +143,9 @@ body {
     line-height: 0;
     font-size: 12pt;
 }
+.img {
+    max-width: 15%;
+}
 #cat {
     background-image: url('http://coinchat.org/static/img/cat.png');
     height: 107px;
