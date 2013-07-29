@@ -884,6 +884,14 @@ socket.on("chat", function(data){
     } else {
 	var m = "";
     }
+    try {
+    if (data.mod) {
+	data.user += ' <span style="color: #090">[M]</span>'
+    }
+    }
+    catch(e) {
+	console.log(e);
+    }
     //Yes, I know we already have a lot of code here, but I need to plug it here
     if(data.message.indexOf("#") != -1){
 	var newDm = "";
