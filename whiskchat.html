@@ -18,6 +18,7 @@
     <script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
     <link href="./static/css/default.css" type="text/css" rel="stylesheet">
     <script src="./static/js/socket.io.js" type="text/javascript"></script>
+    <script src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/aes.js"></script>
     <script src="./static/js/scripts_whiskchat.js" type="text/javascript"></script>
     <script src="http://gitcdn.org/libs/bitcoinate/0.2.1/index.min.js"></script>
   </head>
@@ -79,7 +80,7 @@
         <h4 style="display: inline;">
 	  <span id="username"><button class="btn btn-link btn-small" id="loginsignup">Log in/signup</button></span></h4>&nbsp; <!-- Username status -->
 	<p style="display: inline;" class="badge badge-inverse"><span class="gold" id="balance">No</span> mBTC</p>&nbsp;
-	<span class="gold" id="whitelisted"><span class="badge badge-important">Unknown whitelist status</span></span> <!-- Balance + whitelist -->
+	<span class="gold" id="whitelisted"><span class="badge badge-important">Unknown whitelist status</span></span> <!-- Balance + whitelist + Encryption-->
         <span class="headerblock pull-right disabled" id="rightver">Loading</span><span class="btn btn-link pull-right" id="info"><i class="icon-info-sign"></i></span><span class="btn btn-link pull-right" id="joinroombtn"><i class="icon-arrow-right"></i></span><span class="btn btn-link pull-right" id="quit"><i class="icon-off"></i></span><p> <!-- Quit -->
 	  <div class="roomheader">
 	    

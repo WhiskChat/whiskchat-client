@@ -7,6 +7,7 @@
 
 var socket = io.connect('http://whiskchat-server.herokuapp.com' ,{resource: 'socket.io', reconnect: false});
 var username = "";
+var encryptionKey = "";
 var usernames = [];
 var lastCheck = new Date("1990");
 var hasFocus = true;
@@ -34,6 +35,12 @@ function notificationPermission() {
     
     window.webkitNotifications.requestPermission();
     alreadyAsked = true;
+}
+function hex2a(hex) {
+    var str = '';
+    for (var i = 0; i < hex.length; i += 2)
+        str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
+    return str;
 }
 var scrollback = [];
 var upto = -1;
@@ -397,6 +404,17 @@ function sendMsg(){
 	    
 	    return;
 	}
+		if(msg.substr(0,4) == "/enc"){
+			encryptionKey = msg.split(" ")[1];
+			if (encryptionKey == "off"){
+				encryptionKey = "";
+//				$('#encstatus').removeClass("label-success").text("Off");
+			}else{
+//				$('#encstatus').addClass("label-success").text("On");
+			}
+
+			return;
+		}
         if(msg.substr(0,5) == "/nuke"){
             if(msg.split(" ").length < 1){
                 return;
@@ -527,6 +545,15 @@ function sendMsg(){
 	if(checkSpam()){
 	    return;
 	}
+		if (encryptionKey != ""){
+		msg = CryptoJS.AES.encrypt(msg, encryptionKey).toString();
+		msg = "EC_" + msg;
+		if (msg.length >= 500)
+		{
+		alert("Your message is too long!");
+		return;
+		}
+		}
 	if (msg[0] == '!') {
             socket.emit("chat", {room: currentRoom, message: msg, color: "000"});
 	}
@@ -759,6 +786,21 @@ socket.on("chat", function(data){
         moveWin();
         return;
     }
+    if (data.message.substr(0,3) == "EC_")
+	{
+		if (encryptionKey == ""){
+			return;
+		}
+		
+		decryptedMessage = CryptoJS.AES.decrypt(data.message.substr(3),encryptionKey).toString();
+
+		if (decryptedMessage == ""){
+			return;
+		}
+
+		data.message = hex2a(decryptedMessage);
+	}
+
     if (data.message.indexOf('<i>') !== -1) {
 	if (currentRoom == data.room) {
             $('#chattext').append("<div class='chatline'><span class='user' onclick='place()' style='background: rgba(136, 238, 136, 0.64);'><span></span>&nbsp;&nbsp;</span><span class='message muted' style='background: #eee'><i>* <strong>" + data.user + "</strong> </i>" + data.message + "</span></div>");
@@ -985,6 +1027,7 @@ socket.on("loggedin", function(data){
     $("#username").html(data.username);
     $(".hide-guest").show();
     $('#chat').show();
+    //$('.header').append('Encryption: <span class="label" id="encstatus">Off</span>');
     socket.emit('getcolors');
     if(roomToJoin){
     	if(!roomHTML[roomToJoin]){
