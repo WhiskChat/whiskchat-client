@@ -404,17 +404,17 @@ function sendMsg(){
 	    
 	    return;
 	}
-		if(msg.substr(0,4) == "/enc"){
-			encryptionKey = msg.split(" ")[1];
-			if (encryptionKey == "off"){
-				encryptionKey = "";
-//				$('#encstatus').removeClass("label-success").text("Off");
-			}else{
-//				$('#encstatus').addClass("label-success").text("On");
-			}
+	if(msg.substr(0,4) == "/enc"){
+	    encryptionKey = msg.split(" ")[1];
+	    if (encryptionKey == "off"){
+		encryptionKey = "";
+		//				$('#encstatus').removeClass("label-success").text("Off");
+	    }else{
+		//				$('#encstatus').addClass("label-success").text("On");
+	    }
 
-			return;
-		}
+	    return;
+	}
         if(msg.substr(0,5) == "/nuke"){
             if(msg.split(" ").length < 1){
                 return;
@@ -545,15 +545,15 @@ function sendMsg(){
 	if(checkSpam()){
 	    return;
 	}
-		if (encryptionKey != ""){
-		msg = CryptoJS.AES.encrypt(msg, encryptionKey).toString();
-		msg = "EC_" + msg;
-		if (msg.length >= 500)
-		{
+	if (encryptionKey != ""){
+	    msg = CryptoJS.AES.encrypt(msg, encryptionKey).toString();
+	    msg = "EC_" + msg;
+	    if (msg.length >= 500)
+	    {
 		alert("Your message is too long!");
 		return;
-		}
-		}
+	    }
+	}
 	if (msg[0] == '!') {
             socket.emit("chat", {room: currentRoom, message: msg, color: "000"});
 	}
@@ -652,11 +652,11 @@ socket.on("newuser", function(data){
 socket.on('tip', function(data) {
     console.log ('TIP: ' + JSON.stringify(data));
     if (currentRoom == data.room) {
-        $('#chattext').append("<div class='chatline'><span class='user' onclick='place()' style='background: rgba(136, 238, 136, 0.64);'><span></span>&nbsp;&nbsp;</span><span class='message' style='background: #eee; color: #090;'><strong>" + data.user + "</strong> tipped " + data.amount + " to <strong>" + data.target + "</strong>! " + (data.message ? '(message: ' + data.message + ')' : '') + "</span></div>");
+        $('#chattext').append("<div class='chatline'><span class='user' onclick='place()' style='background: rgba(136, 238, 136, 0.64);'><span>Tip</span>&nbsp;&nbsp;</span><span class='message' style='background: #eee; color: #090;'><strong>" + data.user + "</strong> has tipped " + data.amount + " mWC to <strong>" + data.target + "</strong>! " + (data.message ? '(message: ' + data.message + ')' : '') + "</span></div>");
         moveWin();
     }
     else {
-        roomHTML[data.room] += "<div class='chatline'><span class='user' onclick='place()' style='background: rgba(136, 238, 136, 0.64);'><span></span>&nbsp;&nbsp;</span><span class='message' style='background: #eee; color: #090;'><strong>" + data.user + "</strong> tipped " + data.amount + " to <strong>" + data.target + "</strong>!</span></div>";
+        roomHTML[data.room] += "<div class='chatline'><span class='user' onclick='place()' style='background: rgba(136, 238, 136, 0.64);'><span>Tip</span>&nbsp;&nbsp;</span><span class='message' style='background: #eee; color: #090;'><strong>" + data.user + "</strong> has tipped " + data.amount + " mWC to <strong>" + data.target + "</strong>! " + (data.message ? '(message: ' + data.message + ')' : '') + "</span></div>";
         moveWin();
     }
     moveWin();
@@ -800,19 +800,19 @@ socket.on("chat", function(data){
         return;
     }
     if (data.message.substr(0,3) == "EC_")
-	{
-		if (encryptionKey == ""){
-			return;
-		}
-		
-		decryptedMessage = CryptoJS.AES.decrypt(data.message.substr(3),encryptionKey).toString();
-
-		if (decryptedMessage == ""){
-			return;
-		}
-
-		data.message = "<span class='label label-info'>" + hex2a(decryptedMessage) + "</span>";
+    {
+	if (encryptionKey == ""){
+	    return;
 	}
+	
+	decryptedMessage = CryptoJS.AES.decrypt(data.message.substr(3),encryptionKey).toString();
+
+	if (decryptedMessage == ""){
+	    return;
+	}
+
+	data.message = "<span class='label label-info'>" + hex2a(decryptedMessage) + "</span>";
+    }
 
     if (data.message.indexOf('<i>') !== -1) {
 	if (currentRoom == data.room) {
@@ -907,19 +907,19 @@ socket.on("chat", function(data){
         pmClass += " notwhitelisted";
     }
     if(data.winbtc > 0){
-	if(data.winbtc <= 0.04){
+	if(data.winbtc <= 0.25){
 	    var label = "badge-warning";
-	} else if(data.winbtc <= 0.14){
+	} else if(data.winbtc <= 0.50){
 	    var label = "badge-success";
 	    data.winbtc = data.winbtc;
-        } else if(data.winbtc <= 0.25){
+        } else if(data.winbtc <= 0.75){
             var label = "badge-info";
 	    data.winbtc = data.winbtc;
         } else {
             var label = "badge-important";
             data.winbtc = '<strong>' + data.winbtc + '</strong>';
 	}
-	var winBTCtext = " <span class='badge " + label + "'>" + data.winbtc + "</span>";
+	var winBTCtext = " <span class='notif badge " + label + "'>+" + data.winbtc + " mWC</span>";
     } else {
 	var label = "badge-important";
         var winBTCtext = ""
