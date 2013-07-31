@@ -798,7 +798,7 @@ socket.on("chat", function(data){
 			return;
 		}
 
-		data.message = hex2a(decryptedMessage);
+		data.message = "<span class='label label-info'>" + hex2a(decryptedMessage) + "</span>";
 	}
 
     if (data.message.indexOf('<i>') !== -1) {
