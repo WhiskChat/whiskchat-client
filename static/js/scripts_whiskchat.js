@@ -652,11 +652,11 @@ socket.on("newuser", function(data){
 socket.on('tip', function(data) {
     console.log ('TIP: ' + JSON.stringify(data));
     if (currentRoom == data.room) {
-        $('#chattext').append("<div class='chatline'><span class='user' onclick='place()' style='background: rgba(136, 238, 136, 0.64);'><span>Tip</span>&nbsp;&nbsp;</span><span class='message' style='background: #eee; color: #090;'><strong>" + data.user + "</strong> has tipped " + data.amount + " mWC to <strong>" + data.target + "</strong>! " + (data.message ? '(message: ' + data.message + ')' : '') + "</span></div>");
+        $('#chattext').append("<div class='chatline'><span class='user' onclick='place()' style='background: rgba(136, 238, 136, 0.64);'><span>Tip</span>&nbsp;&nbsp;</span><span class='message' style='background: #eee; color: #090;'><strong>" + data.user + "</strong> has tipped " + Number(data.amount).toFixed(2) + " mWC to <strong>" + data.target + "</strong>! " + (data.message ? '(message: ' + data.message + ')' : '') + "</span></div>");
         moveWin();
     }
     else {
-        roomHTML[data.room] += "<div class='chatline'><span class='user' onclick='place()' style='background: rgba(136, 238, 136, 0.64);'><span>Tip</span>&nbsp;&nbsp;</span><span class='message' style='background: #eee; color: #090;'><strong>" + data.user + "</strong> has tipped " + data.amount + " mWC to <strong>" + data.target + "</strong>! " + (data.message ? '(message: ' + data.message + ')' : '') + "</span></div>";
+        roomHTML[data.room] += "<div class='chatline'><span class='user' onclick='place()' style='background: rgba(136, 238, 136, 0.64);'><span>Tip</span>&nbsp;&nbsp;</span><span class='message' style='background: #eee; color: #090;'><strong>" + data.user + "</strong> has tipped " + Number(data.amount).toFixed(2) + " mWC to <strong>" + data.target + "</strong>! " + (data.message ? '(message: ' + data.message + ')' : '') + "</span></div>";
         moveWin();
     }
     moveWin();
