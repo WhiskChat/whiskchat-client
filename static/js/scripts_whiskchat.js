@@ -604,8 +604,6 @@ function addToRoomHTML(html) {
 function callMsg(data){
     var newId = "m" + Math.round(Math.random() * 10000);
     $("#chattext").append("<div class='chatline expiring'><span class='user' onclick='place()' style='background: rgba(238, 160, 136, 0.64);'><span></span>&nbsp;&nbsp;</span><span class='message' style='background: #eee'><strong>" + data.message + "</strong></span></div>");
-    addToRoomHTML("<div class='chatline expiring'><span class='user' onclick='place()' style='background: rgba(238, 160, 136, 0.64);'><span></span>&nbsp;&nbsp;</span><span class='message' style='background: #eee'><strong>" + data.message + "</strong></span></div>");
-    $('#messageslogin').html(data.message);
     moveWin();
     
     if((!fs && $("#chattext").scrollTop() + 650 >= $("#chattext").prop('scrollHeight')) || (fs && $("#chattext").scrollTop() + $(window).height() >= $("#chattext").prop('scrollHeight'))){
