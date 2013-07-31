@@ -623,8 +623,9 @@ socket.on("newuser", function(data){
     updateSidebar();
 });
 socket.on('tip', function(data) {
+    console.log ('TIP: ' + JSON.stringify(data));
     if (currentRoom == data.room) {
-        $('#chattext').append("<div class='chatline'><span class='user' onclick='place()' style='background: rgba(136, 238, 136, 0.64);'><span></span>&nbsp;&nbsp;</span><span class='message' style='background: #eee; color: #090;'><strong>" + data.user + "</strong> tipped " + data.amount + " to <strong>" + data.target + "</strong>!</span></div>");
+        $('#chattext').append("<div class='chatline'><span class='user' onclick='place()' style='background: rgba(136, 238, 136, 0.64);'><span></span>&nbsp;&nbsp;</span><span class='message' style='background: #eee; color: #090;'><strong>" + data.user + "</strong> tipped " + data.amount + " to <strong>" + data.target + "</strong>! " + (data.message ? '(message: ' + data.message + ')' : '') + "</span></div>");
         moveWin();
     }
     else {
