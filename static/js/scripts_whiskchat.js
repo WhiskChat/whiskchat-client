@@ -622,6 +622,18 @@ socket.on("newuser", function(data){
     }
     updateSidebar();
 });
+socket.on('tip', function(data) {
+    if (currentRoom == data.room) {
+        $('#chattext').append("<div class='chatline'><span class='user' onclick='place()' style='background: rgba(136, 238, 136, 0.64);'><span></span>&nbsp;&nbsp;</span><span class='message' style='background: #eee; color: #090;'><strong>" + data.user + "</strong> tipped " + data.amount + " to <strong>" + data.target + "</strong>!</span></div>");
+        moveWin();
+    }
+    else {
+        roomHTML[data.room] += "<div class='chatline'><span class='user' onclick='place()' style='background: rgba(136, 238, 136, 0.64);'><span></span>&nbsp;&nbsp;</span><span class='message' style='background: #eee; color: #090;'><strong>" + data.user + "</strong> tipped " + data.amount + " to <strong>" + data.target + "</strong>!</span></div>";
+        moveWin();
+    }
+    moveWin();
+    return;
+});
 socket.on("joinroom", function(data){
     if(data.room != "main"){
 	clearTimeout(myTimeout);
@@ -885,9 +897,9 @@ socket.on("chat", function(data){
 	var m = "";
     }
     try {
-    if (data.mod) {
-	data.user += ' <span style="color: #090">[M]</span>'
-    }
+	if (data.mod) {
+	    data.user += ' <span style="color: #090">[M]</span>'
+	}
     }
     catch(e) {
 	console.log(e);
