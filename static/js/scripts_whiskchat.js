@@ -711,7 +711,7 @@ socket.on("joinroom", function(data){
 	    }
 	} else {
 	    var otherUser = (data.room.split(":")[0].toLowerCase() == username.toLowerCase() ? data.room.split(":")[1] : data.room.split(":")[0]); 
-	    $(".header").append(" <span class='roombtn btn btn-small' data-room='" + data.room + "' onclick='switchRoom(this)'>PM " + otherUser + " <span class='quit close muted' data-room='" + data.room + "'>&times;</span></span>");
+	    $(".roomheader").append(" <span class='roombtn btn btn-small' data-room='" + data.room + "' onclick='switchRoom(this)'>PM " + otherUser + " <span class='quit close muted' data-room='" + data.room + "'>&times;</span></span>");
 	}
         $(".quit[data-room='" + data.room + "']").click(function(event){
             if($(this).attr("data-room").indexOf(":") == -1){
@@ -786,16 +786,10 @@ socket.on("chat", function(data){
         return;
     }
     if (data.message.substr(0, 10) == '!; connect') {
-        $("#chattext").append("<div class='chatline'><span class='user' onclick='place()' style='background: rgba(136, 238, 136, 0.64);'><span></span>&nbsp;&nbsp;</span><span class='message muted' style='background: #eee'><strong>" + data.user + "</strong> connected to CoinChat (" + data.message.substr(11, data.message.length) + ")</span></div>");
-        addToRoomHTML("<div class='chatline'><span class='user' onclick='place()' style='background: rgba(136, 238, 136, 0.64);'><span></span>&nbsp;&nbsp;</span><span class='message muted' style='background: #eee'><strong>" + data.user + "</strong> connected to CoinChat (" + data.message.substr(11, data.message.length) + ")</span></div>");
+        $("#chattext").append("<div class='chatline'><span class='user' onclick='place()' style='background: rgba(136, 238, 136, 0.64);'><span></span>&nbsp;&nbsp;</span><span class='message muted' style='background: #eee'><strong>" + data.user + "</strong> connected to WhiskChat Server (" + data.message.substr(11, data.message.length) + ")</span></div>");
+        addToRoomHTML("<div class='chatline'><span class='user' onclick='place()' style='background: rgba(136, 238, 136, 0.64);'><span></span>&nbsp;&nbsp;</span><span class='message muted' style='background: #eee'><strong>" + data.user + "</strong> connected to WhiskChat Server (" + data.message.substr(11, data.message.length) + ")</span></div>");
 	moveWin();
 	return;
-    }
-    if (data.message.substr(0, 9) == '!; notice') {
-        $("#chattext").append("<div class='chatline'><span class='user' onclick='place()' style='background: rgba(136, 238, 136, 0.64);'><span></span>&nbsp;&nbsp;</span><span class='message muted' style='background: #eee'><strong>NOTICE</strong> " + data.message.substr(10, data.message.length) + "</span></div>");
-        addToRoomHTML("<div class='chatline'><span class='user' onclick='place()' style='background: rgba(136, 238, 136, 0.64);'><span></span>&nbsp;&nbsp;</span><span class='message muted' style='background: #eee'><strong>" + data.user + "</strong> connected to CoinChat (" + data.message.substr(11, data.message.length) + ")</span></div>");
-        moveWin();
-        return;
     }
     if (data.message.substr(0,3) == "EC_")
     {
@@ -804,14 +798,14 @@ socket.on("chat", function(data){
 	}
 	
 	decryptedMessage = CryptoJS.AES.decrypt(data.message.substr(3),encryptionKey).toString();
-
+	
 	if (decryptedMessage == ""){
 	    return;
 	}
-
+	
 	data.message = "<span class='label label-info'>" + hex2a(decryptedMessage) + "</span>";
     }
-
+    
     if (data.message.indexOf('<i>') !== -1) {
 	if (currentRoom == data.room) {
             $('#chattext').append("<div class='chatline'><span class='user' onclick='place()' style='background: rgba(136, 238, 136, 0.64);'><span></span>&nbsp;&nbsp;</span><span class='message' style='background: #eee'>* <strong>" + data.user + "</strong> " + data.message + "</span></div>");
@@ -825,14 +819,23 @@ socket.on("chat", function(data){
         return;
     }
     if (data.message == '!; joinroom') {
-        $("#chattext").append("<div class='chatline'><span class='user' onclick='place()' style='background: rgba(136, 238, 136, 0.64);'><span></span>&nbsp;&nbsp;</span><span class='message muted' style='background: #eee'><strong>" + data.user + "</strong> joined #" + data.room + "<span></div>");
-        addToRoomHTML("<div class='chatline'><span class='user' onclick='place()' style='background: rgba(136, 238, 136, 0.64);'><span></span>&nbsp;&nbsp;</span><span class='message muted' style='background: #eee'><strong>" + data.user + "</strong> joined #" + data.room + "<span></div>");
+	if (currentRoom == data.room) {
+            $("#chattext").append("<div class='chatline'><span class='user' onclick='place()' style='background: rgba(136, 238, 136, 0.64);'><span></span>&nbsp;&nbsp;</span><span class='message muted' style='background: #eee'><strong>" + data.user + "</strong> joined #" + data.room + "<span></div>");
+	}
+	else {
+            roomHTML[data.room] += "<div class='chatline'><span class='user' onclick='place()' style='background: rgba(136, 238, 136, 0.64);'><span></span>&nbsp;&nbsp;</span><span class='message muted' style='background: #eee'><strong>" + data.user + "</strong> joined #" + data.room + "<span></div>"
+	
+	}
         moveWin();
         return;
     }
     if (data.message.substr(0, 11) == '!; quitroom') {
-        $("#chattext").append("<div class='chatline'><span class='user' onclick='place()' style='background: rgba(136, 238, 136, 0.64);'><span></span>&nbsp;&nbsp;</span><span class='message muted' style='background: #eee'><strong>" + data.user + "</strong> left #" + data.room + " (" + data.message.substr(12, data.message.length) + ")</span></div>");
-        addToRoomHTML("<div class='chatline'><span class='user' onclick='place()' style='background: rgba(136, 238, 136, 0.64);'><span></span>&nbsp;&nbsp;</span><span class='message muted' style='background: #eee'><strong>" + data.user + "</strong> left #" + data.room + " (" + data.message.substr(12, data.message.length) + ")</span></div>");
+	if (currentRoom == data.room) {
+	    $("#chattext").append("<div class='chatline'><span class='user' onclick='place()' style='background: rgba(136, 238, 136, 0.64);'><span></span>&nbsp;&nbsp;</span><span class='message muted' style='background: #eee'><strong>" + data.user + "</strong> left #" + data.room + " (" + data.message.substr(12, data.message.length) + ")</span></div>");
+	}
+	else {
+	    roomHTML[data.room] += "<div class='chatline'><span class='user' onclick='place()' style='background: rgba(136, 238, 136, 0.64);'><span></span>&nbsp;&nbsp;</span><span class='message muted' style='background: #eee'><strong>" + data.user + "</strong> left #" + data.room + " (" + data.message.substr(12, data.message.length) + ")</span></div>"
+	}
         moveWin();
         return;
     }
@@ -866,9 +869,7 @@ socket.on("chat", function(data){
 	    }
             if(data.message.toLowerCase().indexOf(username.toLowerCase()) != -1 && username.length > 0 && mention){
                 $("#chattext").append("<div class='chatline' title='Notification'><span class='user muted'>" + data.user + "</span><span class='message'><strong>" + data.message + "  <span class='label label-info'>#" + data.room + "</span></strong></span></div>");
-		if (!hasFocus) {
-		    chatNotify(data.user, data.message, data.room);
-		}
+		
 		moveWin();
             }
 	    else {
@@ -886,12 +887,12 @@ socket.on("chat", function(data){
 	}
     } else if(data.user != "!Topic"){
 	$(".roombtn[data-room='" + data.room + "']").removeClass("btn-danger");
-	changeTitle("WhiskChat Reloaded");
+	changeTitle("WhiskChat");
     }
     if(data.message.toLowerCase().indexOf(username.toLowerCase()) != -1 && username.length > 0){ 
-	if(!focus){
-	    startFlashing("Mentioned by " + data.user);
-	}
+        if (!hasFocus) {
+            chatNotify(data.user, data.message, data.room);
+        }
     }
     if(usernames.indexOf(data.user) == -1 && data.user != "!Topic"){
 	usernames.push(data.user);
@@ -937,14 +938,6 @@ socket.on("chat", function(data){
     } else {
 	var m = "";
     }
-    try {
-	if (data.mod) {
-	    data.user += ' <span style="color: #090">[M]</span>'
-	}
-    }
-    catch(e) {
-	console.log(e);
-    }
     //Yes, I know we already have a lot of code here, but I need to plug it here
     if(data.message.indexOf("#") != -1){
 	var newDm = "";
@@ -961,16 +954,7 @@ socket.on("chat", function(data){
     var dateFormat = " <span class='time muted'>" + new Date(data.timestamp).getHours() + ":" + (String(new Date(data.timestamp).getMinutes()).length == 1 ? "0" + new Date(data.timestamp).getMinutes() : new Date(data.timestamp).getMinutes()) + "</span> <button class='btn hide btn-mini tipbutton pull-right' data-user='" + data.user + "'>Tip mBTC</button>";
     if(currentRoom == data.room){
 	$(".silent").remove();
-	if (data.user != "WhiskDiceBot") {
-            if (mods.indexOf(data.user) !== -1) {
-                $("#chattext").append("<div class='chatline' title='" + data.timestamp + "'><span class='user" + pmClass + "' onclick='place()' data-user='" + data.user + "'><span><span style='color: #000'><strong>" + data.user + "</strong></span></span>&nbsp;&nbsp;</span><span class='message'>" + data.message + winBTCtext + dateFormat + "</span></div>");
-            }
-	    else {
-		$("#chattext").append("<div class='chatline' title='" + data.timestamp + "'><span class='user" + pmClass + "' onclick='place()' data-user='" + data.user + "'><span>" + data.user + "</span>&nbsp;&nbsp;</span><span class='message'>" + data.message + winBTCtext + dateFormat + "</span></div>");
-	    }
-	} else {
-	    $("#chattext").append("<div class='chatline' title='" + data.timestamp + "'><span class='user" + pmClass + "' onclick='place()' data-user='" + data.user + "'><span><span class='label label-inverse'>#botgames bot</span></span>&nbsp;&nbsp;</span><span class='message'>" + data.message + winBTCtext + dateFormat + "</span></div>");
-	}
+	$("#chattext").append("<div class='chatline' title='" + data.timestamp + "'><span class='user" + pmClass + "' onclick='place()' data-user='" + data.user + "'><span>" + data.userShow + "</span>&nbsp;&nbsp;</span><span class='message'>" + data.message + winBTCtext + dateFormat + "</span></div>");
 	while($("#chattext").children().length > 200){
 	    $("#chattext .chatline:first-child").remove();
 	}
