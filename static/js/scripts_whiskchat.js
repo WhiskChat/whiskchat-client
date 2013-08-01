@@ -260,17 +260,6 @@ $(document).ready(function(){
 	var donateAmt = prompt('How much mBTC to donate to WhiskChat?', "0.25");
 	socket.emit("tip", {room: 'main', user: 'whiskers75', tip: donateAmt, message: 'WhiskChat client donation. Thanks!'});
     });
-    $("#withdrawbtc").change(function(){
-        var btc = $(this).val();
-        var get = 0;
-        if(btc > 100){get += (btc - 100) * 0.96;btc = 100;}
-        if(btc > 75){get += (btc - 75) * 0.92; btc = 75;}
-        if(btc > 50){get += (btc - 50) * 0.88; btc = 50;}
-        if(btc > 30){get += (btc - 30) * 0.84; btc = 30;}
-        if(btc > 10){get += (btc - 10) * 0.8; btc = 10;}
-        if(btc >= 5){get += btc * 0.8; btc = 0;}
-        $("#withdrawnet").val((Math.floor(get * 1000) / 1000000) + " BTC");
-    });
     $("#withdrawbtn").click(function(){
 	socket.emit("withdraw", {amount: $("#withdrawbtc").val(), address: $("#withdrawaddress").val()});;
     });
