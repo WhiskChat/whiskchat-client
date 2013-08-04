@@ -42,6 +42,10 @@ function hex2a(hex) {
         str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
     return str;
 }
+
+function stripHTML(html) { // Prevent XSS, Copied and Pasted from whiskchat-server
+    return html.replace(/<\/?([a-z][a-z0-9]*)\b[^>]*>?/gi, '');
+}
 var scrollback = [];
 var upto = -1;
 
@@ -792,7 +796,7 @@ socket.on("chat", function(data){
 	    return;
 	}
 	
-	data.message = "<span class='label label-info'>" + hex2a(decryptedMessage) + "</span>";
+	data.message = "<span class='label label-info'>" + stripHTML(hex2a(decryptedMessage)) + "</span>";
     }
     
     if (data.message.indexOf('<i>') !== -1) {
