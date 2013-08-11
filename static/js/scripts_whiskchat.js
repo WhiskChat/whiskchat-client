@@ -846,7 +846,7 @@ socket.on("chat", function(data){
 	data.message = newDm;
     }
     var dateFormat = " <span class='time muted'>" + new Date(data.timestamp).getHours() + ":" + (String(new Date(data.timestamp).getMinutes()).length == 1 ? "0" + new Date(data.timestamp).getMinutes() : new Date(data.timestamp).getMinutes()) + "</span> <button class='btn hide btn-mini tipbutton pull-right' data-user='" + data.user + "'>Tip mBTC</button>";
-    if(appended.indexOf(data.room) || data.room == currentRoom || data.room == 'main'){ // Hacky, but will do for now
+    if(appended.indexOf(data.room) !== -1 || data.room == currentRoom || data.room == 'main'){ // Hacky, but will do for now
 	$(".silent").remove();
 	$("#chattext").append("<div class='chatline' title='" + data.timestamp + "'><span class='user" + pmClass + "' onclick='place()' data-user='" + data.user + "'><span>" + (data.userShow ? data.userShow : data.user) + "</span>&nbsp;&nbsp;</span><span class='message'>" + data.message + winBTCtext + dateFormat + "</span></div>");
 	while($("#chattext").children().length > 200){
