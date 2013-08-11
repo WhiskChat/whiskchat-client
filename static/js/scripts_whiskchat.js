@@ -688,6 +688,9 @@ function switchRoom(obj){
 }
 socket.on("chat", function(data){
     var args = data.message.split(" ");
+    if(usernames.indexOf(data.user) == -1 && data.user != "!Topic"){
+	usernames.push(data.user);
+    }
     if (muted.indexOf(data.user) !== -1) {
 	console.log('Muted message from ' + data.user + ': ' + data.message);
         return;
@@ -782,9 +785,7 @@ socket.on("chat", function(data){
             chatNotify(data.user, data.message, data.room);
         }
     }
-    if(usernames.indexOf(data.user) == -1 && data.user != "!Topic"){
-	usernames.push(data.user);
-    }
+    
     var pmClass = "";
     if(data.room.indexOf(":") == -1){
         pmClass = " userpm";
