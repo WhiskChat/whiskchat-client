@@ -162,9 +162,8 @@ $(document).ready(function(){
 	muted.push(tmp);
 	callMsg({type: 'alert-success', message: 'Muted ' + tmp + '!'});
     });
-    $("#bottip").click(function() {
-	srwrap('botgames');
-        $('#chatinput').val('/bet (amount) (percentage - max 75%)');
+    $("#withdrawlnk").click(function() {
+        $('#chatinput').val('/withdraw amount address');
     });
     $("#botstate").click(function() {
         srwrap('botgames');
