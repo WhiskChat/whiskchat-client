@@ -448,7 +448,7 @@ function sendMsg(){
 	    return;
         }
         if(msg.substr(0,5) == "/ping"){
-            socket.emit("chat", {room: currentRoom, message: 'PING! ' + usernames.join(' '), color: "000"});
+            socket.emit("ping", {ts: Date.now()});
 	    return;
         }
         if(msg.substr(0,8) == "/version"){
