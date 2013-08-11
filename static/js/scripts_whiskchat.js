@@ -12,7 +12,7 @@ var usernames = [];
 var online = 0;
 var lastCheck = new Date("1990");
 var hasFocus = true;
-var versionString = 'WhiskChat Client v4/whiskers75';
+var versionString = 'WhiskChat Client v4.0.2/whiskers75';
 var muted = [];
 var roomToJoin = "";
 var forcedc = false;
@@ -317,7 +317,7 @@ function moveWin(){
     $("#chattext").css("width", w - s296);
     $("#chat .content").css("height", h - 35 - $(".header").height());
     $("body").css("overflow", "hidden");
-    $("#chatinput").css("width", w - 150);
+    $("#chatinput").css("width", w - 110);
     $("#chattext").animate({ scrollTop:$("#chattext").prop('scrollHeight') }, "slow");
 }
 var color = "000";
@@ -590,7 +590,8 @@ socket.on("jointhisroom", function(data){
 });
 socket.on("joinroom", function(data) {
     if (data.room == "main") {
-	srwrap(data.room);
+	srwrap(data.room, true);
+	$("#chattext").append("<div class='chatline'><span class='user' onclick='place()' style='background: rgba(238, 160, 136, 0.64);'><span>Copyright notice</span>&nbsp;&nbsp;</span><span class='message' style='background: #eee'>WhiskChat Client uses code from <a href='http://coinchat.org/'>CoinChat.org</a> (c) 2013 admin@glados.cc</span></div>");
     }
 });
 socket.on("message", callMsg);
@@ -949,12 +950,14 @@ socket.on("balance", function(data){
     }
 });
 
-function srwrap(roomName){
+function srwrap(roomName, noticeFalse){
     if(!roomHTML[roomName]){
         roomHTML[roomName] = "";
     }
     switchRoom(roomName)
-    callMsg({message: "Notice: Switched to room #" + roomName + " (change with /sr)"});
+    if (!noticeFalse) {
+	callMsg({message: "Notice: Switched to room #" + roomName + " (change with /sr)"});
+    }
     moveWin();
 }
 
