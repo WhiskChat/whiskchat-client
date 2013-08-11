@@ -18,6 +18,7 @@ var roomToJoin = "";
 var forcedc = false;
 var annJoin = false; // Don't spam
 var fs = false;
+var appended = [];
 var friendsonline = [];
 var whitelisted = 0;
 var mention = false;
@@ -231,22 +232,23 @@ $(document).ready(function(){
 	    }
 	} else if(event.keyCode == 9){ // TODO: Clean this up!
 	    var theUsername = $("#chatinput").val().split(" ")[$("#chatinput").val().split(" ").length-1];
+	    var tmp2 = [];
 	    for(var i in usernames){
 		if(theUsername.length > 0 && usernames[i].substr(0, theUsername.length).toLowerCase() == theUsername.toLowerCase()){
-		    if($("#chatinput").val().split(" ").length == 1){
-			$("#chatinput").val(usernames[i] + ": ");
-		    } else {
-			var prev = "";
-			var splitty = $("#chatinput").val().split(" ");
-			for(var j = 0; j < splitty.length-1; j++){
-			    prev += splitty[j] + " ";
-			}
-			$("#chatinput").val(prev + usernames[i] + " ");
-		    }
-		    break;
+		    tmp2.push(usernames[i]);
 		}
 	    }
-	    event.preventDefault();
+            if($("#chatinput").val().split(" ").length == 1){
+                $("#chatinput").val(usernames[i] + ": ");
+            } else {
+                var prev = "";
+                var splitty = $("#chatinput").val().split(" ");
+                for(var j = 0; j < splitty.length-1; j++){
+                    prev += splitty[j] + " ";
+                }
+                $("#chatinput").val(prev + usernames[i] + " ");
+            }
+            event.preventDefault();
 	}
     });
     $("#send").click(function(){
@@ -681,7 +683,10 @@ socket.on("quitroom", function(data){
 function switchRoom(obj){
     roomHTML[currentRoom] = $("#chattext").html();
     currentRoom = obj;
-    $("#chattext").html(roomHTML[currentRoom]);
+    if (appended.indexOf(obj) == -1) {
+	$("#chattext").append(roomHTML[currentRoom]);
+	appended.push(obj);
+    }
     $("#chattext").scrollTop($("#chattext")[0].scrollHeight);
     updateSidebar();
     moveWin();
@@ -841,7 +846,7 @@ socket.on("chat", function(data){
 	data.message = newDm;
     }
     var dateFormat = " <span class='time muted'>" + new Date(data.timestamp).getHours() + ":" + (String(new Date(data.timestamp).getMinutes()).length == 1 ? "0" + new Date(data.timestamp).getMinutes() : new Date(data.timestamp).getMinutes()) + "</span> <button class='btn hide btn-mini tipbutton pull-right' data-user='" + data.user + "'>Tip mBTC</button>";
-    if(currentRoom == data.room){
+    if(appended.indexOf(data.room)){ // Hacky, but will do for now
 	$(".silent").remove();
 	$("#chattext").append("<div class='chatline' title='" + data.timestamp + "'><span class='user" + pmClass + "' onclick='place()' data-user='" + data.user + "'><span>" + (data.userShow ? data.userShow : data.user) + "</span>&nbsp;&nbsp;</span><span class='message'>" + data.message + winBTCtext + dateFormat + "</span></div>");
 	while($("#chattext").children().length > 200){
@@ -957,7 +962,7 @@ function srwrap(roomName, noticeFalse){
     }
     switchRoom(roomName)
     if (!noticeFalse) {
-	callMsg({message: "Notice: Switched to room #" + roomName + " (change with /sr)"});
+        $("#chattext").append("<div class='chatline'><span class='user' onclick='place()' style='background: rgba(136, 238, 136, 0.64);'><span></span>&nbsp;&nbsp;</span><span class='message muted' style='background: #eee'><strong>*** Switched to #" + roomName + " ***</strong></span></div>");
     }
     moveWin();
 }
