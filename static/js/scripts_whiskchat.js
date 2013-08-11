@@ -12,7 +12,7 @@ var usernames = [];
 var online = 0;
 var lastCheck = new Date("1990");
 var hasFocus = true;
-var versionString = 'WhiskChat Client v4.1.2/whiskers75';
+var versionString = 'WhiskChat Client v4.1.3/whiskers75';
 var muted = [];
 var roomToJoin = "";
 var forcedc = false;
@@ -438,7 +438,7 @@ function sendMsg(){
         if(msg.substr(0,3) == "/rm"){
             if(msg.split(" ").length == 2){
                 appended.splice(appended.indexOf(msg.split(" ")[1]), 1);
-                callMsg({message: 'Unsubbed from #' + msg.split(" ")[1] + '.'});
+                $("#chattext").append("<div class='chatline' style='background-color: #F09898;'><center>Unsubscribed from #" + obj + "</center></div>");
                 return;
             }
         }
@@ -570,21 +570,6 @@ function sendMsg(){
     }
 }
 function checkSpam(){
-    if(warningLevel < 1 && spammyness > 30){
-	callMsg({message: "Hi! We are a chat network with rewards, not a faucet with chat. Please keep this in mind, it is not about saying as many lines as you can. Our reward algorithm takes in many things into account, and your chances of getting a reward may drop as low as 0%. Thanks."});
-	spammyness = 15;
-	warningLevel++;
-	return true;
-    } else if(warningLevel < 2 && spammyness > 25){
-	callMsg({message: "Please do not spam. Say everything you want to say in one line, not multiple lines."});
-	spammyness = 15;
-	warningLevel++;
-	return true;
-    } else if(spammyness > 35){
-	spammyness = 20;
-	callMsg({message: "Seriously, don't spam. Cut down on the amount of lines you're saying."});
-	return true;
-    }
     return false;
 }
 function checknew(room, message){
@@ -855,7 +840,7 @@ socket.on("chat", function(data){
 	var msgHash = data.message.split(" ");
 	for(var i = 0; i < msgHash.length; i++){
 	    if(msgHash[i].indexOf("#") == 0 && msgHash[i].indexOf("'") == -1 && msgHash[i].indexOf('"') == -1){
-		newDm += "<a href='#' onclick='srwrap(\"" + msgHash[i].substr(1) + "\", true)'>" + msgHash[i] + "</a> ";
+		newDm += "<a href='#' onclick='srwrap(\"" + msgHash[i].substr(1) + "\")'>" + msgHash[i] + "</a> ";
 	    } else {
 		newDm += msgHash[i] + " ";
 	    }
@@ -1039,7 +1024,7 @@ function startFlashing(title){
 }
 function chatNotify(user, message, room) {
     if (window.webkitNotifications && window.webkitNotifications.checkPermission() == 0) {
-	var notif = webkitNotifications.createNotification('http://coinchat.org/static/img/chat.png', user, '#' + room + ': ' + message)
+	var notif = webkitNotifications.createNotification('http://coinchat.org/static/img/chat.png', stripHTML(user), stripHTML(message));
 	notif.show();
 	setTimeout(function() {
 	    notif.cancel()
@@ -1047,17 +1032,7 @@ function chatNotify(user, message, room) {
     }
 }
 function startLightFlashing(title){
-    /*
-      clearInterval(flashInterval);
-      flashInterval = setInterval(function(){
-      if(window.document.title == title){
-      window.document.title = "> " + title;
-      } else {
-      window.document.title = title;
-      }
-      }, 1250);
-    */
-    // Obsolete.
+    return;
 }
 function changeTitle(title){
     clearInterval(flashInterval);
