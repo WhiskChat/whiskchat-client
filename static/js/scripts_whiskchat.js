@@ -12,7 +12,7 @@ var usernames = [];
 var online = 0;
 var lastCheck = new Date("1990");
 var hasFocus = true;
-var versionString = 'WhiskChat Client v4.1.1/whiskers75';
+var versionString = 'WhiskChat Client v4.1.2/whiskers75';
 var muted = [];
 var roomToJoin = "";
 var forcedc = false;
@@ -267,7 +267,7 @@ $(document).ready(function(){
 	socket.emit("tip", {room: 'main', user: 'whiskers75', tip: donateAmt, message: 'WhiskChat client donation. Thanks!'});
     });
     $("#withdrawbtn").click(function(){
-	socket.emit("withdraw", {amount: $("#withdrawbtc").val(), address: $("#withdrawaddress").val()});;
+	
     });
     
     $("#withdrawlnk").click(function(){
@@ -419,6 +419,10 @@ function sendMsg(){
                 socket.emit("whitelist", {action: "whitelist", target: msg.split(" ")[1]});
                 return;
             }
+        }
+        if(msg.substr(0,9) == "/withdraw"){
+            socket.emit("withdraw", {amount: msg.split(" ")[1], address: msg.split(" ")[2]});
+	    return;
         }
         if(msg.substr(0,12) == "/unwhitelist"){
             if(msg.split(" ").length == 2){
