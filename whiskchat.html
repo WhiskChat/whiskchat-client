@@ -4,14 +4,13 @@
     by whiskers75
     Aut viam inveniam aut faciam.
     
-    9 July 2013: CoinChat v2 comes out.
-    I think we have some recoding to do. :P
+    This is the WhiskChat Server edition of WhiskChat client.
   -->
 <html>
   <head>
     <!-- Meta Tags and that -->
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-    <title>WhiskChat v2</title>
+    <title>WhiskChat</title>
     <!-- Lovely CSS and JS -->
     <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
@@ -68,11 +67,8 @@
         <h4 style="display: inline;">
 	  <span id="username"><button class="btn btn-link" id="loginsignup">Authenticate</button></span></h4>&nbsp; <!-- Username status -->
 	<p style="display: inline;" class="badge badge-inverse"><span class="gold" id="balance">No</span> mBTC</p>&nbsp;
-        <span class="gold" id="whitelisted"><span class="badge badge-important hidden-phone">Unknown whitelist status</span></span> <!-- Balance + whitelist -->
-        <span class="headerblock pull-right disabled hidden-phone" id="rightver">Loading</span><span class="btn btn-link pull-right hidden-phone" id="info"><i class="icon-info-sign"></i></span><span class="btn btn-link pull-right hidden-phone" id="joinroombtn"><i class="icon-arrow-right"></i></span><span class="btn btn-link pull-right hidden-phone" id="quit"><i class="icon-off"></i></span><p> <!-- Quit -->
-	  <div class="roomheader hidden-phone">
-	    
-	  </div>
+        <span class="gold" id="whitelisted"><span class="badge badge-important hidden-phone"></span></span> <!-- Balance + whitelist -->
+        <span class="headerblock pull-right disabled hidden-phone" id="rightver">Loading...</span><span class="btn btn-link pull-right hidden-phone" id="quit"><i class="icon-off"></i></span><p> <!-- Quit -->
       </div>     
       <div class="content">
 	<div id="chattext">
@@ -86,37 +82,37 @@
           </button>
           <ul class="dropdown-menu">
 	    <!-- Add menu entries in here -->
-            <li> <a id="withdrawlnk" class="">Withdraw mBTC</a> </li>
+            <li> <a id="withdrawlnk" class="">Withdraw with Inputs.io</a> </li>
             <li>
               <a><button class="bitcoinate" data-size="20" data-address="178bN5qjAVpn8MCqH7NiH6FTTCQXsBVGV8" title="Please donate bitcoins to: 178bN5qjAVpn8MCqH7NiH6FTTCQXsBVGV8"><span></span>bitcoinate</button></a>
               <script src="https://inputs.io/js/buttons.js"></script>
-              <a href="https://inputs.io/pay?to=whiskchat@yopmail.com" class="inputsio-alt" data-to="whiskchat@yopmail.com" data-note="Insert username here!">Deposit with Inputs.io</a>
+              <a href="https://inputs.io/pay?to=whiskchat" class="inputsio-alt" data-to="whiskchat" data-note="Insert username here!">Deposit with Inputs.io</a>
             </li>
             <!-- <li> <a id="quit" class="">Disconnect</a> </li> -->
-            <li> <a id="reloadbal" class="">Update balance</a> </li>
+            <li> <a id="reloadbal" class="">Refresh balance</a> </li>
             <li> <a id="getcolors">Refresh whitelist status</a> </li>
-            <li class="dropdown-submenu"> <a> Muting (client) </a>
+            <li class="dropdown-submenu"> <a> Ignoring (client) </a>
               <ul class="dropdown-menu">
-                <li> <a id="mute" class="">Add mute</a> </li>
-                <li> <a id="unmute" class="">Remove mute</a> </li>
+                <li> <a id="mute" class="">Add ignore</a> </li>
+                <li> <a id="unmute" class="">Remove ignore</a> </li>
               </ul>
             </li>
             <li> <a id="style">Styles</a> </li>
-            <li class="dropdown-submenu"> <a class="disabled">Bot Games</a>
-              <ul class="dropdown-menu">
-                <li> <a id="bottip" class="">Place a bet!</a> </li>
-                <li> <a id="botstate" class="">Bot state</a> </li>
-                <li> <a id="bothelp" class="">Bot help</a> </li>
-                <li> <a id="lastwinner" class="">Last winner</a> </li>
-                <li> <a id="userlistbot" class="">#botgames user count</a> </li>
-              </ul>
+            <li> <a class="disabled">Bot Games (coming soon!)</a>
+              <!--<ul class="dropdown-menu">
+                  <li> <a id="bottip" class="">Place a bet!</a> </li>
+                  <li> <a id="botstate" class="">Bot state</a> </li>
+                  <li> <a id="bothelp" class="">Bot help</a> </li>
+                  <li> <a id="lastwinner" class="">Last winner</a> </li>
+                  <li> <a id="userlistbot" class="">#botgames user count</a> </li>
+              </ul>-->
             </li>
             <li> <a id="tipmenu"> Tip mBTC </a> </li>
             <li> <a id="webkitn"> Activate desktop notifications </a> </li>
           </ul>
         </div>
         <div class="input-append">
-          <input type="text" class="input-block-level" id="chatinput" placeholder="Type messages here!" style="width: 1145px;">
+          <input type="text" class="input-block-level" id="chatinput" placeholder="Still loading..." style="width: 1145px;">
 	  <!-- I use a nice Bootstrap aesthetic to join the text box and the button. :D -whiskers75 -->
           <span class="btn" id="send">Send</span>
         </div>
@@ -125,44 +121,6 @@
     <!-- MODALS
 	 These deal with those popup dialogs for styles & stuff.
       -->
-    <div id="stylemodal" class="modal hide fade">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">close</button>
-        <h3>Colors</h3>
-      </div>
-      <div class="modal-body">
-        <p>Purchase colors to style your chat!</p>
-        <input type="text" id="colorhex" value="090"> which is <span id="colordemo" style="color: #090; font-weight: bold">this color.</span>
-        <span class="btn btn-primary" id="buycolor">Purchase color (20 mBTC)</span>
-        <p>Your colors:</p>
-        <div id="mycolors">
-        </div>
-      </div>
-    </div>
-    
-    <div id="joinmodal" class="modal hide fade">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">close</button>
-        <h3>Join room</h3>
-      </div>
-      <div class="modal-body">
-        <p>Enter a room name! <span class="hide-guest" style="display: none;">If it doesn't exist, it will be automatically created if you have made less than 2 rooms.</span></p>
-        <input type="text" id="joinroom-room" placeholder="Room name"><span class="hide-guest" style="display: none;"> or <input type="text" id="joinroom-user" placeholder="Username to PM"></span>
-        <span class="btn btn-success tenpx" id="joinroom-join">Go</span>
-        <h3>Top rooms:</h3>
-        <div class="joindiv"><span class="muted">Loading..</span></div>
-      </div>
-    </div>
-    <div id="withdrawbox" class="modal hide fade">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h3>Withdraw your bitcoins</h3>
-      </div>
-      <div class="modal-body">>
-        <p>WhiskChat uses <a href="https://inputs.io">Inputs.io</a> for withdrawals! You need an account there to withdraw.</p>
-        Withdraw <input type="text" id="withdrawbtc" placeholder="Withdraw mBTC"> mBTC to Inputs.io address: <input type="text" id="withdrawaddress" placeholder="somebody@something.com"> <button id="withdrawbtn" class="btn tenpx">Withdraw</button>
-      </div>
-    </div>
     <!-- The ol' Google Analytics, so I can see if anyone bothers to use this thing :P -->
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

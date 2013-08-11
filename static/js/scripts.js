@@ -319,7 +319,7 @@ function moveWin(){
     $("#chat").css("left", 2);
     $("#chat").css("height", h);
     $("#chat").css("width", w);
-    $(".message").css("width", w - s296 - 121 - 30);
+    $(".message").css("width", w - s296 - 150 - 30);
     $("#chattext").css("width", w - s296);
     $("#chat .content").css("height", h - 35 - $(".header").height());
     $("body").css("overflow", "hidden");
