@@ -12,7 +12,7 @@ var usernames = [];
 var online = 0;
 var lastCheck = new Date("1990");
 var hasFocus = true;
-var versionString = 'WhiskChat Client v4.0.3/whiskers75';
+var versionString = 'WhiskChat Client v4.1/whiskers75';
 var muted = [];
 var roomToJoin = "";
 var forcedc = false;
@@ -432,6 +432,13 @@ function sendMsg(){
                 return;
             }
         }
+        if(msg.substr(0,3) == "/rm"){
+            if(msg.split(" ").length == 2){
+                appended.splice(appended.indexOf(msg.split(" ")[1]), 1);
+                callMsg({message: 'Unsubbed from #' + msg.split(" ")[1] + '.'});
+                return;
+            }
+        }
 	if(msg.substr(0,5) == "/join"){
 	    if(msg.split(" ").length==2){
 		annJoin = true;
@@ -594,6 +601,12 @@ socket.on("joinroom", function(data) {
     if (data.room == "main") {
 	srwrap(data.room, true);
 	$("#chattext").append("<div class='chatline'><span class='user' onclick='place()' style='background: rgba(238, 160, 136, 0.64);'><span>Copyright notice</span>&nbsp;&nbsp;</span><span class='message' style='background: #eee'>WhiskChat Client uses code from <a href='http://coinchat.org/'>CoinChat.org</a> (c) 2013 admin@glados.cc</span></div>");
+    }
+    else {
+        $("#chattext").append("<div class='chatline'><span class='user' onclick='place()' style='background: rgba(238, 160, 136, 0.64);'><span></span>&nbsp;&nbsp;</span><span class='message' style='background: #eee'><strong>Subscribing you to #" + data.room +" (requested by server)</strong></span></div>");
+	if (appended.indexOf(data.room) == -1) {
+	    appended.push(data.room)
+	}
     }
 });
 socket.on("message", callMsg);
@@ -848,7 +861,12 @@ socket.on("chat", function(data){
     var dateFormat = " <span class='time muted'>" + new Date(data.timestamp).getHours() + ":" + (String(new Date(data.timestamp).getMinutes()).length == 1 ? "0" + new Date(data.timestamp).getMinutes() : new Date(data.timestamp).getMinutes()) + "</span> <button class='btn hide btn-mini tipbutton pull-right' data-user='" + data.user + "'>Tip mBTC</button>";
     if(appended.indexOf(data.room) !== -1 || data.room == currentRoom || data.room == 'main'){ // Hacky, but will do for now
 	$(".silent").remove();
-	$("#chattext").append("<div class='chatline' title='" + data.timestamp + "'><span class='user" + pmClass + "' onclick='place()' data-user='" + data.user + "'><span>" + (data.userShow ? data.userShow : data.user) + "</span>&nbsp;&nbsp;</span><span class='message'>" + data.message + winBTCtext + dateFormat + "</span></div>");
+	if (data.room != currentRoom) {
+            $("#chattext").append("<div class='chatline' title='" + data.timestamp + "'><span class='user" + pmClass + "' onclick='place()' data-user='" + data.user + "'><span>" + (data.userShow ? data.userShow : data.user) + "</span>&nbsp;&nbsp;</span><span class='message'>" + data.message + winBTCtext  + dateFormat + "   <span class='label label-info notif'>#" + data.room + "</strong></span></div>");
+	}
+	else {
+	    $("#chattext").append("<div class='chatline' title='" + data.timestamp + "'><span class='user" + pmClass + "' onclick='place()' data-user='" + data.user + "'><span>" + (data.userShow ? data.userShow : data.user) + "</span>&nbsp;&nbsp;</span><span class='message'>" + data.message + winBTCtext + dateFormat + "</span></div>");
+	}
 	while($("#chattext").children().length > 200){
 	    $("#chattext .chatline:first-child").remove();
 	}
@@ -962,7 +980,7 @@ function srwrap(roomName, noticeFalse){
     }
     switchRoom(roomName)
     if (!noticeFalse) {
-        $("#chattext").append("<div class='chatline'><span class='user' onclick='place()' style='background: rgba(136, 238, 136, 0.64);'><span></span>&nbsp;&nbsp;</span><span class='message muted' style='background: #eee'><strong>*** Switched to #" + roomName + " ***</strong></span></div>");
+        $("#chattext").append("<div class='chatline' style='background-color: #F09898;'><center><strong>Switched to #" + roomName + "</strong> (subscribed)</center></div>");
     }
     moveWin();
 }
