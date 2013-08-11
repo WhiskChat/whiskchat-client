@@ -12,7 +12,7 @@ var usernames = [];
 var online = 0;
 var lastCheck = new Date("1990");
 var hasFocus = true;
-var versionString = 'WhiskChat Client v4.1/whiskers75';
+var versionString = 'WhiskChat Client v4.1.1/whiskers75';
 var muted = [];
 var roomToJoin = "";
 var forcedc = false;
@@ -699,6 +699,7 @@ function switchRoom(obj){
     if (appended.indexOf(obj) == -1) {
 	$("#chattext").append(roomHTML[currentRoom]);
 	appended.push(obj);
+        $("#chattext").append("<div class='chatline' style='background-color: #F09898;'><center>Subscribed to #" + obj + "</center></div>");
     }
     $("#chattext").scrollTop($("#chattext")[0].scrollHeight);
     updateSidebar();
@@ -861,6 +862,9 @@ socket.on("chat", function(data){
     var dateFormat = " <span class='time muted'>" + new Date(data.timestamp).getHours() + ":" + (String(new Date(data.timestamp).getMinutes()).length == 1 ? "0" + new Date(data.timestamp).getMinutes() : new Date(data.timestamp).getMinutes()) + "</span> <button class='btn hide btn-mini tipbutton pull-right' data-user='" + data.user + "'>Tip mBTC</button>";
     if(appended.indexOf(data.room) !== -1 || data.room == currentRoom || data.room == 'main'){ // Hacky, but will do for now
 	$(".silent").remove();
+	if (data.user == 'WhiskDiceBot' && currentRoom != data.room) {
+	    return;
+	}
 	if (data.room != currentRoom) {
             $("#chattext").append("<div class='chatline' title='" + data.timestamp + "'><span class='user" + pmClass + "' onclick='place()' data-user='" + data.user + "'><span>" + (data.userShow ? data.userShow : data.user) + "</span>&nbsp;&nbsp;</span><span class='message'>" + data.message + winBTCtext  + dateFormat + "   <span class='label label-info notif'>#" + data.room + "</strong></span></div>");
 	}
@@ -980,7 +984,7 @@ function srwrap(roomName, noticeFalse){
     }
     switchRoom(roomName)
     if (!noticeFalse) {
-        $("#chattext").append("<div class='chatline' style='background-color: #F09898;'><center><strong>Switched to #" + roomName + "</strong> (subscribed)</center></div>");
+        $("#chattext").append("<div class='chatline' style='background-color: #F09898;'><center><strong>Switched to #" + roomName + "</strong></center></div>");
     }
     moveWin();
 }
