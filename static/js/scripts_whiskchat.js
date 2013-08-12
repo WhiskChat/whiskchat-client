@@ -12,7 +12,7 @@ var usernames = [];
 var online = 0;
 var lastCheck = new Date("1990");
 var hasFocus = true;
-var versionString = 'WhiskChat Client v4.1.6/whiskers75';
+var versionString = 'WhiskChat Client v4.2.0/whiskers75';
 var muted = [];
 var roomToJoin = "";
 var forcedc = false;
@@ -638,6 +638,7 @@ socket.on("botcheck", function(data){
 });
 socket.on("online", function(data){
     online = data.people;
+    usernames = data.array;
     updateSidebar();
 });
 var roomHTML = [];
