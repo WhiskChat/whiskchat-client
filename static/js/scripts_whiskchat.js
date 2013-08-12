@@ -12,7 +12,7 @@ var usernames = [];
 var online = 0;
 var lastCheck = new Date("1990");
 var hasFocus = true;
-var versionString = 'WhiskChat Client v4.2.0/whiskers75';
+var versionString = 'WhiskChat Client v5.0.0/whiskers75';
 var muted = [];
 var roomToJoin = "";
 var forcedc = false;
@@ -85,7 +85,7 @@ $(document).ready(function(){
 	    roomToJoin = "";
 	}
     }
-    $('#version').html(versionString);
+    $('.versionstr').html(versionString);
     $(document).click(notificationPermission);
     
     $('#webkitn').click(function() {
@@ -834,12 +834,12 @@ socket.on("chat", function(data){
     
     if(data.user == username){
 	var m = "";
-	if (spammyness > 25) {
+	/*if (spammyness > 25) {
             winBTCtext += " <span class='label label-important notif'>high chat frequency</span> ";
 	}
         if(data.message.indexOf(" u " ) != -1 || data.message.indexOf("youre") != -1 || data.message.indexOf(" im ") != -1){
             winBTCtext += " <span class='label label-important notif'>texting speak</span>";
-        }
+        }*/
     } else {
 	var m = "";
     }
