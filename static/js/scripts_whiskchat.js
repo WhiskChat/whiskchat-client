@@ -12,7 +12,7 @@ var usernames = [];
 var online = 0;
 var lastCheck = new Date("1990");
 var hasFocus = true;
-var versionString = 'WhiskChat Client v4.1.4/whiskers75';
+var versionString = 'WhiskChat Client v4.1.5/whiskers75';
 var muted = [];
 var roomToJoin = "";
 var forcedc = false;
@@ -238,6 +238,7 @@ $(document).ready(function(){
 		}
 	    }
 	    if (tmp2.length > 1) {
+                event.preventDefault();
 		return callMsg({message: 'Multiple choices: ' + tmp2.join(', ')});
 	    }
             if($("#chatinput").val().split(" ").length == 1){
