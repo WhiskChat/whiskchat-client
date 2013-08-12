@@ -12,7 +12,7 @@ var usernames = [];
 var online = 0;
 var lastCheck = new Date("1990");
 var hasFocus = true;
-var versionString = 'WhiskChat Client v4.1.3/whiskers75';
+var versionString = 'WhiskChat Client v4.1.4/whiskers75';
 var muted = [];
 var roomToJoin = "";
 var forcedc = false;
@@ -237,15 +237,18 @@ $(document).ready(function(){
 		    tmp2.push(usernames[i]);
 		}
 	    }
+	    if (tmp2.length > 1) {
+		return callMsg({message: 'Multiple choices: ' + tmp2.join(', ')});
+	    }
             if($("#chatinput").val().split(" ").length == 1){
-                $("#chatinput").val(usernames[i] + ": ");
+                $("#chatinput").val(tmp2[0] + ": ");
             } else {
                 var prev = "";
                 var splitty = $("#chatinput").val().split(" ");
                 for(var j = 0; j < splitty.length-1; j++){
                     prev += splitty[j] + " ";
                 }
-                $("#chatinput").val(prev + usernames[i] + " ");
+                $("#chatinput").val(prev + tmp2[0] + " ");
             }
             event.preventDefault();
 	}
