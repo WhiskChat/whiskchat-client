@@ -12,8 +12,10 @@ var usernames = [];
 var online = 0;
 var lastCheck = new Date("1990");
 var hasFocus = true;
-var versionString = 'WhiskChat Client v5.0.3-RC1/whiskers75';
+var versionString = 'WhiskChat Client v5.1.0/whiskers75';
 var muted = [];
+var disconnected = false;
+var notifyAll = false;
 var roomToJoin = "";
 var forcedc = false;
 var annJoin = false; // Don't spam
@@ -24,16 +26,9 @@ var whitelisted = 0;
 var mention = false;
 var alreadyAsked = false;
 function notificationPermission() {
-    
-    // Not compatible, or already allowed?
-    
-    if(!window.webkitNotifications || (window.webkitNotifications.checkPermission() == 0) || alreadyAsked)
+    if (!window.webkitNotifications || (window.webkitNotifications.checkPermission() == 0) || alreadyAsked) {
         return;
-    
-    
-    
-    // Ask for permission
-    
+    }
     window.webkitNotifications.requestPermission();
     alreadyAsked = true;
 }
@@ -71,13 +66,35 @@ setInterval(function() { // Delete old messages
     $('.expiring').fadeOut(1000, "swing", function() {
         $('.expiring').remove();
     });
-}, 5000);
+}, 10000);
+socket.on("connect", function() {
+    if (disconnected) {
+	disconnected = false;
+    callMsg({message: 'Connected to WhiskChat Server!'});
+	$('#username').html('<a id="loginsignup">Authenticate</a>');
+        $("#loginsignup").click(function() {
+            $('#login').modal('show');
+        });
+    $('#balance').html('0');
+    if(document.URL.split("index.html?j:").length == 2){
+        roomToJoin = document.URL.split("j:")[1].split("&")[0];
+    }
+    if(getCookie("session")){
+        socket.emit("login", {session: getCookie("session"), quiet: true});
+    } else {
+        if(roomToJoin){
+            socket.emit("joinroom", {join: roomToJoin});
+            roomToJoin = "";
+        }
+    }
+	socket.emit('quiet');
+	}
+});
 $(document).ready(function(){
     if(document.URL.split("index.html?j:").length == 2){
 	roomToJoin = document.URL.split("j:")[1].split("&")[0];
     }
     if(getCookie("session")){
-	$('#loginsignup').html('Login/sign up (cookie detected)');
         socket.emit("login", {session: getCookie("session")});
     } else {
 	if(roomToJoin){
@@ -90,7 +107,19 @@ $(document).ready(function(){
     
     $('#webkitn').click(function() {
 	if (window.webkitNotifications) {
+            callMsg({message: 'Asked for permission!'});
             window.webkitNotifications.requestPermission();
+	}
+	else {
+            callMsg({message: 'Your browser is incapable of WebKit Notifications.'}); 
+	}
+    });
+    $('#webkitalways').click(function() {
+        if (window.webkitNotifications) {
+	    callMsg({message: 'You have enabled notification for all messages for this session.'});
+        }
+	else {
+            callMsg({message: 'Your browser is incapable of WebKit Notifications.'}); 
 	}
     });
     $('.inputsio-alt').click(function() {
@@ -123,7 +152,7 @@ $(document).ready(function(){
 	    forcedc = true;
 	    socket.disconnect();
 	    window.close();
-	    callMsg({message: 'Disconnected from CoinChat. You can now exit the page.'});
+	    callMsg({message: 'Disconnected from WhiskChat. You can now exit the page.'});
 	}, 800);
     });
     /*$('.header').on('mouseover', function() {
@@ -327,26 +356,27 @@ function moveWin(){
     $("#chat .content").css("height", h - 35 - $(".header").height());
     $("body").css("overflow", "hidden");
     $("#chatinput").css("width", w - 110);
-    $("#chattext").animate({ scrollTop:$("#chattext").prop('scrollHeight') }, "slow");
+    //$("#chattext").animate({ scrollTop:$("#chattext").prop('scrollHeight') }, "slow");
+}
+function scrollWin() {
+    $("#chattext").animate({ scrollTop:$("#chattext").prop('scrollHeight') }, "slow"); 
 }
 var color = "000";
-socket.on("getcolors", function(data){
-    var newHTML = "";
-    for(var i in data){
-	newHTML += "<span class='color' data-color='" + data[i] + "' style='color: #" + data[i] + "'>" + data[i] + "</span><br />";
-    }
-    $("#mycolors").html(newHTML);
-    $(".color").click(function(){
-	color = $(this).attr('data-color');
-	$("#stylemodal").modal('hide');
-    });
-});
+socket.on('disconnect', function(data) 
 socket.on("disconnect", function(data){
-    ///alert("Disconnected from server. Refreshing..");
-    callMsg({message: "Disconnected.", type: 'alert-warning'});
-    
-    if (!forcedc) {setTimeout(function(){document.location.reload(true)}, 1000 + Math.random()*3750);}
-    
+    if (!forcedc) {
+	callMsg({message: "Disconnected from WhiskChat, attempting to reconnect...", type: 'alert-warning'});
+	$('#username').html('<a id="loginsignup">Authenticate</a>');
+	$('#balance').html('0');
+	$("#loginsignup").click(function() {
+	    $('#login').modal('show');
+	});
+	disconnected = true;
+        socket.socket.connect();
+    }
+    else {
+        callMsg({message: "Disconnected from WhiskChat.", type: 'alert-warning'});
+    }
 });
 socket.on("addcolor", function(data){
     $("#mycolors").append("<span class='color data-color='" + data.color + "' style='color: #" + data.color + "'>" + data.color + "</span><br />");
@@ -464,7 +494,7 @@ function sendMsg(){
 	    return;
         }
         if(msg.substr(0,5) == "/help"){
-	    callMsg({message: 'Commands: /quit, /join (room), /ping, /tip, /pm, /query, /kick, /unkick, /version, /mute, /unmute, /bet', type: 'alert-success'});
+	    callMsg({message: 'Commands: /quit, /join (room), /ping, /tip, /sr, /rm, /spt, /sc, /me, /version, /mute, /unmute, /bet', type: 'alert-success'});
 	    return;
         }
         if(msg.substr(0,5) == "/ping"){
@@ -599,7 +629,7 @@ socket.on("joinroom", function(data) {
 	$("#chattext").append("<div class='chatline'><span class='user' onclick='place()' style='background: rgba(238, 160, 136, 0.64);'><span>Copyright notice</span>&nbsp;&nbsp;</span><span class='message' style='background: #eee'>WhiskChat Client uses code from <a href='http://coinchat.org/'>CoinChat.org</a> (c) 2013 admin@glados.cc</span></div>");
     }
     else {
-        $("#chattext").append("<div class='chatline'><span class='user' onclick='place()' style='background: rgba(238, 160, 136, 0.64);'><span></span>&nbsp;&nbsp;</span><span class='message' style='background: #eee'><strong>Subscribing you to #" + data.room +" (requested by server)</strong></span></div>");
+        $("#chattext").append("<div class='chatline' style='background-color: #F09898;'><center>Subscribed to #" + data.room + " (requested by server)</center></div>");
 	if (appended.indexOf(data.room) == -1) {
 	    appended.push(data.room)
 	}
@@ -613,7 +643,8 @@ function addToRoomHTML(html) {
 }
 function callMsg(data){
     var newId = "m" + Math.round(Math.random() * 10000);
-    $("#chattext").append("<div class='chatline expiring'><span class='user' onclick='place()' style='background: rgba(238, 160, 136, 0.64);'><span></span>&nbsp;&nbsp;</span><span class='message' style='background: #eee'><strong>" + data.message + "</strong></span></div>");
+    //$("#chattext").append("<div class='chatline expiring'><span class='user' onclick='place()' style='background: rgba(238, 160, 136, 0.64);'><span></span>&nbsp;&nbsp;</span><span class='message' style='background: #eee'><strong>" + data.message + "</strong></span></div>");
+    $("#chattext").append("<div class='chatline expiring' style='background-color: #D0F098;'><center><strong>" + data.message + "</strong></center></div>");
     moveWin();
     
     if((!fs && $("#chattext").scrollTop() + 650 >= $("#chattext").prop('scrollHeight')) || (fs && $("#chattext").scrollTop() + $(window).height() >= $("#chattext").prop('scrollHeight'))){
@@ -804,7 +835,7 @@ socket.on("chat", function(data){
         }
     }
     else {
-        if (!hasFocus) {
+        if (!hasFocus && notifyAll) {
             chatQuickNotify(data.user, data.message, data.room);
         }
     }
