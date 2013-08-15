@@ -12,7 +12,7 @@ var usernames = [];
 var online = 0;
 var lastCheck = new Date("1990");
 var hasFocus = true;
-var versionString = 'WhiskChat Client v5.0.2/whiskers75';
+var versionString = 'WhiskChat Client v5.0.3-RC1/whiskers75';
 var muted = [];
 var roomToJoin = "";
 var forcedc = false;
@@ -803,7 +803,12 @@ socket.on("chat", function(data){
             chatNotify(data.user, data.message, data.room);
         }
     }
-    
+    else {
+        if (!hasFocus) {
+            chatQuickNotify(data.user, data.message, data.room);
+        }
+    }
+
     var pmClass = "";
     if(data.room.indexOf(":") == -1){
         pmClass = " userpm";
@@ -1040,6 +1045,15 @@ function chatNotify(user, message, room) {
 	setTimeout(function() {
 	    notif.cancel()
 	}, 5000);
+    }
+}
+function chatQuickNotify(user, message, room) {
+    if (window.webkitNotifications && window.webkitNotifications.checkPermission() == 0) {
+        var notif = webkitNotifications.createNotification('http://coinchat.org/static/img/chat.png', stripHTML(user), stripHTML(message));
+        notif.show();
+        setTimeout(function() {
+            notif.cancel()
+        }, 900);
     }
 }
 function startLightFlashing(title){
