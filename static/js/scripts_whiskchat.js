@@ -12,7 +12,7 @@ var usernames = [];
 var online = 0;
 var lastCheck = new Date("1990");
 var hasFocus = true;
-var versionString = 'WhiskChat Client v5.1.0/whiskers75';
+var versionString = 'WhiskChat Client v5.1.1/whiskers75';
 var muted = [];
 var disconnected = false;
 var notifyAll = false;
@@ -743,6 +743,7 @@ socket.on("chat", function(data){
         $("#chattext").append("<div class='chatline'><span class='user' onclick='place()' style='background: rgba(136, 238, 136, 0.64);'><span></span>&nbsp;&nbsp;</span><span class='message muted' style='background: #eee'><strong>" + data.user + "</strong> connected to WhiskChat Server (" + data.message.substr(11, data.message.length) + ")</span></div>");
         addToRoomHTML("<div class='chatline'><span class='user' onclick='place()' style='background: rgba(136, 238, 136, 0.64);'><span></span>&nbsp;&nbsp;</span><span class='message muted' style='background: #eee'><strong>" + data.user + "</strong> connected to WhiskChat Server (" + data.message.substr(11, data.message.length) + ")</span></div>");
 	moveWin();
+	scrollWin();
 	return;
     }
     if (data.message.substr(0,3) == "EC_")
@@ -770,6 +771,7 @@ socket.on("chat", function(data){
 	    moveWin();
 	}
         moveWin();
+	scrollWin();
         return;
     }
     if (data.message == '!; joinroom') {
@@ -781,6 +783,7 @@ socket.on("chat", function(data){
 	    
 	}
         moveWin();
+	scrollWin();
         return;
     }
     if (data.message.substr(0, 11) == '!; quitroom') {
@@ -791,12 +794,14 @@ socket.on("chat", function(data){
 	    roomHTML[data.room] += "<div class='chatline'><span class='user' onclick='place()' style='background: rgba(136, 238, 136, 0.64);'><span></span>&nbsp;&nbsp;</span><span class='message muted' style='background: #eee'><strong>" + data.user + "</strong> left #" + data.room + " (" + data.message.substr(12, data.message.length) + ")</span></div>"
 	}
         moveWin();
+	scrollWin();
         return;
     }
     if (data.message.substr(0, 11) == '!; quitchat') {
         $("#chattext").append("<div class='chatline'><span class='user' onclick='place()' style='background: rgba(136, 238, 136, 0.64);'><span></span>&nbsp;&nbsp;</span><span class='message muted' style='background: #eee'><strong>" + data.user + "</strong> has quit (" + data.message.substr(12, data.message.length) + ")</span></div>");
         addToRoomHTML("<div class='chatline'><span class='user' onclick='place()' style='background: rgba(136, 238, 136, 0.64);'><span></span>&nbsp;&nbsp;</span><span class='message muted' style='background: #eee'><strong>" + data.user + "</strong> has quit (" + data.message.substr(12, data.message.length) + ")</span></div>");
         moveWin();
+	scrollWin();
         return;
     }
     if ((args[0] == "!hint" || args[0] == "!ahint") && data.room == "20questions") {
@@ -816,6 +821,7 @@ socket.on("chat", function(data){
 	    if(data.message.toLowerCase().indexOf(username.toLowerCase()) != -1 && username.length > 0 && mention){
                 $("#chattext").append("<div class='chatline' title='Notification'><span class='user muted'>" + data.user + "</span><span class='message'><strong>" + data.message + "  <span class='muted'>#" + data.room + "</span></strong></span></div>");
 		moveWin();
+		scrollWin();
             }
 	}
 	if(data.room.indexOf(":") != -1 && data.user != username && !hasFocus) {
@@ -834,7 +840,7 @@ socket.on("chat", function(data){
             chatQuickNotify(data.user, data.message, data.room);
         }
     }
-
+    
     var pmClass = "";
     if(data.room.indexOf(":") == -1){
         pmClass = " userpm";
