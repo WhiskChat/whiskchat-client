@@ -391,10 +391,6 @@ socket.on("warn", function(data){
 function place() {
     // shut up.
 }
-socket.on("chatad", function(data) {
-    $("#chattext").append("<div class='chatline' title='Advertisement'><span class='user muted'>Advertisement</span><span class='message'>" + data.ad + "</span></div>");
-    moveWin();
-});
 socket.on("toprooms", function(data){
     console.log(data);
     var theHTML = "";
