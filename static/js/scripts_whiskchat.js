@@ -12,7 +12,7 @@ var usernames = [];
 var online = 0;
 var lastCheck = new Date("1990");
 var hasFocus = true;
-var versionString = 'WhiskChat Client v5.1.1/whiskers75';
+var versionString = 'WhiskChat Client v5.1.2-RC1/whiskers75';
 var muted = [];
 var disconnected = false;
 var notifyAll = false;
@@ -912,7 +912,7 @@ socket.on("chat", function(data){
 	}
 	log(data.message.split("<span class=\"foo\"></span>")[0], currentRoom);
 	
-	if(($("#chattext").scrollTop() + 650 >= $("#chattext").prop('scrollHeight')) || (fs && $("#chattext").scrollTop() + $(window).height() >= $("#chattext").prop('scrollHeight'))){
+	if(($("#chattext").scrollTop() + 1000 >= $("#chattext").prop('scrollHeight')) || (fs && $("#chattext").scrollTop() + $(window).height() >= $("#chattext").prop('scrollHeight'))){
 	    $("#chattext").animate({ scrollTop:$("#chattext").prop('scrollHeight') }, "slow");
 	}
 	$(".chatline").hover(function(){
