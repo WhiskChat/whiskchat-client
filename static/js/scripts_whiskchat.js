@@ -361,8 +361,7 @@ function moveWin(){
 function scrollWin() {
     $("#chattext").animate({ scrollTop:$("#chattext").prop('scrollHeight') }, "slow"); 
 }
-var color = "000";
-socket.on('disconnect', function(data) 
+var color = "000"; 
 socket.on("disconnect", function(data){
     if (!forcedc) {
 	callMsg({message: "Disconnected from WhiskChat, attempting to reconnect...", type: 'alert-warning'});
