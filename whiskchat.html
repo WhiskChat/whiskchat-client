@@ -29,7 +29,7 @@
       -->
     <div class="modal hide fade" id="login"> <!-- Login dialog -->
       <div class="modal-header">
-        <h4>Login/sign up (<span id="version"></span>)</h4>
+        <h4>Login/sign up</h4>
       </div>
       <div class="modal-body">
         Username: <input type="text" id="login-username" placeholder="Username"><br>
@@ -38,7 +38,7 @@
       </div>
       <div class="modal-footer">
         <button class="btn btn-primary" id="login-button">Login</button>
-        <button class="btn btn-success" id="register-button">Sign up</button>
+        <button class="btn btn-danger" id="register-button">Sign up</button>
       </div>
     </div> <!-- Closes login dialog -->
     <div class="modal hide fade" id="quitmodal"> <!-- Quit dialog -->
@@ -65,7 +65,8 @@
       <!-- This is the hard part. -->
       <div class="header">
         <span style="font-size: 17.5px;" class="headerblock versionstr">WhiskChat</span>
-        <span class="pull-right headerblock"><span style="color: #090; font-weight: bold;" class="gold" id="balance">0</span> mBTC</span><span id="username" style="font-weight: bold;" class="pull-right headerblock"><a id="loginsignup">Authenticate</a></span><span class="headerblock pull-right hidden-phone" id="quit"><i class="icon-off"></i></span> <!-- Quit -->
+	<span id="whitelisted" class="pull-right headerblock"><i class="icon-gift"></i>  0x</span>
+        <span class="pull-right headerblock"><span style="color: #090; font-weight: bold;" class="gold" id="balance">0</span> mBTC</span><span id="username" style="font-weight: bold;" class="pull-right headerblock"><a id="loginsignup">Authenticate</a></span><span class="headerblock pull-right hidden-phone" id="quit"><i class="icon-off"></i> Quit</span> <!-- Quit -->
       </div>     
       <div class="content">
 	<div id="chattext">

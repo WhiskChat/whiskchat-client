@@ -12,7 +12,7 @@ var usernames = [];
 var online = 0;
 var lastCheck = new Date("1990");
 var hasFocus = true;
-var versionString = 'WhiskChat Client v5.1.2-RC1/whiskers75';
+var versionString = 'WhiskChat Client v6.0.0/whiskers75';
 var muted = [];
 var disconnected = false;
 var notifyAll = false;
@@ -70,25 +70,25 @@ setInterval(function() { // Delete old messages
 socket.on("connect", function() {
     if (disconnected) {
 	disconnected = false;
-    callMsg({message: 'Connected to WhiskChat Server!'});
+	callMsg({message: 'Connected to WhiskChat Server!'});
 	$('#username').html('<a id="loginsignup">Authenticate</a>');
         $("#loginsignup").click(function() {
             $('#login').modal('show');
         });
-    $('#balance').html('0');
-    if(document.URL.split("index.html?j:").length == 2){
-        roomToJoin = document.URL.split("j:")[1].split("&")[0];
-    }
-    if(getCookie("session")){
-        socket.emit("login", {session: getCookie("session"), quiet: true});
-    } else {
-        if(roomToJoin){
-            socket.emit("joinroom", {join: roomToJoin});
-            roomToJoin = "";
-        }
-    }
-	socket.emit('quiet');
+	$('#balance').html('0');
+	if(document.URL.split("index.html?j:").length == 2){
+            roomToJoin = document.URL.split("j:")[1].split("&")[0];
 	}
+	if(getCookie("session")){
+            socket.emit("login", {session: getCookie("session"), quiet: true});
+	} else {
+            if(roomToJoin){
+		socket.emit("joinroom", {join: roomToJoin});
+		roomToJoin = "";
+            }
+	}
+	socket.emit('quiet');
+    }
 });
 $(document).ready(function(){
     if(document.URL.split("index.html?j:").length == 2){
@@ -337,7 +337,7 @@ $(document).ready(function(){
 });
 socket.on("whitelist", function(data){
     whitelisted = data.whitelisted;
-    $('#whitelisted').html('<span class="badge badge-success">' + whitelisted + 'x</span>');
+    $('#whitelisted').html('<i class="icon-gift"></i>  ' + whitelisted + 'x');
 });
 
 function moveWin(){
@@ -492,10 +492,6 @@ function sendMsg(){
 	    callMsg({message: 'Commands: /quit, /join (room), /ping, /tip, /sr, /rm, /spt, /sc, /me, /version, /mute, /unmute, /bet', type: 'alert-success'});
 	    return;
         }
-        if(msg.substr(0,5) == "/ping"){
-            socket.emit("ping", {ts: Date.now()});
-	    return;
-        }
         if(msg.substr(0,8) == "/version"){
             callMsg({message: 'Version ' + versionString});
             return;
@@ -628,6 +624,7 @@ socket.on("joinroom", function(data) {
 	if (appended.indexOf(data.room) == -1) {
 	    appended.push(data.room)
 	}
+	scrollWin();
     }
 });
 socket.on("message", callMsg);
@@ -695,11 +692,11 @@ socket.on("newuser", function(data){
 socket.on('tip', function(data) {
     console.log ('TIP: ' + JSON.stringify(data));
     if (currentRoom == data.room) {
-        $('#chattext').append("<div class='chatline'><span class='user' onclick='place()' style='background: rgba(136, 238, 136, 0.64);'><span>Tip</span>&nbsp;&nbsp;</span><span class='message' style='background: #eee; color: #090;'><strong>" + data.user + "</strong> has tipped " + Number(data.amount).toFixed(4) + " mBTC to <strong>" + data.target + "</strong>! " + (data.message ? '(message: ' + data.message + ')' : '') + "</span></div>");
+        $('#chattext').append("<div class='chatline'><span class='user' onclick='place()' style='background: rgba(136, 238, 136, 0.64);'><span>Tip</span>&nbsp;&nbsp;</span><span class='message' style='background: #eee; color: #090;'><strong>" + data.user + "</strong> has tipped " + Number(data.amount).toFixed(4) + " mBTC to <strong>" + data.target + "</strong>! " + (data.message ? '( ' + data.message + ')' : '') + "</span></div>");
         moveWin();
     }
     else {
-        roomHTML[data.room] += "<div class='chatline'><span class='user' onclick='place()' style='background: rgba(136, 238, 136, 0.64);'><span>Tip</span>&nbsp;&nbsp;</span><span class='message' style='background: #eee; color: #090;'><strong>" + data.user + "</strong> has tipped " + Number(data.amount).toFixed(4) + " mBTC to <strong>" + data.target + "</strong>! " + (data.message ? '(message: ' + data.message + ')' : '') + "</span></div>";
+        roomHTML[data.room] += "<div class='chatline'><span class='user' onclick='place()' style='background: rgba(136, 238, 136, 0.64);'><span>Tip</span>&nbsp;&nbsp;</span><span class='message' style='background: #eee; color: #090;'><strong>" + data.user + "</strong> has tipped " + Number(data.amount).toFixed(4) + " mBTC to <strong>" + data.target + "</strong>! " + (data.message ? '( ' + data.message + ')' : '') + "</span></div>";
         moveWin();
     }
     moveWin();
@@ -725,6 +722,7 @@ function switchRoom(obj){
 	$("#chattext").append(roomHTML[currentRoom]);
 	appended.push(obj);
         $("#chattext").append("<div class='chatline' style='background-color: #F09898;'><center>Subscribed to #" + obj + "</center></div>");
+	scrollWin();
     }
     $("#chattext").scrollTop($("#chattext")[0].scrollHeight);
     updateSidebar();
@@ -740,8 +738,8 @@ socket.on("chat", function(data){
         return;
     }
     if (data.message.substr(0, 10) == '!; connect') {
-        $("#chattext").append("<div class='chatline'><span class='user' onclick='place()' style='background: rgba(136, 238, 136, 0.64);'><span></span>&nbsp;&nbsp;</span><span class='message muted' style='background: #eee'><strong>" + data.user + "</strong> connected to WhiskChat Server (" + data.message.substr(11, data.message.length) + ")</span></div>");
-        addToRoomHTML("<div class='chatline'><span class='user' onclick='place()' style='background: rgba(136, 238, 136, 0.64);'><span></span>&nbsp;&nbsp;</span><span class='message muted' style='background: #eee'><strong>" + data.user + "</strong> connected to WhiskChat Server (" + data.message.substr(11, data.message.length) + ")</span></div>");
+        $("#chattext").append(genJoinNotice("<strong>" + data.user + "</strong> connected to WhiskChat Server (" + data.message.substr(11, data.message.length) + ")"));
+        addToRoomHTML(genJoinNotice("<strong>" + data.user + "</strong> connected to WhiskChat Server (" + data.message.substr(11, data.message.length) + ")"));
 	moveWin();
 	scrollWin();
 	return;
@@ -798,8 +796,8 @@ socket.on("chat", function(data){
         return;
     }
     if (data.message.substr(0, 11) == '!; quitchat') {
-        $("#chattext").append("<div class='chatline'><span class='user' onclick='place()' style='background: rgba(136, 238, 136, 0.64);'><span></span>&nbsp;&nbsp;</span><span class='message muted' style='background: #eee'><strong>" + data.user + "</strong> has quit (" + data.message.substr(12, data.message.length) + ")</span></div>");
-        addToRoomHTML("<div class='chatline'><span class='user' onclick='place()' style='background: rgba(136, 238, 136, 0.64);'><span></span>&nbsp;&nbsp;</span><span class='message muted' style='background: #eee'><strong>" + data.user + "</strong> has quit (" + data.message.substr(12, data.message.length) + ")</span></div>");
+        $("#chattext").append(genQuitNotice("<strong>" + data.user + "</strong> has disconnected (" + data.message.substr(12, data.message.length) + ")"));
+        addToRoomHTML(genQuitNotice("<strong>" + data.user + "</strong> has disconnected (" + data.message.substr(12, data.message.length) + ")"));
         moveWin();
 	scrollWin();
         return;
@@ -895,14 +893,15 @@ socket.on("chat", function(data){
 	}
 	data.message = newDm;
     }
-    var dateFormat = " <span class='time muted'>" + new Date(data.timestamp).getHours() + ":" + (String(new Date(data.timestamp).getMinutes()).length == 1 ? "0" + new Date(data.timestamp).getMinutes() : new Date(data.timestamp).getMinutes()) + "</span> <button class='btn hide btn-mini tipbutton pull-right' data-user='" + data.user + "'>Tip mBTC</button>";
+    /*Old dateformat: */
+    var dateFormat =  " <span class='time muted notif'>" + new Date(data.timestamp).getHours() + ":" + (String(new Date(data.timestamp).getMinutes()).length == 1 ? "0" + new Date(data.timestamp).getMinutes() : new Date(data.timestamp).getMinutes()) + "</span> <button class='btn hide btn-mini tipbutton pull-right' data-user='" + data.user + "'>Tip</button>";
     if(appended.indexOf(data.room) !== -1 || data.room == currentRoom || data.room == 'main'){ // Hacky, but will do for now
 	$(".silent").remove();
 	if (data.user == 'WhiskDiceBot' && currentRoom != data.room) {
 	    return;
 	}
 	if (data.room != currentRoom) {
-            $("#chattext").append("<div class='chatline' title='" + data.timestamp + "'><span class='user" + pmClass + "' onclick='place()' data-user='" + data.user + "'><span>" + (data.userShow ? data.userShow : data.user) + "</span>&nbsp;&nbsp;</span><span class='message'>" + data.message + winBTCtext  + dateFormat + "   <span class='label label-info notif'>#" + data.room + "</strong></span></div>");
+            $("#chattext").append("<div class='chatline' title='" + data.timestamp + "'><span class='user" + pmClass + "' onclick='place()' data-user='" + data.user + "'><span>" + (data.userShow ? data.userShow : data.user) + "</span>&nbsp;&nbsp;</span><span class='message'>" + data.message + winBTCtext  + dateFormat + "   <strong class='muted notif'>#" + data.room + "</strong></span></div>");
 	}
 	else {
 	    $("#chattext").append("<div class='chatline' title='" + data.timestamp + "'><span class='user" + pmClass + "' onclick='place()' data-user='" + data.user + "'><span>" + (data.userShow ? data.userShow : data.user) + "</span>&nbsp;&nbsp;</span><span class='message'>" + data.message + winBTCtext + dateFormat + "</span></div>");
@@ -962,7 +961,7 @@ socket.on("loggedin", function(data){
     setCookie("session", data.session, 14);
     $("#login").modal('hide');
     $("#user").show();
-    $("#username").html(data.username);
+    $("#username").html('<i class="icon-user"></i>  ' + data.username);
     $(".hide-guest").show();
     $('#chat').show();
     //$('.header').append('Encryption: <span class="label" id="encstatus">Off</span>');
@@ -997,7 +996,7 @@ socket.on("loggedin", function(data){
         console.log('Placing user ' + $(this).attr('data-user'));
         $("#chatinput").val($(this).attr('data-user') + ': ');
     });
-    srwrap('main');
+    srwrap('main', true);
     jQuery(window).bind("beforeunload", function() { 
         socket.emit('chat', {room: 'main', message: '!; quitchat Quit: Window closed!', color: '000'});
     });
@@ -1023,6 +1022,7 @@ function srwrap(roomName, noticeFalse){
         $("#chattext").append("<div class='chatline' style='background-color: #F09898;'><center><strong>Switched to #" + roomName + "</strong></center></div>");
     }
     moveWin();
+    scrollWin();
 }
 
 // stuff
@@ -1095,3 +1095,11 @@ function changeTitle(title){
     clearInterval(flashInterval);
     window.document.title = title;
 }    
+function genJoinNotice(message) {
+    //return "<div class='chatline'><span class='message muted' style='background: #eee'><center>" + message + "</center></span></div>"
+    return "<div class='chatline' style='background-color: #95E79E;'><center>" + message + "</center></div>";
+}
+function genQuitNotice(message) {
+    //return "<div class='chatline'><span class='message muted' style='background: #eee'><center>" + message + "</center></span></div>"
+    return "<div class='chatline' style='background-color: #F56868;'><center>" + message + "</center></div>";
+}
