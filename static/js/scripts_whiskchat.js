@@ -12,7 +12,7 @@ var usernames = [];
 var online = 0;
 var lastCheck = new Date("1990");
 var hasFocus = true;
-var versionString = 'WhiskChat Client v6.0.0/whiskers75';
+var versionString = 'WhiskChat Client v6.1.0/whiskers75';
 var muted = [];
 var disconnected = false;
 var notifyAll = false;
@@ -509,6 +509,25 @@ function sendMsg(){
 		return;
 	    }
 	}
+        if(msg.substr(0,7) == "/reptip"){
+            // /tip username 1.25 thank you
+            if (msg == '/reptip') {
+                callMsg({message: 'Syntax: /reptip username amount (message)', type: 'alert-success'});
+                return;
+            }
+            if(msg.split(" ").length > 2){
+                var tipTo = msg.split(" ")[1];
+                var tipAmount = msg.split(" ")[2];
+                if(msg.split(" ")[3]){
+                    var tipMsg = msg.split(" ").slice(3).join(" ");
+                } else {
+                    var tipMsg = "";
+                }
+                callMsg({message: 'Tipping ' + tipTo + ' ' + tipAmount + (tipMsg ? ' (message: ' + tipMsg + ')' : ''), type: 'alert-success'});
+                socket.emit("tip", {room: currentRoom, user: tipTo, tip: tipAmount, message: tipMsg, rep: true});
+                return;
+            }
+        }
 	if(msg.substr(0,4) == "/tip"){
 	    // /tip username 1.25 thank you
 	    if (msg == '/tip') {
@@ -692,11 +711,11 @@ socket.on("newuser", function(data){
 socket.on('tip', function(data) {
     console.log ('TIP: ' + JSON.stringify(data));
     if (currentRoom == data.room) {
-        $('#chattext').append("<div class='chatline'><span class='user' onclick='place()' style='background: rgba(136, 238, 136, 0.64);'><span>Tip</span>&nbsp;&nbsp;</span><span class='message' style='background: #eee; color: #090;'><strong>" + data.user + "</strong> has tipped " + Number(data.amount).toFixed(4) + " mBTC to <strong>" + data.target + "</strong>! " + (data.message ? '( ' + data.message + ')' : '') + "</span></div>");
+        $('#chattext').append("<div class='chatline'><span class='user' onclick='place()' style='background: rgba(136, 238, 136, 0.64);'><span>Tip</span>&nbsp;&nbsp;</span><span class='message' style='background: #eee; color: #090;'><strong>" + data.user + "</strong> has tipped " + Number(data.amount).toFixed(4) + " mBTC to <strong>" + data.target + "</strong>! " + (data.message ? '(' + data.message + ')' : '') + "</span></div>");
         moveWin();
     }
     else {
-        roomHTML[data.room] += "<div class='chatline'><span class='user' onclick='place()' style='background: rgba(136, 238, 136, 0.64);'><span>Tip</span>&nbsp;&nbsp;</span><span class='message' style='background: #eee; color: #090;'><strong>" + data.user + "</strong> has tipped " + Number(data.amount).toFixed(4) + " mBTC to <strong>" + data.target + "</strong>! " + (data.message ? '( ' + data.message + ')' : '') + "</span></div>";
+        roomHTML[data.room] += "<div class='chatline'><span class='user' onclick='place()' style='background: rgba(136, 238, 136, 0.64);'><span>Tip</span>&nbsp;&nbsp;</span><span class='message' style='background: #eee; color: #090;'><strong>" + data.user + "</strong> has tipped " + Number(data.amount).toFixed(4) + " mBTC to <strong>" + data.target + "</strong>! " + (data.message ? '(' + data.message + ')' : '') + "</span></div>";
         moveWin();
     }
     moveWin();
