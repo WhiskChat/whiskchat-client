@@ -12,7 +12,7 @@ var usernames = [];
 var online = 0;
 var lastCheck = new Date("1990");
 var hasFocus = true;
-var versionString = 'WhiskChat Client v6.1.0/whiskers75';
+var versionString = 'WhiskChat Client v6.1.1/whiskers75';
 var muted = [];
 var disconnected = false;
 var notifyAll = false;
@@ -337,7 +337,7 @@ $(document).ready(function(){
 });
 socket.on("whitelist", function(data){
     whitelisted = data.whitelisted;
-    $('#whitelisted').html('<i class="icon-gift"></i>  ' + whitelisted + 'x');
+    $('#whitelisted').html('<i class="icon-gift"></i>  ' + whitelisted);
 });
 
 function moveWin(){
