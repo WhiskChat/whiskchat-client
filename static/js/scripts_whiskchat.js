@@ -872,7 +872,6 @@ socket.on("chat", function(data){
         if (!hasFocus) {
             pendingMsgs += 1;
         }
-        }
     }
     updateTitle();
     
