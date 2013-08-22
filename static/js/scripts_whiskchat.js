@@ -12,7 +12,7 @@ var usernames = [];
 var online = 0;
 var lastCheck = new Date("1990");
 var hasFocus = true;
-var versionString = 'WhiskChat Client v6.2.2/whiskers75';
+var versionString = 'WhiskChat Client v6.2.3/whiskers75';
 var muted = [];
 var disconnected = false;
 var notifyAll = false;
@@ -50,7 +50,7 @@ var upto = -1;
 var spammyness = 0;
 var lastMsg = new Date();
 var warningLevel = 0;
-() {
+function updateTitle() {
     if (pendingMention) {
         changeTitle("(" + pendingMsgs + "!) WhiskChat");
     }
