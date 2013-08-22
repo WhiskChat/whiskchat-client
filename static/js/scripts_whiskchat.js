@@ -12,7 +12,7 @@ var usernames = [];
 var online = 0;
 var lastCheck = new Date("1990");
 var hasFocus = true;
-var versionString = 'WhiskChat Client v6.1.1/whiskers75';
+var versionString = 'WhiskChat Client v6.2.0beta/whiskers75';
 var muted = [];
 var disconnected = false;
 var notifyAll = false;
@@ -24,6 +24,8 @@ var appended = [];
 var friendsonline = [];
 var whitelisted = 0;
 var mention = false;
+var pendingMention = false;
+var pendingMsgs = 0;
 var alreadyAsked = false;
 function notificationPermission() {
     if (!window.webkitNotifications || (window.webkitNotifications.checkPermission() == 0) || alreadyAsked) {
@@ -48,9 +50,18 @@ var upto = -1;
 var spammyness = 0;
 var lastMsg = new Date();
 var warningLevel = 0;
-
+function updateTitle() {
+    if (pendingMention) {
+        changeTitle("(" + pendingMsgs + "!) WhiskChat");
+    }
+    else {
+        changeTitle("(" + pendingMsgs + ") WhiskChat");
+    }
+}
 $(window).focus(function() {
-    changeTitle("WhiskChat v4");
+    changeTitle("WhiskChat");
+    pendingMsgs = 0;
+    pendingMention = false;
     hasFocus = true;
 });
 $(window).blur(function(){
@@ -850,13 +861,20 @@ socket.on("chat", function(data){
     if(data.message.toLowerCase().indexOf(username.toLowerCase()) != -1 && username.length > 0){ 
         if (!hasFocus) {
             chatNotify(data.user, data.message, data.room);
+            pendingMention = true;
+            pendingMsgs += 1;
         }
     }
     else {
         if (!hasFocus && notifyAll) {
             chatQuickNotify(data.user, data.message, data.room);
         }
+        if (!hasFocus) {
+            pendingMsgs += 1;
+        }
+        }
     }
+    updateTitle();
     
     var pmClass = "";
     if(data.room.indexOf(":") == -1){
