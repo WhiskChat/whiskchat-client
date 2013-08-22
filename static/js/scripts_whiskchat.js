@@ -873,7 +873,7 @@ socket.on("chat", function(data){
             pendingMsgs += 1;
         }
     }
-    updateTitle();
+    //updateTitle();
     
     var pmClass = "";
     if(data.room.indexOf(":") == -1){
