@@ -5,14 +5,14 @@
   Forever open source.
 */
 
-var socket = io.connect('http://whiskchat-server.herokuapp.com', {resource: 'socket.io', reconnect: false});
+var socket = io.connect('http://server.whiskchat.com', {resource: 'socket.io', reconnect: false});
 var username = "";
 var encryptionKey = "";
 var usernames = [];
 var online = 0;
 var lastCheck = new Date("1990");
 var hasFocus = true;
-var versionString = 'WhiskChat Client v6.2.3/whiskers75';
+var versionString = 'WhiskChat Client v6.2.5/whiskers75';
 var muted = [];
 var disconnected = false;
 var notifyAll = false;
