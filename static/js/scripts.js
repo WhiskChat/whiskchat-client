@@ -12,7 +12,7 @@ var usernames = [];
 var online = 0;
 var lastCheck = new Date("1990");
 var hasFocus = true;
-var versionString = 'WhiskChat Client v6.2.5/whiskers75';
+var versionString = 'WhiskChat Client v6.3.0/whiskers75';
 var muted = [];
 var disconnected = false;
 var notifyAll = false;
@@ -34,6 +34,11 @@ function notificationPermission() {
     window.webkitNotifications.requestPermission();
     alreadyAsked = true;
 }
+setTimeout(function() {
+    if (!socket.socket.connected) {
+	callMsg({message: 'You seem to be having trouble connecting. WhiskChat may be down, or you might need to refresh.'});
+    }
+}, 10000);
 function hex2a(hex) {
     var str = '';
     for (var i = 0; i < hex.length; i += 2)
@@ -349,6 +354,10 @@ $(document).ready(function(){
     });
     var dcTimeout;
     //afk timeout
+    srwrap('main', true);
+    $("#chattext").append("<div class='chatline'><span class='user' onclick='place()' style='background: rgba(238, 160, 136, 0.64);'><span>Copyright notice</span>&nbsp;&nbsp;</span><span class='message' style='background: #eee'>WhiskChat Client uses code from <a href='http://coinchat.org/'>coinchat.org</a> (c) 2013 admin@glados.cc</span></div>");
+    $("#chattext").append("<div class='chatline'><span class='user' onclick='place()' style='background: rgba(238, 160, 136, 0.64);'><span></span>&nbsp;&nbsp;</span><span class='message' style='background: #eee'>Looking for the CoinChat version of WhiskChat? You'll find it at whiskchat.com/coinchat.html.</span></div>");
+    callMsg({message: 'Connecting to server.whiskchat.com...'});
 });
 socket.on("whitelist", function(data){
     whitelisted = data.whitelisted;
@@ -650,9 +659,9 @@ socket.on("jointhisroom", function(data){
 });
 socket.on("joinroom", function(data) {
     if (data.room == "main") {
-	srwrap(data.room, true);
+	/*srwrap(data.room, true);
 	$("#chattext").append("<div class='chatline'><span class='user' onclick='place()' style='background: rgba(238, 160, 136, 0.64);'><span>Copyright notice</span>&nbsp;&nbsp;</span><span class='message' style='background: #eee'>WhiskChat Client uses code from <a href='http://coinchat.org/'>coinchat.org</a> (c) 2013 admin@glados.cc</span></div>");
-	$("#chattext").append("<div class='chatline'><span class='user' onclick='place()' style='background: rgba(238, 160, 136, 0.64);'><span></span>&nbsp;&nbsp;</span><span class='message' style='background: #eee'>Looking for the CoinChat version of WhiskChat? You'll find it at whiskchat.com/coinchat.html.</span></div>");
+	$("#chattext").append("<div class='chatline'><span class='user' onclick='place()' style='background: rgba(238, 160, 136, 0.64);'><span></span>&nbsp;&nbsp;</span><span class='message' style='background: #eee'>Looking for the CoinChat version of WhiskChat? You'll find it at whiskchat.com/coinchat.html.</span></div>");*/
     }
     else {
         $("#chattext").append("<div class='chatline' style='background-color: #F09898;'><center>Subscribed to #" + data.room + " (requested by server)</center></div>");
