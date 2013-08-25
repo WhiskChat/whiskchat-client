@@ -12,7 +12,7 @@ var usernames = [];
 var online = 0;
 var lastCheck = new Date("1990");
 var hasFocus = true;
-var versionString = 'WhiskChat Client v6.3.0/whiskers75';
+var versionString = 'WhiskChat Client v7.0.0/whiskers75';
 var muted = [];
 var disconnected = false;
 var notifyAll = false;
@@ -666,7 +666,6 @@ socket.on("joinroom", function(data) {
 	$("#chattext").append("<div class='chatline'><span class='user' onclick='place()' style='background: rgba(238, 160, 136, 0.64);'><span></span>&nbsp;&nbsp;</span><span class='message' style='background: #eee'>Looking for the CoinChat version of WhiskChat? You'll find it at whiskchat.com/coinchat.html.</span></div>");*/
     }
     else {
-        $("#chattext").append("<div class='chatline' style='background-color: #F09898;'><center>Subscribed to #" + data.room + " (requested by server)</center></div>");
 	if (appended.indexOf(data.room) == -1) {
 	    appended.push(data.room)
 	}
