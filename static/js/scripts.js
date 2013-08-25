@@ -496,6 +496,8 @@ function sendMsg(){
             if(msg.split(" ").length == 2){
                 appended.splice(appended.indexOf(msg.split(" ")[1]), 1);
                 $("#chattext").append("<div class='chatline' style='background-color: #F09898;'><center>Unsubscribed from #" + obj + "</center></div>");
+		callMsg({message: 'Syncing...'});
+		socket.emit('sync', {sync: appended});
                 return;
             }
         }
@@ -766,6 +768,8 @@ function switchRoom(obj){
 	$("#chattext").append(roomHTML[currentRoom]);
 	appended.push(obj);
         $("#chattext").append("<div class='chatline' style='background-color: #F09898;'><center>Subscribed to #" + obj + "</center></div>");
+	callMsg({message: 'Syncing...'});
+	socket.emit('sync', {sync: appended});
 	scrollWin();
     }
     $("#chattext").scrollTop($("#chattext")[0].scrollHeight);
