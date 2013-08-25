@@ -12,7 +12,7 @@ var usernames = [];
 var online = 0;
 var lastCheck = new Date("1990");
 var hasFocus = true;
-var versionString = 'WhiskChat Client v7.0.0/whiskers75';
+var versionString = 'WhiskChat Client v7.0.2/whiskers75';
 var muted = [];
 var disconnected = false;
 var notifyAll = false;
@@ -39,6 +39,10 @@ setTimeout(function() {
 	callMsg({message: 'You seem to be having trouble connecting. WhiskChat may be down, or you might need to refresh.'});
     }
 }, 10000);
+function sync() {
+    callMsg({message: '<i class="icon-upload"></i> Syncing roomlist to server...'});
+    socket.emit('sync', {sync: appended});
+}
 function hex2a(hex) {
     var str = '';
     for (var i = 0; i < hex.length; i += 2)
@@ -494,10 +498,13 @@ function sendMsg(){
         }
         if(msg.substr(0,3) == "/rm"){
             if(msg.split(" ").length == 2){
+		if (appended.indexOf(msg.split(" ")[1]) == -1) {
+		    callMsg({message: 'You are not subscribed to that room!'});
+		    return;
+		}
                 appended.splice(appended.indexOf(msg.split(" ")[1]), 1);
-                $("#chattext").append("<div class='chatline' style='background-color: #F09898;'><center>Unsubscribed from #" + obj + "</center></div>");
-		callMsg({message: 'Syncing...'});
-		socket.emit('sync', {sync: appended});
+                $("#chattext").append("<div class='chatline expiring' style='background-color: #F09898;'><center>Unsubscribed from #" + msg.split(" ")[1] + "</center></div>");
+		sync();
                 return;
             }
         }
@@ -766,9 +773,10 @@ function switchRoom(obj){
     if (appended.indexOf(obj) == -1) {
 	$("#chattext").append(roomHTML[currentRoom]);
 	appended.push(obj);
-        $("#chattext").append("<div class='chatline' style='background-color: #F09898;'><center>Subscribed to #" + obj + "</center></div>");
-	callMsg({message: 'Syncing...'});
-	socket.emit('sync', {sync: appended});
+	if (obj !== "main") {
+	    $("#chattext").append("<div class='chatline expiring' style='background-color: #F09898;'><center>Subscribed to #" + obj + "</center></div>");
+	    sync();
+	}
 	scrollWin();
     }
     $("#chattext").scrollTop($("#chattext")[0].scrollHeight);
@@ -1072,7 +1080,7 @@ function srwrap(roomName, noticeFalse){
     }
     switchRoom(roomName)
     if (!noticeFalse) {
-        $("#chattext").append("<div class='chatline' style='background-color: #F09898;'><center><strong>Switched to #" + roomName + "</strong></center></div>");
+        $("#chattext").append("<div class='chatline expiring' style='background-color: #F09898;'><center><strong>Switched to #" + roomName + "</strong></center></div>");
     }
     moveWin();
     scrollWin();
