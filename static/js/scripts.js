@@ -12,7 +12,7 @@ var usernames = [];
 var online = 0;
 var lastCheck = new Date("1990");
 var hasFocus = true;
-var versionString = 'WhiskChat Client v7.5.0/whiskers75';
+var versionString = 'WhiskChat Client v7.5.1/whiskers75';
 var muted = [];
 var disconnected = false;
 var notifyAll = false;
@@ -772,12 +772,10 @@ function removeRoom(room) {
 
 }
 function joinroomhandler(obj){
-    roomHTML[currentRoom] = $("#chattext").html();
-    currentRoom = obj;
     if (appended.indexOf(obj) == -1) {
 	$("#chattext").append(roomHTML[currentRoom]);
 	appended.push(obj);
-	$("#roomenu").append("<li class='dropdown-submenu' id=\"room-" + obj + "\"> <a onclick='srwrap(\"" + obj + "\")'>" + obj + "</a> <ul class=\"dropdown-menu\"><li> <a onclick='srwrap(\"" + obj + "\")'>Join</a> <li> <li> <a onclick='removeRoom(\"" + obj + "\")'>Leave</a> <li> </ul></li>");
+	$("#roomenu").append("<li class='dropdown-submenu' id=\"room-" + obj + "\"> <a onclick='srwrap(\"" + obj + "\")'>" + obj + "</a> <ul class=\"dropdown-menu\"><li> <a onclick='srwrap(\"" + obj + "\")'>Switch to</a> <li> <li> <a onclick='removeRoom(\"" + obj + "\")'>Leave</a> <li> </ul></li>");
 	scrollWin();
     }
     $("#chattext").scrollTop($("#chattext")[0].scrollHeight);
@@ -792,7 +790,7 @@ function switchRoom(obj){
 	$("#chattext").append(roomHTML[currentRoom]);
 	appended.push(obj);
 	    $("#chattext").append("<div class='chatline expiring' style='background-color: #F09898;'><center>Subscribed to #" + obj + "</center></div>");
-	$("#roomenu").append("<li class='dropdown-submenu' id=\"room-" + obj + "\"> <a onclick='srwrap(\"" + obj + "\")'>" + obj + "</a> <ul class=\"dropdown-menu\"><li> <a onclick='srwrap(\"" + obj + "\")'>Join</a> <li> <li> <a onclick='removeRoom(\"" + obj + "\")'>Leave</a> <li> </ul></li>");
+	$("#roomenu").append("<li class='dropdown-submenu' id=\"room-" + obj + "\"> <a onclick='srwrap(\"" + obj + "\")'>" + obj + "</a> <ul class=\"dropdown-menu\"><li> <a onclick='srwrap(\"" + obj + "\")'>Switch to</a> <li> <li> <a onclick='removeRoom(\"" + obj + "\")'>Leave</a> <li> </ul></li>");
 	    sync();
 	scrollWin();
     }
