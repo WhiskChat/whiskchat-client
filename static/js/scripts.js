@@ -12,7 +12,7 @@ var usernames = [];
 var online = 0;
 var lastCheck = new Date("1990");
 var hasFocus = true;
-var versionString = 'WhiskChat Client v7.0.3/whiskers75';
+var versionString = 'WhiskChat Client v7.5.0/whiskers75';
 var muted = [];
 var disconnected = false;
 var notifyAll = false;
@@ -358,7 +358,7 @@ $(document).ready(function(){
     });
     var dcTimeout;
     //afk timeout
-    srwrap('main', true);
+    joinroomhandler('main');
     $("#chattext").append("<div class='chatline'><span class='user' onclick='place()' style='background: rgba(238, 160, 136, 0.64);'><span>Copyright notice</span>&nbsp;&nbsp;</span><span class='message' style='background: #eee'>WhiskChat Client uses code from <a href='http://coinchat.org/'>coinchat.org</a> (c) 2013 admin@glados.cc</span></div>");
     $("#chattext").append("<div class='chatline'><span class='user' onclick='place()' style='background: rgba(238, 160, 136, 0.64);'><span></span>&nbsp;&nbsp;</span><span class='message' style='background: #eee'>Looking for the CoinChat version of WhiskChat? You'll find it at whiskchat.com/coinchat.html.</span></div>");
     callMsg({message: 'Connecting to server.whiskchat.com...'});
@@ -498,14 +498,9 @@ function sendMsg(){
         }
         if(msg.substr(0,3) == "/rm"){
             if(msg.split(" ").length == 2){
-		if (appended.indexOf(msg.split(" ")[1]) == -1) {
-		    callMsg({message: 'You are not subscribed to that room!'});
-		    return;
-		}
-                appended.splice(appended.indexOf(msg.split(" ")[1]), 1);
-                $("#chattext").append("<div class='chatline expiring' style='background-color: #F09898;'><center>Unsubscribed from #" + msg.split(" ")[1] + "</center></div>");
-		sync();
-                return;
+		removeRoom(msg.split(" ")[1]);
+		
+		return;
             }
         }
 	if(msg.substr(0,5) == "/join"){
@@ -667,17 +662,8 @@ socket.on("jointhisroom", function(data){
     socket.emit("joinroom", {join: data.room});
 });
 socket.on("joinroom", function(data) {
-    if (data.room == "main") {
-	/*srwrap(data.room, true);
-	$("#chattext").append("<div class='chatline'><span class='user' onclick='place()' style='background: rgba(238, 160, 136, 0.64);'><span>Copyright notice</span>&nbsp;&nbsp;</span><span class='message' style='background: #eee'>WhiskChat Client uses code from <a href='http://coinchat.org/'>coinchat.org</a> (c) 2013 admin@glados.cc</span></div>");
-	$("#chattext").append("<div class='chatline'><span class='user' onclick='place()' style='background: rgba(238, 160, 136, 0.64);'><span></span>&nbsp;&nbsp;</span><span class='message' style='background: #eee'>Looking for the CoinChat version of WhiskChat? You'll find it at whiskchat.com/coinchat.html.</span></div>");*/
-    }
-    else {
-	if (appended.indexOf(data.room) == -1) {
-	    appended.push(data.room)
-	}
+    	joinroomhandler(data.room);
 	scrollWin();
-    }
 });
 socket.on("message", callMsg);
 function addToRoomHTML(html) {
@@ -734,6 +720,7 @@ function updateSidebar(){
     else {
 	$('#chatinput').attr('placeholder', 'Send to #' + currentRoom + ' as ' + username + '... (' + online + ' people online)');
     }
+    $('#currentroom').html('Current room: ' + currentRoom);
 }
 socket.on("newuser", function(data){
     if(users[data.room] && users[data.room].indexOf(data.username) == -1){
@@ -768,16 +755,45 @@ socket.on("quitroom", function(data){
     delete users[data.room];
     
 });
-function switchRoom(obj){
+function removeRoom(room) {
+    if (room == "main") {
+	callMsg({message: 'You cannot leave main.'});
+	return;
+    }
+    if (appended.indexOf(room) == -1) {
+	callMsg({message: 'You are not subscribed to that room!'});
+	return;
+    }
+    appended.splice(appended.indexOf(room), 1);
+    $("#chattext").append("<div class='chatline expiring' style='background-color: #F09898;'><center>Unsubscribed from #" + room + "</center></div>");
+    sync();
+    $('#room-' + room).remove();
+    return;
+
+}
+function joinroomhandler(obj){
     roomHTML[currentRoom] = $("#chattext").html();
     currentRoom = obj;
     if (appended.indexOf(obj) == -1) {
 	$("#chattext").append(roomHTML[currentRoom]);
 	appended.push(obj);
-	if (obj !== "main") {
+	$("#roomenu").append("<li class='dropdown-submenu' id=\"room-" + obj + "\"> <a onclick='srwrap(\"" + obj + "\")'>" + obj + "</a> <ul class=\"dropdown-menu\"><li> <a onclick='srwrap(\"" + obj + "\")'>Join</a> <li> <li> <a onclick='removeRoom(\"" + obj + "\")'>Leave</a> <li> </ul></li>");
+	scrollWin();
+    }
+    $("#chattext").scrollTop($("#chattext")[0].scrollHeight);
+    updateSidebar();
+    moveWin();
+}
+function switchRoom(obj){
+    roomHTML[currentRoom] = $("#chattext").html();
+    currentRoom = obj;
+    ;
+    if (appended.indexOf(obj) == -1) {
+	$("#chattext").append(roomHTML[currentRoom]);
+	appended.push(obj);
 	    $("#chattext").append("<div class='chatline expiring' style='background-color: #F09898;'><center>Subscribed to #" + obj + "</center></div>");
+	$("#roomenu").append("<li class='dropdown-submenu' id=\"room-" + obj + "\"> <a onclick='srwrap(\"" + obj + "\")'>" + obj + "</a> <ul class=\"dropdown-menu\"><li> <a onclick='srwrap(\"" + obj + "\")'>Join</a> <li> <li> <a onclick='removeRoom(\"" + obj + "\")'>Leave</a> <li> </ul></li>");
 	    sync();
-	}
 	scrollWin();
     }
     $("#chattext").scrollTop($("#chattext")[0].scrollHeight);

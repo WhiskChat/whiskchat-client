@@ -1,10 +1,8 @@
 <!DOCTYPE html>
 <!--
-    WhiskChat Reloaded
-    by whiskers75
-    Aut viam inveniam aut faciam.
-    
-    This is the WhiskChat Server edition of WhiskChat client.
+   WhiskChat Client
+   (for WhiskChat Server)
+   Derived from coinchat.org by whiskers75
   -->
 <html>
   <head>
@@ -37,7 +35,7 @@
         Email (signup only): <input type="text" id="register-email" placeholder="Email"><br>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-primary" id="login-button">Login</button>
+        <button class="btn btn-success" id="login-button">Login</button>
         <button class="btn btn-danger" id="register-button">Sign up</button>
       </div>
     </div> <!-- Closes login dialog -->
@@ -64,7 +62,7 @@
     <div id="chat"> <!-- Welcome to the arena. -->
       <!-- This is the hard part. -->
       <div class="header">
-        <span style="font-size: 17.5px;" class="headerblock versionstr">WhiskChat</span>
+        <span style="font-size: 17.5px;" class="headerblock versionstr hidden-phone">WhiskChat</span>
 	<span id="whitelisted" class="pull-right headerblock"><i class="icon-gift"></i>  0</span>
         <span class="pull-right headerblock"><span style="color: #090; font-weight: bold;" class="gold" id="balance">0</span> mBTC</span><span id="username" style="font-weight: bold;" class="pull-right headerblock"><a id="loginsignup">Authenticate</a></span><span class="headerblock pull-right hidden-phone" id="quit"><i class="icon-off"></i> Quit</span> <!-- Quit -->
       </div>     
@@ -88,6 +86,11 @@
             </li>
             <li> <a id="reloadbal" class="">Refresh balance</a> </li>
             <li> <a id="getcolors">Refresh whitelist status</a> </li>
+	    <!--<li> <a class="muted" id="currentroom">Not in a room</a> </li>-->
+	    <li class="dropdown-submenu"> <a> <span id="currentroom"></span> (change) </a>
+              <ul class="dropdown-menu" id="roomenu">
+              </ul>
+            </li>
             <li class="dropdown-submenu"> <a> Ignoring (client) </a>
               <ul class="dropdown-menu">
                 <li> <a id="mute" class="">Add ignore</a> </li>
