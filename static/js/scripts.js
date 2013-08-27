@@ -662,8 +662,8 @@ socket.on("jointhisroom", function(data){
     socket.emit("joinroom", {join: data.room});
 });
 socket.on("joinroom", function(data) {
-    	joinroomhandler(data.room);
-	scrollWin();
+    joinroomhandler(data.room);
+    scrollWin();
 });
 socket.on("message", callMsg);
 function addToRoomHTML(html) {
@@ -789,9 +789,9 @@ function switchRoom(obj){
     if (appended.indexOf(obj) == -1) {
 	$("#chattext").append(roomHTML[currentRoom]);
 	appended.push(obj);
-	    $("#chattext").append("<div class='chatline expiring' style='background-color: #F09898;'><center>Subscribed to #" + obj + "</center></div>");
+	$("#chattext").append("<div class='chatline expiring' style='background-color: #F09898;'><center>Subscribed to #" + obj + "</center></div>");
 	$("#roomenu").append("<li class='dropdown-submenu' id=\"room-" + obj + "\"> <a onclick='srwrap(\"" + obj + "\")'>" + obj + "</a> <ul class=\"dropdown-menu\"><li> <a onclick='srwrap(\"" + obj + "\")'>Switch to</a> <li> <li> <a onclick='removeRoom(\"" + obj + "\")'>Leave</a> <li> </ul></li>");
-	    sync();
+	sync();
 	scrollWin();
     }
     $("#chattext").scrollTop($("#chattext")[0].scrollHeight);
@@ -969,8 +969,11 @@ socket.on("chat", function(data){
 	}
 	data.message = newDm;
     }
+    if (!data.rep) {
+	data.rep = '<span class="muted">none</span>';
+    }
     /*Old dateformat: */
-    var dateFormat =  " <span class='time muted notif'>" + new Date(data.timestamp).getHours() + ":" + (String(new Date(data.timestamp).getMinutes()).length == 1 ? "0" + new Date(data.timestamp).getMinutes() : new Date(data.timestamp).getMinutes()) + "</span> <button class='btn hide btn-mini tipbutton pull-right' data-user='" + data.user + "'>Tip</button>";
+    var dateFormat =   "<span class='time muted notif'> " + new Date(data.timestamp).getHours() + ":" + (String(new Date(data.timestamp).getMinutes()).length == 1 ? "0" + new Date(data.timestamp).getMinutes() : new Date(data.timestamp).getMinutes()) + "</span> <button class='btn hide btn-mini tipbutton pull-right' data-user='" + data.user + "'>Tip</button><span class='time notif'>  <i class='icon-gift'></i> " + data.rep + "</span>";
     if(appended.indexOf(data.room) !== -1 || data.room == currentRoom || data.room == 'main'){ // Hacky, but will do for now
 	$(".silent").remove();
 	if (data.user == 'WhiskDiceBot' && currentRoom != data.room) {
