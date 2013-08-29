@@ -961,8 +961,8 @@ socket.on("chat", function(data){
 	var newDm = "";
 	var msgHash = data.message.split(" ");
 	for(var i = 0; i < msgHash.length; i++){
-	    if(msgHash[i].indexOf("#") == 0 && msgHash[i].indexOf("'") == -1 && msgHash[i].indexOf('"') == -1){
-		newDm += "<a href='#' onclick='srwrap(\"" + msgHash[i].substr(1).replace('+', '') + "\")'>" + msgHash[i] + "</a> ";
+	    if(msgHash[i].indexOf("#") == 0){
+		newDm += "<a href='#' onclick='srwrap(\"" + msgHash[i].substr(1).replace(/\W/g, '') + "\")'>" + msgHash[i] + "</a> ";
 	    } else {
 		newDm += msgHash[i] + " ";
 	    }
