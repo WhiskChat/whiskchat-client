@@ -12,7 +12,7 @@ var usernames = [];
 var online = 0;
 var lastCheck = new Date("1990");
 var hasFocus = true;
-var versionString = 'WhiskChat Client v7.5.1/whiskers75';
+var versionString = 'WhiskChat Client v8.0.0/whiskers75';
 var muted = [];
 var disconnected = false;
 var notifyAll = false;
@@ -955,19 +955,6 @@ socket.on("chat", function(data){
           }*/
     } else {
 	var m = "";
-    }
-    //Yes, I know we already have a lot of code here, but I need to plug it here
-    if(data.message.indexOf("#") != -1){
-	var newDm = "";
-	var msgHash = data.message.split(" ");
-	for(var i = 0; i < msgHash.length; i++){
-	    if(msgHash[i].indexOf("#") == 0 && msgHash[i].indexOf("'") == -1 && msgHash[i].indexOf('"') == -1){
-		newDm += "<a href='#' onclick='srwrap(\"" + msgHash[i].substr(1).replace('+', '') + "\")'>" + msgHash[i] + "</a> ";
-	    } else {
-		newDm += msgHash[i] + " ";
-	    }
-	}
-	data.message = newDm;
     }
     if (!data.rep) {
 	data.rep = '<span class="muted">none</span>';
