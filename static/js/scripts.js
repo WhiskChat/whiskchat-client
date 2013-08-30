@@ -12,7 +12,7 @@ var usernames = [];
 var online = 0;
 var lastCheck = new Date("1990");
 var hasFocus = true;
-var versionString = 'WhiskChat Client v8.1.1/whiskers75';
+var versionString = 'WhiskChat Client v8.1.2/whiskers75';
 var muted = [];
 var disconnected = false;
 var notifyAll = false;
@@ -838,7 +838,7 @@ socket.on("chat", function(data){
 	    return;
 	}
 	data.encrypted = true;
-	data.message = decryptedMessage;
+        data.message = stripHTML(hex2a(decryptedMessage));
 	
     }
     else {
