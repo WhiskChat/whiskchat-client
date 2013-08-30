@@ -12,7 +12,7 @@ var usernames = [];
 var online = 0;
 var lastCheck = new Date("1990");
 var hasFocus = true;
-var versionString = 'WhiskChat Client v8.0.1/whiskers75';
+var versionString = 'WhiskChat Client v8.0.3/whiskers75';
 var muted = [];
 var disconnected = false;
 var notifyAll = false;
@@ -825,6 +825,7 @@ socket.on("chat", function(data){
 	    return;
 	}
 	data.encrypted = true;
+	data.message = decrypedMessage;
 	
     }
     else {
@@ -972,12 +973,12 @@ socket.on("chat", function(data){
             $("#chattext").append("<div class='chatline' style='background-color: #6F6F6F; color: #BBBBBB;' title='" + data.timestamp + "'><span class='user" + pmClass + "' onclick='place()' data-user='" + data.user + "'><span>" + (data.userShow ? data.userShow : data.user) + "</span>&nbsp;&nbsp;</span><span class='message'>" + data.message + winBTCtext  + dateFormat + "   <strong class='muted notif'>Encrypted with /enc " + encryptionKey + ". /enc off to stop.</strong></span></div>");
 	}
 	else {
-	if (data.room != currentRoom) {
-            $("#chattext").append("<div class='chatline' title='" + data.timestamp + "'><span class='user" + pmClass + "' onclick='place()' data-user='" + data.user + "'><span>" + (data.userShow ? data.userShow : data.user) + "</span>&nbsp;&nbsp;</span><span class='message'>" + data.message + winBTCtext  + dateFormat + "   <strong class='muted notif'>#" + data.room + "</strong></span></div>");
-	}
-	else {
-	    $("#chattext").append("<div class='chatline' title='" + data.timestamp + "'><span class='user" + pmClass + "' onclick='place()' data-user='" + data.user + "'><span>" + (data.userShow ? data.userShow : data.user) + "</span>&nbsp;&nbsp;</span><span class='message'>" + data.message + winBTCtext + dateFormat + "</span></div>");
-	}
+	    if (data.room != currentRoom) {
+		$("#chattext").append("<div class='chatline' title='" + data.timestamp + "'><span class='user" + pmClass + "' onclick='place()' data-user='" + data.user + "'><span>" + (data.userShow ? data.userShow : data.user) + "</span>&nbsp;&nbsp;</span><span class='message'>" + data.message + winBTCtext  + dateFormat + "   <strong class='muted notif'>#" + data.room + "</strong></span></div>");
+	    }
+	    else {
+		$("#chattext").append("<div class='chatline' title='" + data.timestamp + "'><span class='user" + pmClass + "' onclick='place()' data-user='" + data.user + "'><span>" + (data.userShow ? data.userShow : data.user) + "</span>&nbsp;&nbsp;</span><span class='message'>" + data.message + winBTCtext + dateFormat + "</span></div>");
+	    }
 	}
 	while($("#chattext").children().length > 200){
 	    $("#chattext .chatline:first-child").remove();
