@@ -12,7 +12,7 @@ var usernames = [];
 var online = 0;
 var lastCheck = new Date("1990");
 var hasFocus = true;
-var versionString = 'WhiskChat Client v8.1.0/whiskers75';
+var versionString = 'WhiskChat Client v8.1.1/whiskers75';
 var muted = [];
 var disconnected = false;
 var notifyAll = false;
@@ -739,6 +739,8 @@ socket.on('tip', function(data) {
             roomHTML[data.room] += "<div class='chatline'><span class='user' onclick='place()' style='background: rgba(136, 238, 136, 0.64);'><span>Tip</span>&nbsp;&nbsp;</span><span class='message' style='background: #eee; color: #090;'><strong>" + data.user + "</strong> has set " + data.target + "'s rep to " + Number(data.amount) + "! " + (data.message ? '(' + data.message + ')' : '') + "</span></div>";
             scrollWin();
 	}
+	moveWin();
+	scrollWin();
 	return;
     }
     if (currentRoom == data.room) {
