@@ -12,7 +12,7 @@ var usernames = [];
 var online = 0;
 var lastCheck = new Date("1990");
 var hasFocus = true;
-var versionString = 'WhiskChat Client v8.2.1/whiskers75';
+var versionString = 'WhiskChat Client v8.2.2/whiskers75';
 var muted = [];
 var disconnected = false;
 var notifyAll = false;
@@ -757,6 +757,9 @@ socket.on('tip', function(data) {
         roomHTML[data.room] += "<div class='chatline'><span class='user' onclick='place()' style='background: rgba(136, 238, 136, 0.64);'><span>Tip</span>&nbsp;&nbsp;</span><span class='message' style='background: #eee; color: #090;'><strong>" + data.user + "</strong> has tipped " + Number(data.amount) + " mBTC to <strong>" + data.target + "</strong>! " + (data.message ? '(' + data.message + ')' : '') + "</span></div>";
         moveWin();
     }
+    if (debugMode && currentRoom != data.room) {
+	callMsg({message: 'DBG Tip: ' JSON.stringify(data)});
+    }
     moveWin();
     scrollWin();
     return;
@@ -1027,7 +1030,7 @@ socket.on("chat", function(data){
 	if (data.winbtc && debugMode) {
 	    callMsg({message: 'User ' + data.user + ' earnt ' + data.winbtc + ' for ' + data.message + ' in room ' + data.room});
 	}
-        if (data.winbtc && debugMode) {
+        if (debugMode) {
             callMsg({message: 'User ' + data.user + ': ' + data.message + ' in room ' + data.room});
         }
         roomHTML[data.room] += "<div class='chatline' title='" + data.timestamp + "'><span class='user" + pmClass + "' onclick='place()' data-user='" + data.user + "'><span>" + (data.userShow ? data.userShow : data.user) + "</span>&nbsp;&nbsp;</span><span class='message'>" + data.message + winBTCtext + dateFormat + "</span></div>";
