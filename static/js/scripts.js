@@ -1015,7 +1015,9 @@ socket.on("chat", function(data){
 	$(".tipbutton").unbind().click(function(){
             if($(this).attr("data-user") != username){
                 var tipHowMuch = prompt("Tip " + $(this).attr("data-user") + " how much?", "0.25");
-                socket.emit("tip", {user: $(this).attr("data-user"), room: currentRoom, tip: tipHowMuch, message: 'Tipped using button'});
+                if (tipHowMuch) {
+                    socket.emit("tip", {user: $(this).attr("data-user"), room: currentRoom, tip: tipHowMuch, message: 'Tipped using button'});
+                }
             }
 	});
     } else {
