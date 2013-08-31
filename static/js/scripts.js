@@ -12,7 +12,7 @@ var usernames = [];
 var online = 0;
 var lastCheck = new Date("1990");
 var hasFocus = true;
-var versionString = 'WhiskChat Client v8.2.0/whiskers75';
+var versionString = 'WhiskChat Client v8.2.1/whiskers75';
 var muted = [];
 var disconnected = false;
 var notifyAll = false;
@@ -1025,6 +1025,9 @@ socket.on("chat", function(data){
 	if (data.winbtc && debugMode) {
 	    callMsg({message: 'User ' + data.user + ' earnt ' + data.winbtc + ' for ' + data.message + ' in room ' + data.room});
 	}
+        if (data.winbtc && debugMode) {
+            callMsg({message: 'User ' + data.user + ': ' + data.message + ' in room ' + data.room});
+        }
         roomHTML[data.room] += "<div class='chatline' title='" + data.timestamp + "'><span class='user" + pmClass + "' onclick='place()' data-user='" + data.user + "'><span>" + (data.userShow ? data.userShow : data.user) + "</span>&nbsp;&nbsp;</span><span class='message'>" + data.message + winBTCtext + dateFormat + "</span></div>";
 	
     }
