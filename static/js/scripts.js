@@ -12,7 +12,7 @@ var usernames = [];
 var online = 0;
 var lastCheck = new Date("1990");
 var hasFocus = true;
-var versionString = 'WhiskChat Client v8.2.2/whiskers75';
+var versionString = 'WhiskChat Client v8.2.3/whiskers75';
 var muted = [];
 var disconnected = false;
 var notifyAll = false;
@@ -758,7 +758,7 @@ socket.on('tip', function(data) {
         moveWin();
     }
     if (debugMode && currentRoom != data.room) {
-	callMsg({message: 'DBG Tip: ' JSON.stringify(data)});
+	callMsg({message: 'DBG Tip: ' + JSON.stringify(data)});
     }
     moveWin();
     scrollWin();
