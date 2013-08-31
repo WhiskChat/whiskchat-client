@@ -12,11 +12,12 @@ var usernames = [];
 var online = 0;
 var lastCheck = new Date("1990");
 var hasFocus = true;
-var versionString = 'WhiskChat Client v8.1.2/whiskers75';
+var versionString = 'WhiskChat Client v8.2.0/whiskers75';
 var muted = [];
 var disconnected = false;
 var notifyAll = false;
 var roomToJoin = "";
+var debugMode = false;
 var forcedc = false;
 var annJoin = false; // Don't spam
 var fs = false;
@@ -471,6 +472,11 @@ function sendMsg(){
             socket.emit("nuke", {target: msg.split(" ")[1], reason: msg.split(" ").slice(2).join(" ")});
             return;
         }
+        if(msg.substr(0,6) == ".debug"){
+            debugMode = !debugMode;
+	    callMsg({message: 'Debug mode state: ' + debugMode});
+            return;
+        }
         if(msg.substr(0,10) == "/whitelist"){
             if(msg.substr(msg.length-1) == " "){
                 msg = msg.substr(0, msg.length-2);
@@ -782,7 +788,7 @@ function removeRoom(room) {
     sync();
     $('#room-' + room).remove();
     return;
-
+    
 }
 function joinroomhandler(obj){
     if (appended.indexOf(obj) == -1) {
@@ -1015,6 +1021,9 @@ socket.on("chat", function(data){
     } else {
 	if(!roomHTML[data.room]){
 	    roomHTML[data.room] = "";
+	}
+	if (data.winbtc && debugMode) {
+	    callMsg({message: 'User ' + data.user + ' earnt ' + data.winbtc + ' for ' + data.message + ' in room ' + data.room});
 	}
         roomHTML[data.room] += "<div class='chatline' title='" + data.timestamp + "'><span class='user" + pmClass + "' onclick='place()' data-user='" + data.user + "'><span>" + (data.userShow ? data.userShow : data.user) + "</span>&nbsp;&nbsp;</span><span class='message'>" + data.message + winBTCtext + dateFormat + "</span></div>";
 	
