@@ -530,6 +530,15 @@ function sendMsg(){
             callMsg({message: 'Version ' + versionString});
             return;
         }
+        if(msg.substr(0,10) == "/changemail" || msg.substr(0,11) == "/changeemail") {
+        	if(msg == "/changemail" || msg == "/changeemail") {
+        		callMsg({message: 'Syntax: ' + msg + ' <email>', type: 'alert-success'});
+			return;
+        	} else {
+        		socket.emit("accounts", {action: 'changemail', username: username, email: msg.split(" ")[1]);
+        		return;
+        	}
+        }
         if(msg.substr(0,4) == "/bet" && currentRoom == "botgames") {
             if(msg != "/bet"){
                 var tipAmount = msg.split(" ")[1];
