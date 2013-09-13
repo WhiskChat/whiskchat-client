@@ -72,6 +72,7 @@
 	</div>
       </div>
       <div class="input"> <!-- The input box -->
+      <div class="btn-group">
         <div class="btn-group dropup">
           <button class="btn dropdown-toggle tenpx" data-toggle="dropdown" id="menubtn" style="display: inline-block;">
             <i class="icon-plus-sign"></i> <!-- The menu button -->
@@ -86,11 +87,6 @@
             </li>
             <li> <a id="reloadbal" class="">Refresh balance</a> </li>
             <li> <a id="getcolors">Refresh whitelist status</a> </li>
-	    <!--<li> <a class="muted" id="currentroom">Not in a room</a> </li>-->
-	    <li class="dropdown-submenu"> <a> <span id="currentroom"></span> (change) </a>
-              <ul class="dropdown-menu" id="roomenu">
-              </ul>
-            </li>
             <li class="dropdown-submenu"> <a> Ignoring (client) </a>
               <ul class="dropdown-menu">
                 <li> <a id="mute" class="">Add ignore</a> </li>
@@ -101,6 +97,14 @@
 <li> <a id="tipmenu"> Tip mBTC </a> </li>
 <li> <a id="webkitn"> Activate desktop notifications </a> </li>
 </ul>
+</div>
+        <div class="btn-group dropup">
+          <button class="btn dropdown-toggle tenpx" data-toggle="dropdown" id="roomslist" style="display: inline-block;">
+            <i class="icon-home"></i> none <!-- The menu button -->
+          </button>
+          <ul class="dropdown-menu" id="roomenu">
+</ul>
+</div>
 </div>
 <div class="input-append">
   <input type="text" class="input-block-level" id="chatinput" placeholder="Still loading..." style="width: 1145px;">
