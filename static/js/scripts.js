@@ -112,7 +112,6 @@ socket.on("connect", function() {
             message: 'Connected to WhiskChat Server!'
         });
          socket.once("loggedin", function(data) {
-    $('#chattext').html('<center><h2 class="muted" style="background-color: #eee; margin: 0px 0;">Connected</h2><p class="muted" style="background-color: #eee; margin: 0px 0;">Logged in as ' + data.username + '</center>');
     setCookie("session", data.session, 14);
     $("#login").modal('hide');
     $("#user").show();
