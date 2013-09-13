@@ -15,7 +15,7 @@ var usernames = [];
 var online = 0;
 var lastCheck = new Date("1990");
 var hasFocus = true;
-var versionString = 'WhiskChat v10.0.0-RC2';
+var versionString = 'WhiskChat v10.0.0-RC3';
 var muted = [];
 var disconnected = false;
 var notifyAll = false;
@@ -103,13 +103,69 @@ setInterval(function() { // Delete old messages
     $('.expiring').fadeOut(1000, "swing", function() {
         $('.expiring').remove();
     });
-}, 10000);
+}, 15000);
+setTimeout(function() {
 socket.on("connect", function() {
     if (disconnected) {
         disconnected = false;
         callMsg({
             message: 'Connected to WhiskChat Server!'
         });
+         socket.once("loggedin", function(data) {
+    $('#chattext').html('<center><h2 class="muted" style="background-color: #eee; margin: 0px 0;">Connected</h2><p class="muted" style="background-color: #eee; margin: 0px 0;">Logged in as ' + data.username + '</center>');
+    setCookie("session", data.session, 14);
+    $("#login").modal('hide');
+    $("#user").show();
+    $("#username").html('<i class="icon-user"></i>  ' + data.username);
+    $(".hide-guest").show();
+    $('#chat').show();
+    //$('.header').append('Encryption: <span class="label" id="encstatus">Off</span>');
+    if (roomToJoin) {
+        if (!roomHTML[roomToJoin]) {
+            console.log(roomToJoin);
+            socket.emit("joinroom", {
+                join: roomToJoin
+            });
+            roomToJoin = "";
+        }
+
+    }
+    $('#user').css('display', 'none');
+    fs = !fs;
+    $("#chattext").scrollTop($("#chattext").prop("scrollHeight"));
+    setTimeout(function() {
+        moveWin();
+    }, 800);
+    /*    $(".COINWIDGET_BUTTON").children()[0].style.display = "none";
+      setTimeout(function() {
+      $(".COINWIDGET_BUTTON").children()[1].style["margin-left"] = "2px";
+      $(".COINWIDGET_BUTTON").children()[1].style["padding"] = "2px"
+      }, 2);
+      Cool coinwidget code! (unused)
+    */
+    username = data.username;
+    setTimeout(function() {
+        socket.emit('chat', {
+            room: 'main',
+            message: '!; connect ' + versionString,
+            color: "000"
+        });
+        mention = true;
+    }, 800);
+    $(".user").click(function() {
+        console.log('Placing user ' + $(this).attr('data-user'));
+        $("#chatinput").val($(this).attr('data-user') + ': ');
+    });
+    srwrap('main', true);
+    jQuery(window).bind("beforeunload", function() {
+        socket.emit('chat', {
+            room: 'main',
+            message: '!; quitchat Quit: Window closed!',
+            color: '000'
+        });
+    });
+    $("#deposit").attr("href", "https://inputs.io/pay?to=btc%40coinchat.org&amount=&note=" + username);
+});
         $('#username').html('<a id="loginsignup">Authenticate</a>');
         $("#loginsignup").click(function() {
             $('#login').modal('show');
@@ -134,6 +190,7 @@ socket.on("connect", function() {
         socket.emit('quiet');
     }
 });
+}, 2000);
 $(document).ready(function() {
     if (document.URL.split("index.html?j:").length == 2) {
         roomToJoin = document.URL.split("j:")[1].split("&")[0];
@@ -1278,7 +1335,8 @@ function clickUser(clickUsername) {
     return false;
 }
 var myTimeout;
-socket.on("loggedin", function(data) {
+socket.once("loggedin", function(data) {
+    $('#chattext').html('<center><h2 class="muted" style="background-color: #eee; margin: 0px 0;">Connected</h2><p class="muted" style="background-color: #eee; margin: 0px 0;">Logged in as ' + data.username + '</center>');
     setCookie("session", data.session, 14);
     $("#login").modal('hide');
     $("#user").show();
@@ -1286,7 +1344,6 @@ socket.on("loggedin", function(data) {
     $(".hide-guest").show();
     $('#chat').show();
     //$('.header').append('Encryption: <span class="label" id="encstatus">Off</span>');
-    socket.emit('getcolors');
     if (roomToJoin) {
         if (!roomHTML[roomToJoin]) {
             console.log(roomToJoin);
