@@ -15,7 +15,7 @@ var usernames = [];
 var online = 0;
 var lastCheck = new Date("1990");
 var hasFocus = true;
-var versionString = 'WhiskChat v10.0.0-RC8';
+var versionString = 'WhiskChat v10 Prerelease 1';
 var muted = [];
 var disconnected = false;
 var notifyAll = false;
@@ -265,8 +265,8 @@ $(document).ready(function() {
         });
     });
     $("#joinroombtn").click(function() {
-        var tmp = prompt('What room would you like to join?');
-        if (tmp === '') {
+        var tmp = $('#roominput').val();
+        if (tmp == '') {
             return;
         }
         srwrap(tmp);
@@ -759,19 +759,6 @@ function sendMsg() {
             }
             return;
         }
-        if (msg.substr(0, 5) == "/warn") {
-            if (msg.split(" ").length != 2) {
-                return;
-            }
-            var warnMsg = msg.split(" ")[2];
-            warnMsg = (warnMsg == "spam" ? "Please do not spam the chat by repeatedly saying short messages, or nonsense. Thanks!" : warnMsg);
-            warnMsg = (warnMsg == "quality" ? "Please check your spelling and don't excessively use text speak. The channel main is for English. Thanks!" : warnMsg);
-            socket.emit("warn", {
-                target: msg.split(" ")[1],
-                message: warnMsg
-            });
-            return;
-        }
         if (msg.substr(0, 5) == "/mute") {
             if (msg.split(" ").length >= 3) {
                 var reason = (msg.split(" ").length > 3 ? msg.split(" ").slice(3).join(" ") : "");
@@ -994,7 +981,7 @@ function removeRoom(room) {
         return;
     }
     appended.splice(appended.indexOf(room), 1);
-    $("#chattext").append("<div class='chatline expiring' style='background-color: #F09898;'><center>Unsubscribed from #" + room + "</center></div>");
+    $("#chattext").append("<div class='chatline expiring' style='background-color: #F09898;'><center>Left #" + room + "</center></div>");
     sync();
     $('#room-' + room).remove();
     return;
@@ -1005,7 +992,10 @@ function joinroomhandler(obj) {
     if (appended.indexOf(obj) == -1) {
         $("#chattext").append(roomHTML[currentRoom]);
         appended.push(obj);
-        $("#roomenu").append("<li class='dropdown-submenu' id=\"room-" + obj + "\"> <a onclick='srwrap(\"" + obj + "\")'>" + obj + "</a> <ul class=\"dropdown-menu\"><li> <a onclick='srwrap(\"" + obj + "\")'>Switch to</a> <li> <li> <a onclick='removeRoom(\"" + obj + "\")'>Leave</a> <li> </ul></li>");
+         $("#roomenu").append("<li id=\"room-" + obj + "\"> <a onmouseover='$(\"#quitcon-" + obj + "\").show()' onmouseout='$(\"#quitcon-" + obj + "\").hide()' onclick='srwrap(\"" + obj + "\")'>" + obj + "<i onclick='removeRoom(\"" + obj + "\")' id='quitcon-"+ obj + "' class=\"notif\" style=\"display: none;\"><i class=\"icon-off\"></i></i></a></li>");
+        $("#quitcon-" + obj).click(function(e) {
+            e.stopPropagation();
+        })
         scrollWin();
     }
     $("#chattext").scrollTop($("#chattext")[0].scrollHeight);
@@ -1015,12 +1005,15 @@ function joinroomhandler(obj) {
 
 function switchRoom(obj) {
     roomHTML[currentRoom] = $("#chattext").html();
-    currentRoom = obj;;
+    currentRoom = obj;
     if (appended.indexOf(obj) == -1) {
         $("#chattext").append(roomHTML[currentRoom]);
         appended.push(obj);
         $("#chattext").append("<div class='chatline expiring' style='background-color: #F09898;'><center>Subscribed to #" + obj + "</center></div>");
-        $("#roomenu").append("<li class='dropdown-submenu' id=\"room-" + obj + "\"> <a onclick='srwrap(\"" + obj + "\")'>" + obj + "</a> <ul class=\"dropdown-menu\"><li> <a onclick='srwrap(\"" + obj + "\")'>Switch to</a> <li> <li> <a onclick='removeRoom(\"" + obj + "\")'>Leave</a> <li> </ul></li>");
+         $("#roomenu").append("<li id=\"room-" + obj + "\"> <a onmouseover='$(\"#quitcon-" + obj + "\").show()' onmouseout='$(\"#quitcon-" + obj + "\").hide()' onclick='srwrap(\"" + obj + "\")'>" + obj + "<i onclick='removeRoom(\"" + obj + "\")' id='quitcon-"+ obj + "' class=\"notif\" style=\"display: none;\"><i class=\"icon-off\"></i></i></a></li>");
+        $("#quitcon-" + obj).click(function(e) {
+            e.stopPropagation();
+        })
         sync();
         scrollWin();
     }
@@ -1349,6 +1342,9 @@ socket.on("balance", function(data) {
 function srwrap(roomName, noticeFalse) {
     if (!roomHTML[roomName]) {
         roomHTML[roomName] = "";
+    }
+    if (roomName == currentRoom) {
+        return;
     }
     switchRoom(roomName)
     if (!noticeFalse) {

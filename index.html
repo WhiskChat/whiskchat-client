@@ -86,8 +86,7 @@
               <script src="https://inputs.io/js/buttons.js"></script>
               <a href="https://inputs.io/pay?to=whiskchat" class="inputsio-alt" data-to="whiskchat" data-note="Insert username here!">Deposit with Inputs.io</a>
             </li>
-            <li> <a id="reloadbal" class="">Refresh balance</a> </li>
-            <li> <a id="getcolors">Refresh whitelist status</a> </li>
+            <li> <a id="reloadbal" class="">Refresh balance/rep</a> </li>
             <li class="dropdown-submenu"> <a> Ignoring (client) </a>
               <ul class="dropdown-menu">
                 <li> <a id="mute" class="">Add ignore</a> </li>
@@ -104,6 +103,11 @@
             <i class="icon-home"></i> none <!-- The menu button -->
           </button>
           <ul class="dropdown-menu keep_open" id="roomenu">
+          <li class="dropdown-item-muted dropdown-submenu"><a>Join a room...</a>
+          <ul class="dropdown-menu">
+            <li><div class="input-append" style="margin-bottom: 0px; margin-right: 5px;"><input type="text" placeholder="Room name" id="roominput" style="margin-left: 5px;"><span class="btn" id="joinroombtn">Join</span></div></li>
+          </ul>
+          </li>
 </ul>
 </div>
 </div>
