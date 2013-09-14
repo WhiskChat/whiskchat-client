@@ -15,7 +15,7 @@ var usernames = [];
 var online = 0;
 var lastCheck = new Date("1990");
 var hasFocus = true;
-var versionString = 'WhiskChat v10 Prerelease 2';
+var versionString = 'WhiskChat v10 Prerelease 3';
 var muted = [];
 var disconnected = false;
 var notifyAll = false;
@@ -140,6 +140,9 @@ $(document).ready(function() {
     if (document.URL.split("index.html?j:").length == 2) {
         roomToJoin = document.URL.split("j:")[1].split("&")[0];
     }
+    if (document.URL.split("?r:").length == 2) {
+        referrer = document.URL.split("j:")[1];
+    }
     if (getCookie("session")) {
         socket.emit("login", {
             session: getCookie("session")
@@ -197,7 +200,7 @@ $(document).ready(function() {
             password: $("#login-password").val(),
             password2: $("#login-password").val(),
             email: $("#register-email").val(),
-            referredby: "whiskers75"
+            refer: referrer
         });
     });
     $("#loginsignup").click(function() {
