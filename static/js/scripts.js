@@ -15,7 +15,7 @@ var usernames = [];
 var online = 0;
 var lastCheck = new Date("1990");
 var hasFocus = true;
-var versionString = 'WhiskChat v10.0.0-RC7';
+var versionString = 'WhiskChat v10.0.0-RC8';
 var muted = [];
 var disconnected = false;
 var notifyAll = false;
@@ -1192,6 +1192,9 @@ socket.on("chat", function(data) {
     if (appended.indexOf(data.room) !== -1 || data.room == currentRoom || data.room == 'main') { // Hacky, but will do for now
         $(".silent").remove();
         if (data.user == 'WhiskDiceBot' && currentRoom != data.room) {
+            return;
+        }
+        if (data.user == 'ArenaBot' && currentRoom != data.room) {
             return;
         }
         if (data.encrypted) {
