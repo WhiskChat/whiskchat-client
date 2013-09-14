@@ -15,7 +15,7 @@ var usernames = [];
 var online = 0;
 var lastCheck = new Date("1990");
 var hasFocus = true;
-var versionString = 'WhiskChat v10 Prerelease 1';
+var versionString = 'WhiskChat v10 Prerelease 2';
 var muted = [];
 var disconnected = false;
 var notifyAll = false;
@@ -105,36 +105,36 @@ setInterval(function() { // Delete old messages
     });
 }, 15000);
 setTimeout(function() {
-socket.on("connect", function() {
-    if (disconnected) {
-        disconnected = false;
-        callMsg({
-            message: 'Connected to WhiskChat Server!'
-        });
-        $('#username').html('<a id="loginsignup">Authenticate</a>');
-        $("#loginsignup").click(function() {
-            $('#login').modal('show');
-        });
-        $('#balance').html('0');
-        if (document.URL.split("index.html?j:").length == 2) {
-            roomToJoin = document.URL.split("j:")[1].split("&")[0];
-        }
-        if (getCookie("session")) {
-            socket.emit("login", {
-                session: getCookie("session"),
-                quiet: true
+    socket.on("connect", function() {
+        if (disconnected) {
+            disconnected = false;
+            callMsg({
+                message: 'Connected to WhiskChat Server!'
             });
-        } else {
-            if (roomToJoin) {
-                socket.emit("joinroom", {
-                    join: roomToJoin
-                });
-                roomToJoin = "";
+            $('#username').html('<a id="loginsignup">Authenticate</a>');
+            $("#loginsignup").click(function() {
+                $('#login').modal('show');
+            });
+            $('#balance').html('0');
+            if (document.URL.split("index.html?j:").length == 2) {
+                roomToJoin = document.URL.split("j:")[1].split("&")[0];
             }
+            if (getCookie("session")) {
+                socket.emit("login", {
+                    session: getCookie("session"),
+                    quiet: true
+                });
+            } else {
+                if (roomToJoin) {
+                    socket.emit("joinroom", {
+                        join: roomToJoin
+                    });
+                    roomToJoin = "";
+                }
+            }
+            socket.emit('quiet');
         }
-        socket.emit('quiet');
-    }
-});
+    });
 }, 2000);
 $(document).ready(function() {
     if (document.URL.split("index.html?j:").length == 2) {
@@ -154,7 +154,7 @@ $(document).ready(function() {
     }
     $('.versionstr').html(versionString);
     $(document).click(notificationPermission);
-    $('.keep_open').click(function(event){
+    $('.keep_open').click(function(event) {
         event.stopPropagation();
     });
     $('#webkitn').click(function() {
@@ -731,6 +731,16 @@ function sendMsg() {
                 return;
             }
         }
+        if (msg.substr(0, 1) == "~") {
+            if (msg.split(" ").length >= 2) {
+                var tmp9 = msg.split(" ")
+                var tmp10 = tmp9.splice(0, 1);
+                socket.emit('chat', {
+                    room: String(tmp10[0].replace('~', '')),
+                    message: String(tmp9.join(" "))
+                });
+            }
+        }
         if (msg.substr(0, 5) == "/kick" || msg.substr(0, 7) == "/unkick") {
             if (msg.split(" ").length >= 2) {
                 if (msg.substr(0, 5) == "/kick") {
@@ -992,7 +1002,7 @@ function joinroomhandler(obj) {
     if (appended.indexOf(obj) == -1) {
         $("#chattext").append(roomHTML[currentRoom]);
         appended.push(obj);
-         $("#roomenu").append("<li id=\"room-" + obj + "\"> <a onmouseover='$(\"#quitcon-" + obj + "\").show()' onmouseout='$(\"#quitcon-" + obj + "\").hide()' onclick='srwrap(\"" + obj + "\")'>" + obj + "<i onclick='removeRoom(\"" + obj + "\")' id='quitcon-"+ obj + "' class=\"notif\" style=\"display: none;\"><i class=\"icon-off\"></i></i></a></li>");
+        $("#roomenu").append("<li id=\"room-" + obj + "\"> <a onmouseover='$(\"#quitcon-" + obj + "\").show()' onmouseout='$(\"#quitcon-" + obj + "\").hide()' onclick='srwrap(\"" + obj + "\")'>" + obj + "<i onclick='removeRoom(\"" + obj + "\")' id='quitcon-" + obj + "' class=\"notif\" style=\"display: none;\"><i class=\"icon-off\"></i></i></a></li>");
         $("#quitcon-" + obj).click(function(e) {
             e.stopPropagation();
         })
@@ -1010,7 +1020,7 @@ function switchRoom(obj) {
         $("#chattext").append(roomHTML[currentRoom]);
         appended.push(obj);
         $("#chattext").append("<div class='chatline expiring' style='background-color: #F09898;'><center>Subscribed to #" + obj + "</center></div>");
-         $("#roomenu").append("<li id=\"room-" + obj + "\"> <a onmouseover='$(\"#quitcon-" + obj + "\").show()' onmouseout='$(\"#quitcon-" + obj + "\").hide()' onclick='srwrap(\"" + obj + "\")'>" + obj + "<i onclick='removeRoom(\"" + obj + "\")' id='quitcon-"+ obj + "' class=\"notif\" style=\"display: none;\"><i class=\"icon-off\"></i></i></a></li>");
+        $("#roomenu").append("<li id=\"room-" + obj + "\"> <a onmouseover='$(\"#quitcon-" + obj + "\").show()' onmouseout='$(\"#quitcon-" + obj + "\").hide()' onclick='srwrap(\"" + obj + "\")'>" + obj + "<i onclick='removeRoom(\"" + obj + "\")' id='quitcon-" + obj + "' class=\"notif\" style=\"display: none;\"><i class=\"icon-off\"></i></i></a></li>");
         $("#quitcon-" + obj).click(function(e) {
             e.stopPropagation();
         })
