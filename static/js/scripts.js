@@ -15,7 +15,7 @@ var usernames = [];
 var online = 0;
 var lastCheck = new Date("1990");
 var hasFocus = true;
-var versionString = 'WhiskChat v10.0.0-RC6';
+var versionString = 'WhiskChat v10.0.0-RC7';
 var muted = [];
 var disconnected = false;
 var notifyAll = false;
@@ -154,7 +154,9 @@ $(document).ready(function() {
     }
     $('.versionstr').html(versionString);
     $(document).click(notificationPermission);
-
+    $('.keep_open').click(function(event){
+        event.stopPropagation();
+    });
     $('#webkitn').click(function() {
         if (window.webkitNotifications) {
             callMsg({
@@ -856,7 +858,7 @@ socket.on("jointhisroom", function(data) {
 });
 socket.on("joinroom", function(data) {
     if (data.room == "--connectedmsg") {
-        $('#chattext').append('<center><h2 class="muted" style="background-color: #eee; margin: 0px 0;">Connected</h2><p class="muted" style="background-color: #eee; margin: 0px 0;">Logged in as ' + data.username + '</center>');
+        $('#chattext').append('<center><h2 class="muted" style="background-color: #eee; margin: 0px 0;">Connected</h2></center>');
         return;
     }
     joinroomhandler(data.room);
