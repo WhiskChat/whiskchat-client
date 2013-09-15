@@ -15,7 +15,7 @@ var usernames = [];
 var online = 0;
 var lastCheck = new Date("1990");
 var hasFocus = true;
-var versionString = 'WhiskChat v10 Prerelease 7';
+var versionString = 'WhiskChat v10 Prerelease 8';
 var muted = [];
 var disconnected = false;
 var notifyAll = false;
@@ -138,7 +138,7 @@ setTimeout(function() {
 }, 2000);
 $(document).ready(function() {
     if (document.URL.split("?j:").length == 2) {
-        roomToJoin = document.URL.split("j:")[1].split("&")[0];
+        roomToJoin = document.URL.split("j:")[1];
     }
     if (document.URL.split("?r:").length == 2) {
         referrer = document.URL.split("r:")[1];
