@@ -15,7 +15,7 @@ var usernames = [];
 var online = 0;
 var lastCheck = new Date("1990");
 var hasFocus = true;
-var versionString = 'WhiskChat v10 Prerelease 9';
+var versionString = 'WhiskChat v10 Prerelease 10';
 var muted = [];
 var disconnected = false;
 var notifyAll = false;
@@ -1214,9 +1214,6 @@ socket.on("chat", function(data) {
             } else {
                 $("#chattext").append("<div class='chatline' title='" + data.timestamp + "'><span class='user" + pmClass + "' onclick='place()' data-user='" + data.user + "'><span>" + (data.userShow ? data.userShow : data.user) + "</span>&nbsp;&nbsp;</span><span class='message'>" + data.message + winBTCtext + dateFormat + "</span></div>");
             }
-        }
-        while ($("#chattext").children().length > 200) {
-            $("#chattext .chatline:first-child").remove();
         }
         log(data.message.split("<span class=\"foo\"></span>")[0], currentRoom);
 
