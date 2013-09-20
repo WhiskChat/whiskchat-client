@@ -5,7 +5,7 @@
   Forever open source.
 */
 
-var socket = io.connect('http://beta.whiskchat.com', {
+var socket = io.connect('http://server.whiskchat.com', {
     resource: 'socket.io',
     reconnect: false
 });
