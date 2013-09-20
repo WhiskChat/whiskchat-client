@@ -5,7 +5,7 @@
   Forever open source.
 */
 
-var socket = io.connect('http://server.whiskchat.com', {
+var socket = io.connect('http://beta.whiskchat.com', {
     resource: 'socket.io',
     reconnect: false
 });
@@ -15,7 +15,7 @@ var usernames = [];
 var online = 0;
 var lastCheck = new Date("1990");
 var hasFocus = true;
-var versionString = 'WhiskChat v10 Prerelease 10';
+var versionString = 'WhiskChat v10 Raspi Beta 1';
 var muted = [];
 var disconnected = false;
 var notifyAll = false;
