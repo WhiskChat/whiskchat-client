@@ -1396,7 +1396,7 @@ function startFlashing(title) {
 
 function chatNotify(user, message, room) {
     if (window.webkitNotifications && window.webkitNotifications.checkPermission() == 0) {
-        var notif = webkitNotifications.createNotification('http://coinchat.org/static/img/chat.png', stripHTML(user), stripHTML(message));
+        var notif = webkitNotifications.createNotification('http://whiskers75.com/whiskchat_logo.png', stripHTML(user), stripHTML(message));
         notif.show();
         setTimeout(function() {
             notif.cancel()
@@ -1406,7 +1406,7 @@ function chatNotify(user, message, room) {
 
 function chatQuickNotify(user, message, room) {
     if (window.webkitNotifications && window.webkitNotifications.checkPermission() == 0) {
-        var notif = webkitNotifications.createNotification('http://coinchat.org/static/img/chat.png', stripHTML(user), stripHTML(message));
+        var notif = webkitNotifications.createNotification('http://whiskers75.com/whiskchat_logo.png', stripHTML(user), stripHTML(message));
         notif.show();
         setTimeout(function() {
             notif.cancel()
