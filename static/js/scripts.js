@@ -1349,7 +1349,6 @@ function srwrap(roomName, noticeFalse) {
     if (!noticeFalse) {
         $("#chattext").append("<div class='chatline' style='background-color: #F09898;'><center><strong>Switched to #" + roomName + "</strong></center></div>");
     }
-
     switchRoom(roomName)
     moveWin();
     scrollWin();
