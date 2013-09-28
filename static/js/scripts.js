@@ -15,7 +15,7 @@ var usernames = [];
 var online = 0;
 var lastCheck = new Date("1990");
 var hasFocus = true;
-var versionString = 'WhiskChat v10';
+var versionString = 'WhiskChat X 10.1';
 var muted = [];
 var disconnected = false;
 var notifyAll = false;
@@ -462,6 +462,7 @@ function moveWin() {
 
     window.scrollTo(0, 0);
     $("#roomslist").html('<i class="icon-home"></i> ' + currentRoom);
+    $('#usercount').html(usernames.length);
     $("#chat").css("position", "absolute");
     $("#chat").css("top", 2);
     $("#chat").css("left", 2);
@@ -471,7 +472,7 @@ function moveWin() {
     $("#chattext").css("width", w - s296);
     $("#chat .content").css("height", h - 35 - $(".header").height());
     $("body").css("overflow", "hidden");
-    $("#chatinput").css("width", w - 130 - $('#roomslist').outerWidth(true));
+    $("#chatinput").css("width", w - 130 - $('#roomslist').outerWidth(true) - $('#userslist').outerWidth(true));
     //$("#chattext").animate({ scrollTop:$("#chattext").prop('scrollHeight') }, "slow");
 }
 
@@ -930,6 +931,11 @@ function updateSidebar() {
         $('#chatinput').attr('placeholder', 'Send to #' + currentRoom + ' as ' + username + '... (' + online + ' people online)');
     }
     $("#roomslist").html('<i class="icon-home"></i> ' + currentRoom);
+    var userslistHTML = '<li class="dropdown-item-muted"><a>Users</a></li>\n'
+    usernames.forEach(function(user) {
+userslistHTML += '<li><a>' + user + '</a></li>'
+    })
+    $('#userslistm').html(userslistHTML);
     moveWin();
 }
 socket.on("newuser", function(data) {
@@ -1008,7 +1014,7 @@ function joinroomhandler(obj) {
     if (appended.indexOf(obj) == -1) {
         $("#chattext").append(roomHTML[currentRoom]);
         appended.push(obj);
-        $("#roomenu").append("<li id=\"room-" + obj + "\"> <a onmouseover='$(\"#quitcon-" + obj + "\").show()' onmouseout='$(\"#quitcon-" + obj + "\").hide()' onclick='srwrap(\"" + obj + "\")'>" + obj + "<i onclick='removeRoom(\"" + obj + "\")' id='quitcon-" + obj + "' class=\"notif\" style=\"display: none;\"><i class=\"icon-off\"></i></i></a></li>");
+        $("#roomenu").append("<li id=\"room-" + obj + "\"> <a onmouseover='$(\"#quitcon-" + obj + "\").show()' onmouseout='$(\"#quitcon-" + obj + "\").hide()' onclick='srwrap(\"" + obj + "\")'>" + obj + "<button onclick='removeRoom(\"" + obj + "\")' id='quitcon-" + obj + "' class=\"notif btn btn-mini btn-link\" style=\"display: none;\"><i class=\"icon-off\"></i></button></a></li>");
         $("#quitcon-" + obj).click(function(e) {
             e.stopPropagation();
         })
@@ -1022,11 +1028,11 @@ function joinroomhandler(obj) {
 function switchRoom(obj) {
     roomHTML[currentRoom] = $("#chattext").html();
     currentRoom = obj;
+    $("#chattext").html(roomHTML[currentRoom]);
     if (appended.indexOf(obj) == -1) {
-        $("#chattext").append(roomHTML[currentRoom]);
         appended.push(obj);
-        $("#chattext").append("<div class='chatline expiring' style='background-color: #F09898;'><center>Subscribed to #" + obj + "</center></div>");
-        $("#roomenu").append("<li id=\"room-" + obj + "\"> <a onmouseover='$(\"#quitcon-" + obj + "\").show()' onmouseout='$(\"#quitcon-" + obj + "\").hide()' onclick='srwrap(\"" + obj + "\")'>" + obj + "<i onclick='removeRoom(\"" + obj + "\")' id='quitcon-" + obj + "' class=\"notif\" style=\"display: none;\"><i class=\"icon-off\"></i></i></a></li>");
+        $("#chattext").append("<div class='chatline expiring' style='background-color: #F09898;'><center>Joined #" + obj + "</center></div>");
+        $("#roomenu").append("<li id=\"room-" + obj + "\"> <a onmouseover='$(\"#quitcon-" + obj + "\").show()' onmouseout='$(\"#quitcon-" + obj + "\").hide()' onclick='srwrap(\"" + obj + "\")'>" + obj + "<button onclick='removeRoom(\"" + obj + "\")' id='quitcon-" + obj + "' class=\"notif btn btn-mini btn-link\" style=\"display: none;\"><i class=\"icon-off\"></i></button></a></li>");
         $("#quitcon-" + obj).click(function(e) {
             e.stopPropagation();
         })
@@ -1047,8 +1053,7 @@ socket.on("chat", function(data) {
         return;
     }
     if (data.message.substr(0, 10) == '!; connect') {
-        $("#chattext").append(genJoinNotice("<strong>" + data.user + "</strong> connected to WhiskChat Server (" + data.message.substr(11, data.message.length) + ")"));
-        addToRoomHTML(genJoinNotice("<strong>" + data.user + "</strong> connected to WhiskChat Server (" + data.message.substr(11, data.message.length) + ")"));
+        genJoinNotice("<strong>" + data.user + "</strong> connected to WhiskChat Server (" + data.message.substr(11, data.message.length) + ")");
         moveWin();
         scrollWin();
         return;
@@ -1104,8 +1109,7 @@ socket.on("chat", function(data) {
         return;
     }
     if (data.message.substr(0, 11) == '!; quitchat') {
-        $("#chattext").append(genQuitNotice("<strong>" + data.user + "</strong> has disconnected (" + data.message.substr(12, data.message.length) + ")"));
-        addToRoomHTML(genQuitNotice("<strong>" + data.user + "</strong> has disconnected (" + data.message.substr(12, data.message.length) + ")"));
+        genQuitNotice("<strong>" + data.user + "</strong> has disconnected (" + data.message.substr(12, data.message.length) + ")");
         moveWin();
         scrollWin();
         return;
@@ -1161,19 +1165,19 @@ socket.on("chat", function(data) {
         pmClass += " notwhitelisted";
     }
     if (data.winbtc > 0) {
-        if (data.winbtc <= 0.25) {
+        if (data.winbtc <= 0.05) {
             var label = "badge-warning";
-        } else if (data.winbtc <= 0.50) {
+        } else if (data.winbtc <= 0.10) {
             var label = "badge-success";
             data.winbtc = data.winbtc;
-        } else if (data.winbtc <= 0.75) {
+        } else if (data.winbtc <= 0.15) {
             var label = "badge-info";
             data.winbtc = data.winbtc;
         } else {
             var label = "badge-important";
             data.winbtc = '<strong>' + data.winbtc + '</strong>';
         }
-        var winBTCtext = " <span class='notif badge " + label + "'>+" + data.winbtc + " mBTC</span>";
+        var winBTCtext = " <span class='notif badge " + label + "'>" + data.winbtc + "</span>";
     } else {
         var label = "badge-important";
         var winBTCtext = ""
@@ -1198,7 +1202,7 @@ socket.on("chat", function(data) {
     }
     /*Old dateformat: */
     var dateFormat = "<span class='time muted notif'> " + new Date(data.timestamp).getHours() + ":" + (String(new Date(data.timestamp).getMinutes()).length == 1 ? "0" + new Date(data.timestamp).getMinutes() : new Date(data.timestamp).getMinutes()) + "</span> <button class='btn hide btn-mini tipbutton pull-right' data-user='" + data.user + "'>Tip</button><span class='time notif'>  <i class='icon-gift'></i> " + data.rep + "</span>";
-    if (appended.indexOf(data.room) !== -1 || data.room == currentRoom || data.room == 'main') { // Hacky, but will do for now
+    if (data.room == currentRoom) { // Hacky, but will do for now
         $(".silent").remove();
         if (data.user == 'WhiskDiceBot' && currentRoom != data.room) {
             return;
@@ -1243,16 +1247,6 @@ socket.on("chat", function(data) {
     } else {
         if (!roomHTML[data.room]) {
             roomHTML[data.room] = "";
-        }
-        if (data.winbtc && debugMode) {
-            callMsg({
-                message: 'User ' + data.user + ' earnt ' + data.winbtc + ' for ' + data.message + ' in room ' + data.room
-            });
-        }
-        if (debugMode) {
-            callMsg({
-                message: 'User ' + data.user + ': ' + data.message + ' in room ' + data.room
-            });
         }
         roomHTML[data.room] += "<div class='chatline' title='" + data.timestamp + "'><span class='user" + pmClass + "' onclick='place()' data-user='" + data.user + "'><span>" + (data.userShow ? data.userShow : data.user) + "</span>&nbsp;&nbsp;</span><span class='message'>" + data.message + winBTCtext + dateFormat + "</span></div>";
 
@@ -1354,9 +1348,6 @@ function srwrap(roomName, noticeFalse) {
         return;
     }
     switchRoom(roomName)
-    if (!noticeFalse) {
-        $("#chattext").append("<div class='chatline' style='background-color: #F09898;'><center><strong>Switched to #" + roomName + "</strong></center></div>");
-    }
     moveWin();
     scrollWin();
 }
@@ -1432,12 +1423,19 @@ function changeTitle(title) {
     window.document.title = title;
 }
 
-function genJoinNotice(message) {
-    //return "<div class='chatline'><span class='message muted' style='background: #eee'><center>" + message + "</center></span></div>"
-    return "<div class='chatline' style='background-color: #95E79E;'><center>" + message + "</center></div>";
+function genJoinNotice(message, id) {
+    id = Math.random();
+    $('#chattext').append("<div class='chatline joinnotice' id='" + id + "'' style='background-color: #95E79E; display: none;'><center>" + message + "</center></div>");
+    $('.joinnotice').fadeIn(700);
+    setTimeout(function() {
+    $('.joinnotice').fadeOut(700);
+}, 500);
 }
-
-function genQuitNotice(message) {
-    //return "<div class='chatline'><span class='message muted' style='background: #eee'><center>" + message + "</center></span></div>"
-    return "<div class='chatline' style='background-color: #F56868;'><center>" + message + "</center></div>";
+function genQuitNotice(message, id) {
+    id = Math.random();
+    $('#chattext').append("<div class='chatline joinnotice' id='" + id + "'' style='background-color: #F56868; display: none;'><center>" + message + "</center></div>");
+    $('.joinnotice').fadeIn(700);
+    setTimeout(function() {
+    $('.joinnotice').fadeOut(700);
+}, 500);
 }

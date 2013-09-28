@@ -11,6 +11,7 @@
     <title>WhiskChat</title>
     <!-- Lovely CSS and JS -->
     <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
+    <link rel="icon" type="image/png" href="static/img/whiskchat_logo.png">
     <script src="http://code.jquery.com/jquery-2.0.3.js"></script>
     <script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
     <link href="./static/css/default.css" type="text/css" rel="stylesheet">
@@ -108,6 +109,16 @@
             <li><div class="input-append" style="margin-bottom: 0px; margin-right: 5px;"><input type="text" placeholder="Room name" id="roominput" style="margin-left: 5px;"><span class="btn" id="joinroombtn">Join</span></div></li>
           </ul>
           </li>
+</ul>
+</div>
+<div class="btn-group dropup">
+          <button class="btn dropdown-toggle tenpx" data-toggle="dropdown" id="userslist" style="display: inline-block;">
+            <i class="icon-user"></i>&nbsp;<span id='usercount'>0</span> <!-- The menu button -->
+          </button>
+          <ul class="dropdown-menu keep_open" id="userslistm">
+          <li class="dropdown-item-muted"><a><b>Users list</b></a></li>
+          <li class="dropdown-item-muted"><a>Users list</a></li>
+          <li><a>[insert]</a></li>
 </ul>
 </div>
 </div>
