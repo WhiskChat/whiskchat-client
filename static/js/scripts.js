@@ -15,7 +15,7 @@ var usernames = [];
 var online = 0;
 var lastCheck = new Date("1990");
 var hasFocus = true;
-var versionString = 'WhiskChat X 10.1';
+var versionString = 'WhiskChat X 10.1 Adamant Admin';
 var muted = [];
 var disconnected = false;
 var notifyAll = false;
@@ -1028,9 +1028,9 @@ function joinroomhandler(obj) {
 function switchRoom(obj) {
     roomHTML[currentRoom] = $("#chattext").html();
     currentRoom = obj;
-    $("#chattext").html(roomHTML[currentRoom]);
     if (appended.indexOf(obj) == -1) {
         appended.push(obj);
+        $("#chattext").append(roomHTML[currentRoom]);
         $("#chattext").append("<div class='chatline expiring' style='background-color: #F09898;'><center>Joined #" + obj + "</center></div>");
         $("#roomenu").append("<li id=\"room-" + obj + "\"> <a onmouseover='$(\"#quitcon-" + obj + "\").show()' onmouseout='$(\"#quitcon-" + obj + "\").hide()' onclick='srwrap(\"" + obj + "\")'>" + obj + "<button onclick='removeRoom(\"" + obj + "\")' id='quitcon-" + obj + "' class=\"notif btn btn-mini btn-link\" style=\"display: none;\"><i class=\"icon-off\"></i></button></a></li>");
         $("#quitcon-" + obj).click(function(e) {
@@ -1202,7 +1202,7 @@ socket.on("chat", function(data) {
     }
     /*Old dateformat: */
     var dateFormat = "<span class='time muted notif'> " + new Date(data.timestamp).getHours() + ":" + (String(new Date(data.timestamp).getMinutes()).length == 1 ? "0" + new Date(data.timestamp).getMinutes() : new Date(data.timestamp).getMinutes()) + "</span> <button class='btn hide btn-mini tipbutton pull-right' data-user='" + data.user + "'>Tip</button><span class='time notif'>  <i class='icon-gift'></i> " + data.rep + "</span>";
-    if (data.room == currentRoom) { // Hacky, but will do for now
+    if (appended.indexOf(data.room) !== -1 || data.room == currentRoom || data.room == 'main') {
         $(".silent").remove();
         if (data.user == 'WhiskDiceBot' && currentRoom != data.room) {
             return;
@@ -1426,16 +1426,8 @@ function changeTitle(title) {
 function genJoinNotice(message, id) {
     id = Math.random();
     $('#chattext').append("<div class='chatline joinnotice' id='" + id + "'' style='background-color: #95E79E; display: none;'><center>" + message + "</center></div>");
-    $('.joinnotice').fadeIn(700);
-    setTimeout(function() {
-    $('.joinnotice').fadeOut(700);
-}, 500);
 }
 function genQuitNotice(message, id) {
     id = Math.random();
     $('#chattext').append("<div class='chatline joinnotice' id='" + id + "'' style='background-color: #F56868; display: none;'><center>" + message + "</center></div>");
-    $('.joinnotice').fadeIn(700);
-    setTimeout(function() {
-    $('.joinnotice').fadeOut(700);
-}, 500);
 }
