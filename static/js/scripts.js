@@ -142,8 +142,7 @@ $(document).ready(function() {
     }
     if (document.URL.split("?r:").length == 2) {
         referrer = document.URL.split("r:")[1];
-    }
-    else {
+    } else {
         referrer = 'whiskers75'
     }
     if (getCookie("session")) {
@@ -933,7 +932,7 @@ function updateSidebar() {
     $("#roomslist").html('<i class="icon-home"></i> ' + currentRoom);
     var userslistHTML = '<li class="dropdown-item-muted"><a>Users</a></li>\n'
     usernames.forEach(function(user) {
-userslistHTML += '<li><a>' + user + '</a></li>'
+        userslistHTML += '<li><a>' + user + '</a></li>'
     })
     $('#userslistm').html(userslistHTML);
     moveWin();
@@ -1347,6 +1346,10 @@ function srwrap(roomName, noticeFalse) {
     if (roomName == currentRoom) {
         return;
     }
+    if (!noticeFalse) {
+        $("#chattext").append("<div class='chatline' style='background-color: #F09898;'><center><strong>Switched to #" + roomName + "</strong></center></div>");
+    }
+
     switchRoom(roomName)
     moveWin();
     scrollWin();
@@ -1427,6 +1430,7 @@ function genJoinNotice(message, id) {
     id = Math.random();
     $('#chattext').append("<div class='chatline joinnotice' id='" + id + "'' style='background-color: #95E79E; display: none;'><center>" + message + "</center></div>");
 }
+
 function genQuitNotice(message, id) {
     id = Math.random();
     $('#chattext').append("<div class='chatline joinnotice' id='" + id + "'' style='background-color: #F56868; display: none;'><center>" + message + "</center></div>");
