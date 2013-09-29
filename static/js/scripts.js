@@ -231,6 +231,7 @@ $(document).ready(function() {
             message: '!; quitchat ' + $('#quitmsg').val(),
             color: '000'
         });
+        forcedc = true;
         setTimeout(function() {
             forcedc = true;
             socket.disconnect();
