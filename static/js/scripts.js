@@ -1202,7 +1202,7 @@ socket.on("chat", function(data) {
     }
     /*Old dateformat: */
     var dateFormat = "<span class='time muted notif'> " + new Date(data.timestamp).getHours() + ":" + (String(new Date(data.timestamp).getMinutes()).length == 1 ? "0" + new Date(data.timestamp).getMinutes() : new Date(data.timestamp).getMinutes()) + "</span> <button class='btn hide btn-mini tipbutton pull-right' data-user='" + data.user + "'>Tip</button><span class='time notif'>  <i class='icon-gift'></i> " + data.rep + "</span>";
-    if ((appended.indexOf(data.room) !== -1 && showOthers == false)|| data.room == currentRoom || data.room == 'main') {
+    if ((appended.indexOf(data.room) !== -1 && showOthers) || data.room == currentRoom || (data.room == 'main' && showOthers)) {
         $(".silent").remove();
         if (data.user == 'WhiskDiceBot' && currentRoom != data.room) {
             return;
