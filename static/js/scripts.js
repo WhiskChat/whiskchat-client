@@ -1356,7 +1356,7 @@ function srwrap(roomName, noticeFalse) {
 
 // stuff
 
-function setCookie(c_name, value, exdays) {
+xsetCookie(c_name, value, exdays) {
     var exdate = new Date();
     exdate.setDate(exdate.getDate() + exdays);
     var c_value = escape(value) + ((exdays == null) ? "" : "; expires=" + exdate.toUTCString());
@@ -1425,12 +1425,10 @@ function changeTitle(title) {
     window.document.title = title;
 }
 
-function genJoinNotice(message, id) {
-    id = Math.random();
-    $('#chattext').append("<div class='chatline joinnotice' id='" + id + "'' style='background-color: #95E79E; display: none;'><center>" + message + "</center></div>");
+function genJoinNotice(message) {
+    $('#chattext').append("<div class='chatline' id='" + id + "'' style='background-color: #95E79E; display: none;'><center>" + message + "</center></div>");
 }
 
-function genQuitNotice(message, id) {
-    id = Math.random();
-    $('#chattext').append("<div class='chatline joinnotice' id='" + id + "'' style='background-color: #F56868; display: none;'><center>" + message + "</center></div>");
+function genQuitNotice(message) {
+    $('#chattext').append("<div class='chatline' id='" + id + "'' style='background-color: #F56868; display: none;'><center>" + message + "</center></div>");
 }
