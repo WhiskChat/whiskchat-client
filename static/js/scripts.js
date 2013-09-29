@@ -15,10 +15,11 @@ var usernames = [];
 var online = 0;
 var lastCheck = new Date("1990");
 var hasFocus = true;
-var versionString = 'WhiskChat X 10.1 Adamant Admin';
+var versionString = 'WhiskChat X 10.2 Buggy Button';
 var muted = [];
 var disconnected = false;
 var notifyAll = false;
+var showOthers = true;
 var roomToJoin = "";
 var debugMode = false;
 var forcedc = false;
@@ -1201,7 +1202,7 @@ socket.on("chat", function(data) {
     }
     /*Old dateformat: */
     var dateFormat = "<span class='time muted notif'> " + new Date(data.timestamp).getHours() + ":" + (String(new Date(data.timestamp).getMinutes()).length == 1 ? "0" + new Date(data.timestamp).getMinutes() : new Date(data.timestamp).getMinutes()) + "</span> <button class='btn hide btn-mini tipbutton pull-right' data-user='" + data.user + "'>Tip</button><span class='time notif'>  <i class='icon-gift'></i> " + data.rep + "</span>";
-    if (appended.indexOf(data.room) !== -1 || data.room == currentRoom || data.room == 'main') {
+    if ((appended.indexOf(data.room) !== -1 && showOthers == false)|| data.room == currentRoom || data.room == 'main') {
         $(".silent").remove();
         if (data.user == 'WhiskDiceBot' && currentRoom != data.room) {
             return;
@@ -1353,7 +1354,11 @@ function srwrap(roomName, noticeFalse) {
     moveWin();
     scrollWin();
 }
-
+function embed(roomName) {
+    $('#chattext').html('<center><h2 class="muted" style="background-color: #eee; margin: 0px 0;">Welcome to #' + roomName + '</h2></center>');
+    showOthers = false;
+    srwrap(roomName);
+}
 // stuff
 
 function setCookie(c_name, value, exdays) {
@@ -1426,9 +1431,9 @@ function changeTitle(title) {
 }
 
 function genJoinNotice(message) {
-    $('#chattext').append("<div class='chatline' id='" + id + "'' style='background-color: #95E79E; display: none;'><center>" + message + "</center></div>");
+    $('#chattext').append("<div class='chatline' style='background-color: #95E79E; display: none;'><center>" + message + "</center></div>");
 }
 
 function genQuitNotice(message) {
-    $('#chattext').append("<div class='chatline' id='" + id + "'' style='background-color: #F56868; display: none;'><center>" + message + "</center></div>");
+    $('#chattext').append("<div class='chatline' style='background-color: #F56868; display: none;'><center>" + message + "</center></div>");
 }
