@@ -141,6 +141,14 @@ $(document).ready(function() {
     if (document.URL.split("?j:").length == 2) {
         roomToJoin = document.URL.split("j:")[1];
     }
+    if (document.URL.split("?e:").length == 2) {
+        versionString = 'Embedded: #' + document.URL.split("j:")[1]
+        socket.on('loggedin', function() {
+            setTimeout(function() {
+                embed(document.URL.split("j:")[1])
+            }, 2000);
+        });
+    }
     if (document.URL.split("?r:").length == 2) {
         referrer = document.URL.split("r:")[1];
     } else {
