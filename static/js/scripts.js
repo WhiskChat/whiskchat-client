@@ -15,7 +15,7 @@ var usernames = [];
 var online = 0;
 var lastCheck = new Date("1990");
 var hasFocus = true;
-var versionString = 'WhiskChat X 10.2 Buggy Button';
+var versionString = 'WhiskChat X 10.3 Crazy Cat Chat';
 var muted = [];
 var disconnected = false;
 var notifyAll = false;
@@ -617,28 +617,20 @@ function sendMsg() {
                 return;
             }
         }
-        if (msg.substr(0, 3) == "/sr") {
+        if (msg.substr(0, 3) == "/sr" || msg.substr(0, 5) == "/join") {
             if (msg.split(" ").length == 2) {
                 srwrap(msg.split(" ")[1]);
                 return;
             }
         }
-        if (msg.substr(0, 3) == "/rm") {
+        if (msg.substr(0, 3) == "/rm" || msg.substr(0, 6) == "/leave") {
             if (msg.split(" ").length == 2) {
                 removeRoom(msg.split(" ")[1]);
 
                 return;
             }
         }
-        if (msg.substr(0, 5) == "/join") {
-            if (msg.split(" ").length == 2) {
-                annJoin = true;
-                socket.emit("joinroom", {
-                    join: msg.split(" ")[1]
-                });
-                return;
-            }
-        }
+        
         if (msg.substr(0, 5) == "/quit") {
             socket.emit("chat", {
                 room: 'main',
@@ -1222,7 +1214,7 @@ socket.on("chat", function(data) {
             $("#chattext").append("<div class='chatline' style='background-color: #6F6F6F; color: #BBBBBB;' title='" + data.timestamp + "'><span class='user" + pmClass + "' onclick='place()' data-user='" + data.user + "'><span>" + (data.userShow ? data.userShow : data.user) + "</span>&nbsp;&nbsp;</span><span class='message'>" + data.message + winBTCtext + dateFormat + "   <strong class='muted notif'>Encrypted with /enc " + encryptionKey + ". /enc off to stop.</strong></span></div>");
         } else {
             if (data.room != currentRoom) {
-                $("#chattext").append("<div class='chatline' title='" + data.timestamp + "'><span class='user" + pmClass + "' onclick='place()' data-user='" + data.user + "'><span>" + (data.userShow ? data.userShow : data.user) + "</span>&nbsp;&nbsp;</span><span class='message'>" + data.message + winBTCtext + dateFormat + "   <strong class='muted notif'>#" + data.room + "</strong></span></div>");
+                $("#chattext").append("<div class='chatline' style='background-color: #C0C0C0;' title='" + data.timestamp + "'><span class='user" + pmClass + "' onclick='place()' data-user='" + data.user + "'><span>" + (data.userShow ? data.userShow : data.user) + "</span>&nbsp;&nbsp;</span><span class='message'>" + data.message + winBTCtext + dateFormat + "   <strong class='muted notif'>#" + data.room + "</strong></span></div>");
             } else {
                 $("#chattext").append("<div class='chatline' title='" + data.timestamp + "'><span class='user" + pmClass + "' onclick='place()' data-user='" + data.user + "'><span>" + (data.userShow ? data.userShow : data.user) + "</span>&nbsp;&nbsp;</span><span class='message'>" + data.message + winBTCtext + dateFormat + "</span></div>");
             }
