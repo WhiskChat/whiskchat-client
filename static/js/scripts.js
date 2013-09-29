@@ -1431,9 +1431,11 @@ function changeTitle(title) {
 }
 
 function genJoinNotice(message) {
-    $('#chattext').append("<div class='chatline' style='background-color: #95E79E; display: none;'><center>" + message + "</center></div>");
+    $('#chattext').append("<div class='chatline' style='background-color: #95E79E;'><center>" + message + "</center></div>");
+    addToRoomHTML("<div class='chatline' style='background-color: #95E79E;'><center>" + message + "</center></div>")
 }
 
 function genQuitNotice(message) {
-    $('#chattext').append("<div class='chatline' style='background-color: #F56868; display: none;'><center>" + message + "</center></div>");
+    $('#chattext').append("<div class='chatline' style='background-color: #F56868;'><center>" + message + "</center></div>");
+    addToRoomHTML("<div class='chatline' style='background-color: #F56868;'><center>" + message + "</center></div>")
 }
