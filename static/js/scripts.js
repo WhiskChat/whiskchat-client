@@ -142,10 +142,10 @@ $(document).ready(function() {
         roomToJoin = document.URL.split("j:")[1];
     }
     if (document.URL.split("?e:").length == 2) {
-        versionString = 'Embedded: #' + document.URL.split("j:")[1]
+        versionString = 'Embedded: #' + document.URL.split("?e:")[1]
         socket.on('loggedin', function() {
             setTimeout(function() {
-                embed(document.URL.split("j:")[1])
+                embed(document.URL.split("?e:")[1])
             }, 2000);
         });
     }
