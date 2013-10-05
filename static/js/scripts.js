@@ -15,7 +15,7 @@ var usernames = [];
 var online = 0;
 var lastCheck = new Date("1990");
 var hasFocus = true;
-var versionString = 'WhiskChat X 10.3 Crazy Cat Chat';
+var versionString = 'WhiskChat X 10.4 Dastardly Dragon';
 var muted = [];
 var disconnected = false;
 var notifyAll = false;
@@ -27,6 +27,7 @@ var annJoin = false; // Don't spam
 var fs = false;
 var appended = [];
 var friendsonline = [];
+var textMode = false;
 var whitelisted = 0;
 var mention = false;
 var pendingMention = false;
@@ -148,6 +149,9 @@ $(document).ready(function() {
                 embed(document.URL.split("?e:")[1])
             }, 2000);
         });
+    }
+    if ($('#userslist').outerWidth(true) == 0) {
+        textMode = true; // We must be in a small space!
     }
     if (document.URL.split("?r:").length == 2) {
         referrer = document.URL.split("r:")[1];
@@ -544,24 +548,6 @@ function sendMsg() {
             scrollback = scrollback.slice(scrollback.length - 5);
         }
         upto = -1;
-        if (msg.substr(0, 6) == "/query" || msg.substr(0, 3) == "/pm") {
-            var usr = msg.split(" ")[1];
-            var usrStr = [usr.toLowerCase(), username].sort();
-            if (msg.split(" ").length < 3) {
-                socket.emit("joinroom", {
-                    join: usrStr[0] + ":" + usrStr[1]
-                });
-            }
-            //also send the message
-            var theMsg = msg.split(" ").slice(2).join(" ");
-            socket.emit("chat", {
-                room: usrStr[0] + ":" + usrStr[1],
-                message: theMsg,
-                color: color
-            });
-
-            return;
-        }
         if (msg.substr(0, 4) == "/enc") {
             encryptionKey = msg.split(" ")[1];
             if (encryptionKey == "off") {
@@ -595,9 +581,12 @@ function sendMsg() {
                 msg = msg.substr(0, msg.length - 2);
             }
             if (msg.split(" ").length == 2) {
-                socket.emit("whitelist", {
-                    action: "whitelist",
-                    target: msg.split(" ")[1]
+                socket.emit("tip", {
+                    room: currentRoom,
+                    user: msg.split(" ")[1],
+                    tip: 5,
+                    message: 'Whitelisted!',
+                    rep: true
                 });
                 return;
             }
@@ -611,9 +600,12 @@ function sendMsg() {
         }
         if (msg.substr(0, 12) == "/unwhitelist") {
             if (msg.split(" ").length == 2) {
-                socket.emit("whitelist", {
-                    action: "unwhitelist",
-                    target: msg.split(" ")[1]
+                socket.emit("tip", {
+                    room: currentRoom,
+                    user: msg.split(" ")[1],
+                    tip: 0,
+                    message: 'Unwhitelisted.',
+                    rep: true
                 });
                 return;
             }
@@ -631,7 +623,7 @@ function sendMsg() {
                 return;
             }
         }
-        
+
         if (msg.substr(0, 5) == "/quit") {
             socket.emit("chat", {
                 room: 'main',
@@ -651,7 +643,7 @@ function sendMsg() {
         }
         if (msg.substr(0, 8) == "/version") {
             callMsg({
-                message: 'Version ' + versionString
+                message: 'Client version: ' + versionString + '.'
             });
             return;
         }
@@ -659,10 +651,18 @@ function sendMsg() {
             if (msg != "/bet") {
                 var tipAmount = msg.split(" ")[1];
                 var tipMsg = msg.split(" ")[2];
+                if (tipMsg.indexOf('%') == -1) {
+                    callMsg({
+                        message: 'Syntax: /bet amount chance% (chance can be anything from 1% to 75%)',
+                        type: 'alert-success'
+                    });
+                    return;
+                }
                 callMsg({
                     message: 'Betting ' + tipAmount + ' with a ' + tipMsg + ' chance...',
                     type: 'alert-success'
                 });
+                srwrap('botgames');
                 socket.emit("tip", {
                     room: 'botgames',
                     user: 'WhiskDiceBot',
@@ -696,7 +696,7 @@ function sendMsg() {
                     var tipMsg = "";
                 }
                 callMsg({
-                    message: 'Tipping ' + tipTo + ' ' + tipAmount + (tipMsg ? ' (message: ' + tipMsg + ')' : ''),
+                    message: 'Setting ' + tipTo + '\'s rep to ' + tipAmount + (tipMsg ? ' (message: ' + tipMsg + ')' : ''),
                     type: 'alert-success'
                 });
                 socket.emit("tip", {
@@ -727,7 +727,7 @@ function sendMsg() {
                     var tipMsg = "";
                 }
                 callMsg({
-                    message: 'Tipping ' + tipTo + ' ' + tipAmount + (tipMsg ? ' (message: ' + tipMsg + ')' : ''),
+                    message: 'Tipping ' + tipTo + ' ' + tipAmount + (tipMsg ? ' mBTC (message: ' + tipMsg + ')' : ' mBTC'),
                     type: 'alert-success'
                 });
                 socket.emit("tip", {
@@ -880,9 +880,13 @@ function addToRoomHTML(html) {
 function callMsg(data) {
     var newId = "m" + Math.round(Math.random() * 10000);
     //$("#chattext").append("<div class='chatline expiring'><span class='user' onclick='place()' style='background: rgba(238, 160, 136, 0.64);'><span></span>&nbsp;&nbsp;</span><span class='message' style='background: #eee'><strong>" + data.message + "</strong></span></div>");
-    $("#chattext").append("<div class='chatline expiring' style='background-color: #D0F098;'><center><strong>" + data.message + "</strong></center></div>");
     moveWin();
-
+    if (textMode) {
+        $("#chattext").append("[" + new Date().getHours() + ":" + (String(new Date().getMinutes()).length == 1 ? "0" + new Date().getMinutes() : new Date().getMinutes()) + "] <span class='color: #e00;'>==</span> <strong>" + data.message + "</strong></br>");
+    }
+    else {
+        $("#chattext").append("<div class='chatline expiring' style='background-color: #D0F098;'><center><strong>" + data.message + "</strong></center></div>");
+    }
     if ((!fs && $("#chattext").scrollTop() + 650 >= $("#chattext").prop('scrollHeight')) || (fs && $("#chattext").scrollTop() + $(window).height() >= $("#chattext").prop('scrollHeight'))) {
         $("#chattext").animate({
             scrollTop: $("#chattext").prop('scrollHeight')
@@ -947,6 +951,19 @@ socket.on("newuser", function(data) {
 });
 socket.on('tip', function(data) {
     console.log('TIP: ' + JSON.stringify(data));
+    if (textMode) {
+        if (data.rep) {
+        $('#chattext').append("<span style='color: #090;'><strong>" + data.user + "</strong> has set " + Number(data.amount) + "'s rep to <strong>" + data.target + "</strong>! " + (data.message ? '(' + data.message + ')' : '') + "</span>");
+        moveWin()
+        scrollWin();
+        }
+        else {
+        $('#chattext').append("<span style='color: #090;'><strong>" + data.user + "</strong> has tipped " + Number(data.amount) + " mBTC to <strong>" + data.target + "</strong>! " + (data.message ? '(' + data.message + ')' : '') + "</span>");
+        moveWin()
+        scrollWin();
+        }
+    }
+    else {
     if (data.rep) {
         if (currentRoom == data.room) {
             $('#chattext').append("<div class='chatline'><span class='user' onclick='place()' style='background: rgba(136, 238, 136, 0.64);'><span>Tip</span>&nbsp;&nbsp;</span><span class='message' style='background: #eee; color: #090;'><strong>" + data.user + "</strong> has set " + data.target + "'s rep to " + Number(data.amount) + "! " + (data.message ? '(' + data.message + ')' : '') + "</span></div>");
@@ -973,6 +990,7 @@ socket.on('tip', function(data) {
     }
     moveWin();
     scrollWin();
+}
     return;
 });
 
@@ -1211,6 +1229,10 @@ socket.on("chat", function(data) {
         if (data.user == 'ArenaBot' && currentRoom != data.room) {
             return;
         }
+        if (textMode) {
+            $("#chattext").append("[" + new Date(data.timestamp).getHours() + ":" + (String(new Date(data.timestamp).getMinutes()).length == 1 ? "0" + new Date(data.timestamp).getMinutes() : new Date(data.timestamp).getMinutes()) + "] <strong>&lt;" + (data.userShow ? data.userShow : data.user) + '&gt;</strong> ' + data.message + '</br>');
+        }
+        else {
         if (data.encrypted) {
             $("#chattext").append("<div class='chatline' style='background-color: #6F6F6F; color: #BBBBBB;' title='" + data.timestamp + "'><span class='user" + pmClass + "' onclick='place()' data-user='" + data.user + "'><span>" + (data.userShow ? data.userShow : data.user) + "</span>&nbsp;&nbsp;</span><span class='message'>" + data.message + winBTCtext + dateFormat + "   <strong class='muted notif'>Encrypted with /enc " + encryptionKey + ". /enc off to stop.</strong></span></div>");
         } else {
@@ -1219,6 +1241,7 @@ socket.on("chat", function(data) {
             } else {
                 $("#chattext").append("<div class='chatline' title='" + data.timestamp + "'><span class='user" + pmClass + "' onclick='place()' data-user='" + data.user + "'><span>" + (data.userShow ? data.userShow : data.user) + "</span>&nbsp;&nbsp;</span><span class='message'>" + data.message + winBTCtext + dateFormat + "</span></div>");
             }
+        }
         }
         log(data.message.split("<span class=\"foo\"></span>")[0], currentRoom);
 
@@ -1328,7 +1351,6 @@ socket.once("loggedin", function(data) {
             color: '000'
         });
     });
-    $("#deposit").attr("href", "https://inputs.io/pay?to=btc%40coinchat.org&amount=&note=" + username);
 });
 socket.on("balance", function(data) {
     if (typeof data.balance != 'undefined') {
@@ -1355,6 +1377,7 @@ function srwrap(roomName, noticeFalse) {
     moveWin();
     scrollWin();
 }
+
 function embed(roomName) {
     $('#chattext').html('<center><h2 class="muted" style="background-color: #eee; margin: 0px 0;">Welcome to #' + roomName + '</h2></center>');
     showOthers = false;
