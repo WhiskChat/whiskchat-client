@@ -888,7 +888,7 @@ socket.on("jointhisroom", function(data) {
 });
 socket.on("joinroom", function(data) {
     if (data.room == "--connectedmsg") {
-        $('#chattext').append('<center><h2 class="muted" style="background-color: #eee; margin: 0px 0;">Connected</h2></center>');
+        $('#chattext').append('<center><h2 class="muted" style="background-color: #eee; margin: 0px 0;">Connected</h2><p style="background-color: #eee; margin: 0px 0;"><a href=\'https://gemnasium.com/WhiskTech/whiskchat-server\'><img src="https://gemnasium.com/WhiskTech/whiskchat-server.png" alt="Dependency Status" /></a>&nbsp;&nbsp;<img src="https://webhooks.nodejitsu.com/WhiskTech/whiskchat-server.png">&nbsp;&nbsp;<script data-cfbadgetype="f" data-cfbadgeskin="icon" type="text/javascript"> //<![CDATA[ try{window.CloudFlare||function(){var a=window.document,b=a.createElement("script"),a=a.getElementsByTagName("script")[0];window.CloudFlare=[];b.type="text/javascript";b.async=!0;b.src="//ajax.cloudflare.com/cdn-cgi/nexp/cloudflare.js";a.parentNode.insertBefore(b,a)}(),CloudFlare.push(function(a){a(["cloudflare/badge"])})}catch(e$$5){try{console.error("CloudFlare badge code could not be loaded. "+e$$5.message)}catch(e$$6){}}; //]]> </script></img></p></center>');
         return;
     }
     joinroomhandler(data.room);
