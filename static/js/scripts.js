@@ -15,7 +15,7 @@ var usernames = [];
 var online = 0;
 var lastCheck = new Date("1990");
 var hasFocus = true;
-var versionString = 'WhiskChat X 10.5 Elegant Error';
+var versionString = 'WhiskChat X 10.6 Feature-packed Flock';
 var muted = [];
 var pmLock = false;
 var pmLockUser = '';
@@ -172,6 +172,12 @@ $(document).ready(function() {
             roomToJoin = "";
         }
     }
+    $('#logout').click(function() {
+	setCookie('session', 'loggedout', 14);
+	callMsg({message: 'Cleared cookies.'});
+	forcedc = true;
+	socket.disconnect();
+    });
     $('.versionstr').html(versionString);
     $(document).click(notificationPermission);
     $('.keep_open').click(function(event) {
@@ -208,7 +214,7 @@ $(document).ready(function() {
     });
     $(window).resize(moveWin);
     moveWin();
-
+    
     $(".hide-guest").hide();
     $("#register-button").click(function() {
         socket.emit("accounts", {
@@ -370,7 +376,7 @@ $(document).ready(function() {
                     $("#chatinput").val('');
                 }
             }
-        } else if (event.keyCode == 9) { // TODO: Clean this up!
+        } else if (event.keyCode == 9) { 
             var theUsername = $("#chatinput").val().split(" ")[$("#chatinput").val().split(" ").length - 1];
             var tmp2 = [];
             for (var i in usernames) {
@@ -404,61 +410,6 @@ $(document).ready(function() {
     $("#send").click(function() {
         sendMsg();
     });
-
-    $("#withdraw").click(function() {
-        if ($("#withdrawbox").is(":visible")) {
-            $("#withdrawbox").hide();
-        } else {
-            $("#withdrawbox").show();
-        }
-    });
-    $("#donate").click(function() {
-        var donateAmt = prompt('How much mBTC to donate to WhiskChat?', "0.25");
-        socket.emit("tip", {
-            room: 'main',
-            user: 'whiskers75',
-            tip: donateAmt,
-            message: 'WhiskChat client donation. Thanks!'
-        });
-    });
-    $("#withdrawbtn").click(function() {
-
-    });
-
-    $("#withdrawlnk").click(function() {
-        $("#withdrawbox").modal('show');
-    });
-    $("#joinroom-join").click(function() {
-        if ($("#joinroom-room").val().length > 0) {
-            socket.emit("joinroom", {
-                join: $("#joinroom-room").val()
-            });
-        } else if ($("#joinroom-user").val().length > 0) {
-            var usrA = [$("#joinroom-user").val().toLowerCase(), username];
-            usrA.sort();
-            socket.emit("joinroom", {
-                join: usrA[0] + ":" + usrA[1]
-            });
-        }
-        $("#joinmodal").modal('hide');
-    });
-    $("#style").click(function() {
-        $("#stylemodal").modal('show');
-        socket.emit("getcolors", {});
-    });
-    $("#colorhex").keyup(function() {
-        if ($(this).val().length > 3) {
-            $(this).val($(this).val().substr(0, 3));
-        }
-        $("#colordemo").css("color", "#" + $("#colorhex").val());
-    });
-    $("#buycolor").click(function() {
-        socket.emit("buycolor", {
-            color: $("#colorhex").val()
-        });
-    });
-    var dcTimeout;
-    //afk timeout
     joinroomhandler('main');
     $("#chattext").append("<div class='chatline'><span class='user' onclick='place()' style='background: rgba(238, 160, 136, 0.64);'><span>Copyright notice</span>&nbsp;&nbsp;</span><span class='message' style='background: #eee'>WhiskChat Client uses code from <a href='http://coinchat.org/'>coinchat.org</a> (c) 2013 admin@glados.cc</span></div>");
     callMsg({
@@ -474,10 +425,10 @@ function moveWin() {
     var h = $(window).height() - 6;
     var w = $(window).width() - 6;
     var s296 = 0;
-
+    
     window.scrollTo(0, 0);
     $("#roomslist").html('<i class="icon-home"></i> ' + currentRoom);
-    $('#usercount').html(usernames.length);
+    $('#usercount').html(online);
     $("#chat").css("position", "absolute");
     $("#chat").css("top", 2);
     $("#chat").css("left", 2);
@@ -507,13 +458,6 @@ socket.on("disconnect", function(data) {
         });
     }
 });
-socket.on("addcolor", function(data) {
-    $("#mycolors").append("<span class='color data-color='" + data.color + "' style='color: #" + data.color + "'>" + data.color + "</span><br />");
-    $(".color").click(function() {
-        color = $(this).attr('data-color');
-        $("#stylemodal").modal('hide');
-    });
-});
 socket.on("warn", function(data) {
     callMsg({
         message: "Mod note: " + data.message,
@@ -524,23 +468,6 @@ socket.on("warn", function(data) {
 function place() {
     // shut up.
 }
-socket.on("toprooms", function(data) {
-    console.log(data);
-    var theHTML = "";
-    for (var i in data.list) {
-        theHTML += "<a href='#' class='joinroom' data-room='" + data.list[i].room + "'>" + data.list[i].room + "</a> - " + data.list[i].users + " people online. Topic: <small>" + data.list[i].topic + "</small> <br />";
-    }
-    $(".joindiv").html(theHTML);
-
-    $(".joinroom").click(function() {
-        annJoin = true;
-        socket.emit("joinroom", {
-            join: $(this).attr("data-room")
-        });
-        $("#joinmodal").modal('hide');
-    });
-});
-
 function sendMsg() {
     if (username != "") {
         var msg = $("#chatinput").val();
@@ -554,11 +481,9 @@ function sendMsg() {
             encryptionKey = msg.split(" ")[1];
             if (encryptionKey == "off") {
                 encryptionKey = "";
-                //				$('#encstatus').removeClass("label-success").text("Off");
-            } else {
-                //				$('#encstatus').addClass("label-success").text("On");
+	    } else {
             }
-
+	    
             return;
         }
         if (msg.substr(0, 5) == "/nuke") {
@@ -578,7 +503,7 @@ function sendMsg() {
             });
             return;
         }
-
+	
         if (msg.substr(0, 3) == '.pm') {
             pmLock = !pmLock;
             pmLockUser = msg.split(" ")[1];
@@ -644,11 +569,11 @@ function sendMsg() {
         if (msg.substr(0, 3) == "/rm" || msg.substr(0, 6) == "/leave") {
             if (msg.split(" ").length == 2) {
                 removeRoom(msg.split(" ")[1]);
-
+		
                 return;
             }
         }
-
+	
         if (msg.substr(0, 5) == "/quit") {
             socket.emit("chat", {
                 room: 'main',
@@ -666,13 +591,7 @@ function sendMsg() {
             });
             return;
         }
-        if (msg.substr(0, 8) == "/version") {
-            callMsg({
-                message: 'Client version: ' + versionString + '.'
-            });
-            return;
-        }
-        if (msg.substr(0, 4) == "/bet" && currentRoom == "botgames") {
+	if (msg.substr(0, 4) == "/bet" && currentRoom == "botgames") {
             if (msg != "/bet") {
                 var tipAmount = msg.split(" ")[1];
                 var tipMsg = msg.split(" ")[2];
@@ -837,7 +756,7 @@ function sendMsg() {
         }
         lastMsg = new Date();
         spammyness += secs * Math.max(40 - msg.length, 1) / 40;
-
+	
         if (checkSpam()) {
             return;
         }
@@ -881,14 +800,9 @@ function checknew(room, message) {
     }
     return true;
 }
-socket.on("jointhisroom", function(data) {
-    socket.emit("joinroom", {
-        join: data.room
-    });
-});
 socket.on("joinroom", function(data) {
     if (data.room == "--connectedmsg") {
-        $('#chattext').append('<center><h2 class="muted" style="background-color: #eee; margin: 0px 0;">Connected</h2><p style="background-color: #eee; margin: 0px 0;"><a href=\'https://gemnasium.com/WhiskTech/whiskchat-server\'><img src="https://gemnasium.com/WhiskTech/whiskchat-server.png" alt="Dependency Status" /></a>&nbsp;&nbsp;<img src="https://webhooks.nodejitsu.com/WhiskTech/whiskchat-server.png">&nbsp;&nbsp;<script data-cfbadgetype="f" data-cfbadgeskin="icon" type="text/javascript"> //<![CDATA[ try{window.CloudFlare||function(){var a=window.document,b=a.createElement("script"),a=a.getElementsByTagName("script")[0];window.CloudFlare=[];b.type="text/javascript";b.async=!0;b.src="//ajax.cloudflare.com/cdn-cgi/nexp/cloudflare.js";a.parentNode.insertBefore(b,a)}(),CloudFlare.push(function(a){a(["cloudflare/badge"])})}catch(e$$5){try{console.error("CloudFlare badge code could not be loaded. "+e$$5.message)}catch(e$$6){}}; //]]> </script></img></p></center>');
+        $('#chattext').append('<center><h2 class="muted" style="background-color: #eee; margin: 0px 0;">Connected</h2></center>');
         return;
     }
     joinroomhandler(data.room);
@@ -922,20 +836,7 @@ function callMsg(data) {
       $("#" + newId).fadeOut(500);
       }, 5000);*/
 }
-socket.on("botcheck", function(data) {
-    var response = prompt(data.prompt);
-    socket.emit("botcheck", {
-        id: data.id,
-        response: response
-    });
-    var splitted = document.URL.split("r:");
-    if (splitted.length == 2) {
-        referral = splitted[1].split("&")[0];
-    } else {
-        referral = "";
-    }
 
-});
 socket.on("online", function(data) {
     online = data.people;
     if (data.array) {
@@ -946,12 +847,6 @@ socket.on("online", function(data) {
 var roomHTML = [];
 var users = [];
 var currentRoom = "main";
-socket.on("userquit", function(data) {
-    if (users[data.room] && users[data.room].indexOf(data.username) != -1) {
-        users[data.room].splice(users[data.room].indexOf(data.username), 1);
-    }
-    updateSidebar();
-});
 
 function updateSidebar() {
     if (!username) {
@@ -965,14 +860,9 @@ function updateSidebar() {
         userslistHTML += '<li><a>' + user + '</a></li>'
     })
     $('#userslistm').html(userslistHTML);
+    $('#usercount').html(online);
     moveWin();
 }
-socket.on("newuser", function(data) {
-    if (users[data.room] && users[data.room].indexOf(data.username) == -1) {
-        users[data.room].push(data.username);
-    }
-    updateSidebar();
-});
 socket.on('tip', function(data) {
     console.log('TIP: ' + JSON.stringify(data));
     if (textMode) {
@@ -988,10 +878,10 @@ socket.on('tip', function(data) {
     } else {
         if (data.rep) {
             if (currentRoom == data.room) {
-                $('#chattext').append("<div class='chatline'><span class='user' onclick='place()' style='background: rgba(136, 238, 136, 0.64);'><span>Tip</span>&nbsp;&nbsp;</span><span class='message' style='background: #eee; color: #090;'><strong>" + data.user + "</strong> has set " + data.target + "'s rep to " + Number(data.amount) + "! " + (data.message ? '(' + data.message + ')' : '') + "</span></div>");
+                $('#chattext').append("<div class='chatline expiring'><span class='user' onclick='place()' style='background: rgba(136, 238, 136, 0.64);'><span>Tip</span>&nbsp;&nbsp;</span><span class='message' style='background: #eee; color: #090;'><strong>" + data.user + "</strong> has set " + data.target + "'s rep to " + Number(data.amount) + "! " + (data.message ? '(' + data.message + ')' : '') + "</span></div>");
                 scrollWin();
             } else {
-                roomHTML[data.room] += "<div class='chatline'><span class='user' onclick='place()' style='background: rgba(136, 238, 136, 0.64);'><span>Tip</span>&nbsp;&nbsp;</span><span class='message' style='background: #eee; color: #090;'><strong>" + data.user + "</strong> has set " + data.target + "'s rep to " + Number(data.amount) + "! " + (data.message ? '(' + data.message + ')' : '') + "</span></div>";
+                roomHTML[data.room] += "<div class='chatline expiring'><span class='user' onclick='place()' style='background: rgba(136, 238, 136, 0.64);'><span>Tip</span>&nbsp;&nbsp;</span><span class='message' style='background: #eee; color: #090;'><strong>" + data.user + "</strong> has set " + data.target + "'s rep to " + Number(data.amount) + "! " + (data.message ? '(' + data.message + ')' : '') + "</span></div>";
                 scrollWin();
             }
             moveWin();
@@ -999,10 +889,10 @@ socket.on('tip', function(data) {
             return;
         }
         if (currentRoom == data.room) {
-            $('#chattext').append("<div class='chatline'><span class='user' onclick='place()' style='background: rgba(136, 238, 136, 0.64);'><span>Tip</span>&nbsp;&nbsp;</span><span class='message' style='background: #eee; color: #090;'><strong>" + data.user + "</strong> has tipped " + Number(data.amount) + " mBTC to <strong>" + data.target + "</strong>! " + (data.message ? '(' + data.message + ')' : '') + "</span></div>");
+            $('#chattext').append("<div class='chatline expiring'><span class='user' onclick='place()' style='background: rgba(136, 238, 136, 0.64);'><span>Tip</span>&nbsp;&nbsp;</span><span class='message' style='background: #eee; color: #090;'><strong>" + data.user + "</strong> has tipped " + Number(data.amount) + " mBTC to <strong>" + data.target + "</strong>! " + (data.message ? '(' + data.message + ')' : '') + "</span></div>");
             moveWin();
         } else {
-            roomHTML[data.room] += "<div class='chatline'><span class='user' onclick='place()' style='background: rgba(136, 238, 136, 0.64);'><span>Tip</span>&nbsp;&nbsp;</span><span class='message' style='background: #eee; color: #090;'><strong>" + data.user + "</strong> has tipped " + Number(data.amount) + " mBTC to <strong>" + data.target + "</strong>! " + (data.message ? '(' + data.message + ')' : '') + "</span></div>";
+            roomHTML[data.room] += "<div class='chatline expiring'><span class='user' onclick='place()' style='background: rgba(136, 238, 136, 0.64);'><span>Tip</span>&nbsp;&nbsp;</span><span class='message' style='background: #eee; color: #090;'><strong>" + data.user + "</strong> has tipped " + Number(data.amount) + " mBTC to <strong>" + data.target + "</strong>! " + (data.message ? '(' + data.message + ')' : '') + "</span></div>";
             moveWin();
         }
         if (debugMode && currentRoom != data.room) {
@@ -1017,7 +907,7 @@ socket.on('tip', function(data) {
 });
 
 function newRoom(room) {
-
+    
     updateSidebar();
 };
 socket.on("quitroom", function(data) {
@@ -1027,7 +917,7 @@ socket.on("quitroom", function(data) {
     }
     delete roomHTML[data.room];
     delete users[data.room];
-
+    
 });
 
 function removeRoom(room) {
@@ -1048,7 +938,7 @@ function removeRoom(room) {
     sync();
     $('#room-' + room).remove();
     return;
-
+    
 }
 
 function joinroomhandler(obj) {
@@ -1109,37 +999,37 @@ socket.on("chat", function(data) {
         if (encryptionKey == "") {
             return;
         }
-
+	
         decryptedMessage = CryptoJS.AES.decrypt(data.message.substr(3), encryptionKey).toString();
-
+	
         if (decryptedMessage == "") {
             return;
         }
         data.encrypted = true;
         data.message = stripHTML(hex2a(decryptedMessage));
-
+	
     } else {
         data.encrypted = false;
     }
-
+    
     /*if (data.message.indexOf('<i>') !== -1) {
-        if (currentRoom == data.room) {
-            $('#chattext').append("<div class='chatline'><span class='user' onclick='place()' style='background: rgba(136, 238, 136, 0.64);'><span></span>&nbsp;&nbsp;</span><span class='message' style='background: #eee'>* <strong>" + data.user + "</strong> " + data.message + "</span></div>");
-            moveWin();
-        } else {
-            roomHTML[data.room] += "<div class='chatline'><span class='user' onclick='place()' style='background: rgba(136, 238, 136, 0.64);'><span></span>&nbsp;&nbsp;</span><span class='message muted' style='background: #eee'><i>* <strong>" + data.user + "</strong> </i>" + data.message + "</span></div>";
-            moveWin();
-        }
-        moveWin();
-        scrollWin();
-        return;
-    }*/
+      if (currentRoom == data.room) {
+      $('#chattext').append("<div class='chatline'><span class='user' onclick='place()' style='background: rgba(136, 238, 136, 0.64);'><span></span>&nbsp;&nbsp;</span><span class='message' style='background: #eee'>* <strong>" + data.user + "</strong> " + data.message + "</span></div>");
+      moveWin();
+      } else {
+      roomHTML[data.room] += "<div class='chatline'><span class='user' onclick='place()' style='background: rgba(136, 238, 136, 0.64);'><span></span>&nbsp;&nbsp;</span><span class='message muted' style='background: #eee'><i>* <strong>" + data.user + "</strong> </i>" + data.message + "</span></div>";
+      moveWin();
+      }
+      moveWin();
+      scrollWin();
+      return;
+      }*/
     if (data.message == '!; joinroom') {
         if (currentRoom == data.room) {
             $("#chattext").append("<div class='chatline'><span class='user' onclick='place()' style='background: rgba(136, 238, 136, 0.64);'><span></span>&nbsp;&nbsp;</span><span class='message muted' style='background: #eee'><strong>" + data.user + "</strong> joined #" + data.room + "<span></div>");
         } else {
             roomHTML[data.room] += "<div class='chatline'><span class='user' onclick='place()' style='background: rgba(136, 238, 136, 0.64);'><span></span>&nbsp;&nbsp;</span><span class='message muted' style='background: #eee'><strong>" + data.user + "</strong> joined #" + data.room + "<span></div>"
-
+	    
         }
         moveWin();
         scrollWin();
@@ -1160,6 +1050,9 @@ socket.on("chat", function(data) {
         moveWin();
         scrollWin();
         return;
+    }
+    if (data.message == '!info') {
+	return;
     }
     if ((args[0] == "!hint" || args[0] == "!ahint") && data.room == "20questions") {
         return;
@@ -1232,7 +1125,7 @@ socket.on("chat", function(data) {
     if (data.message.toLowerCase().indexOf(username.toLowerCase()) != -1 && username.length > 0 && data.user != "WhiskDiceBot") {
         data.message = '<strong>' + data.message + '</strong>'
     }
-
+    
     if (data.user == username) {
         var m = "";
         /*if (spammyness > 25) {

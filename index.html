@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <!--
-   WhiskChat Client
-   (for WhiskChat Server)
-   Derived from coinchat.org by whiskers75
+    WhiskChat Client
+    (for WhiskChat Server)
+    Derived from coinchat.org by whiskers75
   -->
 <html>
   <head>
@@ -23,7 +23,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   </head>
   <body style="overflow: auto;">
-
+    
     <!-- This bit is the fun part.
 	 I've commented stuff for you, dear source checker.
 	 -whiskers75
@@ -51,10 +51,10 @@
     <div id="chat"> <!-- Welcome to the arena. -->
       <!-- This is the hard part. -->
       <div class="header">
-      <img src="http://whiskchat.com/static/img/whiskchat_logo.png" style="max-width: 50px;">
+	<img src="http://whiskchat.com/static/img/whiskchat_logo.png" style="max-width: 50px;">
         <span style="font-size: 17.5px;" class="headerblock versionstr hidden-phone">WhiskChat</span>
 	<span id="whitelisted" class="pull-right headerblock"><i class="icon-gift"></i>  0</span>
-        <span class="pull-right headerblock"><span style="color: #090; font-weight: bold;" class="gold" id="balance">0</span> mBTC</span><span id="username" style="font-weight: bold;" class="pull-right headerblock">Authenticate</span><span class="headerblock pull-right hidden-phone" id="quit"><i class="icon-off"></i> Quit</span> <!-- Quit -->
+        <span class="pull-right headerblock"><span style="color: #090; font-weight: bold;" class="gold" id="balance">0</span> mBTC</span><span id="username" style="font-weight: bold;" class="pull-right headerblock">Authenticate</span><span class="headerblock pull-right hidden-phone" id="quit"><i class="icon-off"></i> Quit</span> <span class="headerblock pull-right hidden-phone" id="logout"><i class="icon-off"></i> Logout</span> <!-- Quit -->
       </div>     
       <div class="content">
 	<div id="chattext">
@@ -62,51 +62,51 @@
 	</div>
       </div>
       <div class="input"> <!-- The input box -->
-      <div class="btn-group">
-        <div class="btn-group dropup">
-          <button class="btn dropdown-toggle tenpx" data-toggle="dropdown" id="menubtn" style="display: inline-block;">
-            <i class="icon-plus-sign"></i> <!-- The menu button -->
-          </button>
-          <ul class="dropdown-menu">
-	    <!-- Add menu entries in here -->
-            <li> <a id="withdrawlnk" class="">Withdraw with Inputs.io</a> </li>
-            <li>
-              <script async src="https://inputs.io/js/buttons.js"></script>
-              <a href="https://inputs.io/pay?to=whiskchat.com" class="inputsio-alt" data-to="whiskchat.com" data-note="<b>Insert username here!</b>">Deposit with Inputs.io</a>
-            </li>
-            <li> <a id="reloadbal" class="">Refresh balance/rep</a> </li>
-            <li class="dropdown-submenu"> <a> Ignoring (client) </a>
-              <ul class="dropdown-menu">
-                <li> <a id="mute" class="">Add ignore</a> </li>
-                <li> <a id="unmute" class="">Remove ignore</a> </li>
-              </ul>
-            </li>
+	<div class="btn-group">
+          <div class="btn-group dropup">
+            <button class="btn dropdown-toggle tenpx" data-toggle="dropdown" id="menubtn" style="display: inline-block;">
+              <i class="icon-plus-sign"></i> <!-- The menu button -->
+            </button>
+            <ul class="dropdown-menu">
+	      <!-- Add menu entries in here -->
+              <li> <a id="withdrawlnk" class="">Withdraw with Inputs.io</a> </li>
+              <li>
+		<script async src="https://inputs.io/js/buttons.js"></script>
+		<a href="https://inputs.io/pay?to=whiskchat.com" class="inputsio-alt" data-to="whiskchat.com" data-note="<b>Insert username here!</b>">Deposit with Inputs.io</a>
+              </li>
+              <li> <a id="reloadbal" class="">Refresh balance/rep</a> </li>
+              <li class="dropdown-submenu"> <a> Ignoring (client) </a>
+		<ul class="dropdown-menu">
+                  <li> <a id="mute" class="">Add ignore</a> </li>
+                  <li> <a id="unmute" class="">Remove ignore</a> </li>
+		</ul>
+              </li>
 </li>
 <li> <a id="tipmenu"> Tip mBTC </a> </li>
 <li> <a id="webkitn"> Activate desktop notifications </a> </li>
 </ul>
 </div>
-        <div class="btn-group dropup hidden-phone">
-          <button class="btn dropdown-toggle tenpx" data-toggle="dropdown" id="roomslist" style="display: inline-block;">
-            <i class="icon-home"></i> none <!-- The menu button -->
-          </button>
-          <ul class="dropdown-menu keep_open" id="roomenu">
-          <li class="dropdown-item-muted dropdown-submenu"><a>Join a room...</a>
-          <ul class="dropdown-menu">
-            <li><div class="input-append" style="margin-bottom: 0px; margin-right: 5px;"><input type="text" placeholder="Room name" id="roominput" style="margin-left: 5px;"><span class="btn" id="joinroombtn">Join</span></div></li>
-          </ul>
-          </li>
-</ul>
+<div class="btn-group dropup hidden-phone">
+  <button class="btn dropdown-toggle tenpx" data-toggle="dropdown" id="roomslist" style="display: inline-block;">
+    <i class="icon-home"></i> none <!-- The menu button -->
+  </button>
+  <ul class="dropdown-menu keep_open" id="roomenu">
+    <li class="dropdown-item-muted dropdown-submenu"><a>Join a room...</a>
+      <ul class="dropdown-menu">
+        <li><div class="input-append" style="margin-bottom: 0px; margin-right: 5px;"><input type="text" placeholder="Room name" id="roominput" style="margin-left: 5px;"><span class="btn" id="joinroombtn">Join</span></div></li>
+      </ul>
+    </li>
+  </ul>
 </div>
 <div class="btn-group dropup hidden-phone">
-          <button class="btn dropdown-toggle tenpx" data-toggle="dropdown" id="userslist" style="display: inline-block;">
-            <i class="icon-user"></i>&nbsp;<span id='usercount'>0</span> <!-- The menu button -->
-          </button>
-          <ul class="dropdown-menu keep_open" id="userslistm">
-          <li class="dropdown-item-muted"><a><b>Users list</b></a></li>
-          <li class="dropdown-item-muted"><a>Users list</a></li>
-          <li><a>[insert]</a></li>
-</ul>
+  <button class="btn dropdown-toggle tenpx" data-toggle="dropdown" id="userslist" style="display: inline-block;">
+    <i class="icon-user"></i>&nbsp;<span id='usercount'>0</span> <!-- The menu button -->
+  </button>
+  <ul class="dropdown-menu keep_open" id="userslistm">
+    <li class="dropdown-item-muted"><a><b>Users list</b></a></li>
+    <li class="dropdown-item-muted"><a>Users list</a></li>
+    <li><a>[insert]</a></li>
+  </ul>
 </div>
 </div>
 <div class="input-append">
