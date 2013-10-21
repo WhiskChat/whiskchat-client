@@ -15,7 +15,7 @@ var usernames = [];
 var online = 0;
 var lastCheck = new Date("1990");
 var hasFocus = true;
-var versionString = 'WhiskChat X 10.6 Feature-packed Flock';
+var versionString = 'WhiskChat X 10.6.2 Feature-packed Flock';
 var muted = [];
 var pmLock = false;
 var pmLockUser = '';
@@ -52,9 +52,6 @@ setTimeout(function() {
 }, 10000);
 
 function sync() {
-    callMsg({
-        message: '<i class="icon-upload"></i> Syncing roomlist to server...'
-    });
     socket.emit('sync', {
         sync: appended
     });
@@ -76,7 +73,13 @@ var upto = -1;
 var spammyness = 0;
 var lastMsg = new Date();
 var warningLevel = 0;
-
+socket.on('connect_failed', function() {
+    callMsg({message: '<img src="http://whiskchat.com/static/img/smileys/sad.png"> Failed to connect!'});
+    callMsg({message: 'Check <a href="http://server.whiskchat.com">server status</a> or refresh to retry!'});
+});
+socket.on('error', function() {
+    callMsg({message: '<img src="http://whiskchat.com/static/img/smileys/sad.png"> An error occurred!'});
+});
 function updateTitle() {
     if (pendingMention) {
         changeTitle("(" + pendingMsgs + "!) WhiskChat");
@@ -103,11 +106,17 @@ setInterval(function() {
     spammyness -= 0.05;
     spammyness = Math.max(spammyness, 0);
 }, 1250);
-setInterval(function() { // Delete old messages
-    $('.expiring').fadeOut(1000, "swing", function() {
-        $('.expiring').remove();
-    });
-}, 15000);
+function expire(id) {
+    console.log('Expiring #' + id);
+    console.log($('#' + id).attr('class'));
+    setTimeout(function() {    
+        $('#' + id).addClass('slideOutRight');
+        $('#' + id).removeClass('slideInLeft');
+	setTimeout(function() {
+	    $('#' + id).hide();
+	}, 500);
+    }, 7500);    
+};
 setTimeout(function() {
     socket.on("connect", function() {
         if (disconnected) {
@@ -818,12 +827,14 @@ function addToRoomHTML(html) {
 
 function callMsg(data) {
     var newId = "m" + Math.round(Math.random() * 10000);
-    //$("#chattext").append("<div class='chatline expiring'><span class='user' onclick='place()' style='background: rgba(238, 160, 136, 0.64);'><span></span>&nbsp;&nbsp;</span><span class='message' style='background: #eee'><strong>" + data.message + "</strong></span></div>");
+    //$("#chattext").append("<div class='chatline animated slideInLeft'><span class='user' onclick='place()' style='background: rgba(238, 160, 136, 0.64);'><span></span>&nbsp;&nbsp;</span><span class='message' style='background: #eee'><strong>" + data.message + "</strong></span></div>");
     moveWin();
     if (textMode) {
         $("#chattext").append("[" + new Date().getHours() + ":" + (String(new Date().getMinutes()).length == 1 ? "0" + new Date().getMinutes() : new Date().getMinutes()) + "] <span class='color: #e00;'>==</span> <strong>" + data.message + "</strong></br>");
     } else {
-        $("#chattext").append("<div class='chatline expiring' style='background-color: #D0F098;'><center><strong>" + data.message + "</strong></center></div>");
+	var rnd = (Math.random() * 100).toFixed(0);
+        $("#chattext").append("<div class='chatline animated slideInLeft' id='" + rnd + "' style='background-color: #D0F098;'><center><strong>" + data.message + "</strong></center></div>");
+	expire(rnd);
     }
     if ((!fs && $("#chattext").scrollTop() + 650 >= $("#chattext").prop('scrollHeight')) || (fs && $("#chattext").scrollTop() + $(window).height() >= $("#chattext").prop('scrollHeight'))) {
         $("#chattext").animate({
@@ -864,6 +875,7 @@ function updateSidebar() {
     moveWin();
 }
 socket.on('tip', function(data) {
+    var rnd2 = (Math.random() * 100).toFixed(0);
     console.log('TIP: ' + JSON.stringify(data));
     if (textMode) {
         if (data.rep) {
@@ -878,10 +890,10 @@ socket.on('tip', function(data) {
     } else {
         if (data.rep) {
             if (currentRoom == data.room) {
-                $('#chattext').append("<div class='chatline expiring'><span class='user' onclick='place()' style='background: rgba(136, 238, 136, 0.64);'><span>Tip</span>&nbsp;&nbsp;</span><span class='message' style='background: #eee; color: #090;'><strong>" + data.user + "</strong> has set " + data.target + "'s rep to " + Number(data.amount) + "! " + (data.message ? '(' + data.message + ')' : '') + "</span></div>");
+                $('#chattext').append("<div class='chatline animated slideInLeft' id='"+ rnd2 + "'><span class='user' onclick='place()' style='background: rgba(136, 238, 136, 0.64);'><span>Tip</span>&nbsp;&nbsp;</span><span class='message' style='background: #eee; color: #090;'><strong>" + data.user + "</strong> has set " + data.target + "'s rep to " + Number(data.amount) + "! " + (data.message ? '(' + data.message + ')' : '') + "</span></div>");
                 scrollWin();
             } else {
-                roomHTML[data.room] += "<div class='chatline expiring'><span class='user' onclick='place()' style='background: rgba(136, 238, 136, 0.64);'><span>Tip</span>&nbsp;&nbsp;</span><span class='message' style='background: #eee; color: #090;'><strong>" + data.user + "</strong> has set " + data.target + "'s rep to " + Number(data.amount) + "! " + (data.message ? '(' + data.message + ')' : '') + "</span></div>";
+                roomHTML[data.room] += "<div class='chatline animated slideInLeft' id='"+ rnd2 + "'><span class='user' onclick='place()' style='background: rgba(136, 238, 136, 0.64);'><span>Tip</span>&nbsp;&nbsp;</span><span class='message' style='background: #eee; color: #090;'><strong>" + data.user + "</strong> has set " + data.target + "'s rep to " + Number(data.amount) + "! " + (data.message ? '(' + data.message + ')' : '') + "</span></div>";
                 scrollWin();
             }
             moveWin();
@@ -889,10 +901,10 @@ socket.on('tip', function(data) {
             return;
         }
         if (currentRoom == data.room) {
-            $('#chattext').append("<div class='chatline expiring'><span class='user' onclick='place()' style='background: rgba(136, 238, 136, 0.64);'><span>Tip</span>&nbsp;&nbsp;</span><span class='message' style='background: #eee; color: #090;'><strong>" + data.user + "</strong> has tipped " + Number(data.amount) + " mBTC to <strong>" + data.target + "</strong>! " + (data.message ? '(' + data.message + ')' : '') + "</span></div>");
+            $('#chattext').append("<div class='chatline animated slideInLeft' id='"+ rnd2 + "'><span class='user' onclick='place()' style='background: rgba(136, 238, 136, 0.64);'><span>Tip</span>&nbsp;&nbsp;</span><span class='message' style='background: #eee; color: #090;'><strong>" + data.user + "</strong> has tipped " + Number(data.amount) + " mBTC to <strong>" + data.target + "</strong>! " + (data.message ? '(' + data.message + ')' : '') + "</span></div>");
             moveWin();
         } else {
-            roomHTML[data.room] += "<div class='chatline expiring'><span class='user' onclick='place()' style='background: rgba(136, 238, 136, 0.64);'><span>Tip</span>&nbsp;&nbsp;</span><span class='message' style='background: #eee; color: #090;'><strong>" + data.user + "</strong> has tipped " + Number(data.amount) + " mBTC to <strong>" + data.target + "</strong>! " + (data.message ? '(' + data.message + ')' : '') + "</span></div>";
+            roomHTML[data.room] += "<div class='chatline animated slideInLeft' id='"+ rnd2 + "'><span class='user' onclick='place()' style='background: rgba(136, 238, 136, 0.64);'><span>Tip</span>&nbsp;&nbsp;</span><span class='message' style='background: #eee; color: #090;'><strong>" + data.user + "</strong> has tipped " + Number(data.amount) + " mBTC to <strong>" + data.target + "</strong>! " + (data.message ? '(' + data.message + ')' : '') + "</span></div>";
             moveWin();
         }
         if (debugMode && currentRoom != data.room) {
@@ -902,6 +914,7 @@ socket.on('tip', function(data) {
         }
         moveWin();
         scrollWin();
+	expire(rnd2);
     }
     return;
 });
@@ -934,7 +947,7 @@ function removeRoom(room) {
         return;
     }
     appended.splice(appended.indexOf(room), 1);
-    $("#chattext").append("<div class='chatline expiring' style='background-color: #F09898;'><center>Left " + room + "</center></div>");
+    $("#chattext").append("<div class='chatline' style='background-color: #F09898;'><center>Left " + room + "</center></div>");
     sync();
     $('#room-' + room).remove();
     return;
@@ -968,7 +981,7 @@ function switchRoom(obj) {
     if (appended.indexOf(obj) == -1) {
         appended.push(obj);
         $("#chattext").append(roomHTML[currentRoom]);
-        $("#chattext").append("<div class='chatline expiring' style='background-color: #F09898;'><center>Joined " + obj + "</center></div>");
+        $("#chattext").append("<div class='chatline' style='background-color: #F09898;'><center>Joined " + obj + "</center></div>");
         $("#roomenu").append("<li id=\"room-" + obj + "\"> <a onmouseover='$(\"#quitcon-" + obj + "\").show()' onmouseout='$(\"#quitcon-" + obj + "\").hide()' onclick='srwrap(\"" + obj + "\")'>" + obj + "<button onclick='removeRoom(\"" + obj + "\")' id='quitcon-" + obj + "' class=\"notif btn btn-mini btn-link\" style=\"display: none;\"><i class=\"icon-off\"></i></button></a></li>");
         $("#quitcon-" + obj).click(function(e) {
             e.stopPropagation();
@@ -1375,11 +1388,15 @@ function changeTitle(title) {
 }
 
 function genJoinNotice(message) {
-    $('#chattext').append("<div class='chatline' style='background-color: #95E79E;'><center>" + message + "</center></div>");
+    var rnd3 = (Math.random() * 100).toFixed(0);
+    $('#chattext').append("<div class='chatline animated slideInLeft' style='background-color: #95E79E;' id='" + rnd3 + "'><center>" + message + "</center></div>");
     addToRoomHTML("<div class='chatline' style='background-color: #95E79E;'><center>" + message + "</center></div>")
+    expire(rnd3);
 }
 
 function genQuitNotice(message) {
-    $('#chattext').append("<div class='chatline' style='background-color: #F56868;'><center>" + message + "</center></div>");
+    var rnd4 = (Math.random() * 100).toFixed(0);
+    $('#chattext').append("<div class='chatline animated slideInLeft' style='background-color: #F56868;' id='" + rnd4 + "'><center>" + message + "</center></div>");
     addToRoomHTML("<div class='chatline' style='background-color: #F56868;'><center>" + message + "</center></div>")
+    expire(rnd4);
 }
