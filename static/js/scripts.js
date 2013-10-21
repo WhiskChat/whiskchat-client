@@ -109,9 +109,10 @@ setInterval(function() {
 function expire(id) {
     console.log('Expiring #' + id);
     console.log($('#' + id).attr('class'));
-    setTimeout(function() {    
-        $('#' + id).addClass('slideOutRight');
+    setTimeout(function() {
+	$('#' + id).removeClass('slideOutRight');
         $('#' + id).removeClass('slideInLeft');
+        $('#' + id).addClass('slideOutRight');
 	setTimeout(function() {
 	    $('#' + id).hide();
 	}, 500);
