@@ -15,7 +15,7 @@ var usernames = [];
 var online = 0;
 var lastCheck = new Date("1990");
 var hasFocus = true;
-var versionString = 'WhiskChat X 10.6.2 Feature-packed Flock';
+var versionString = 'WhiskChat X 10.6.3 Feature-packed Flock';
 var muted = [];
 var pmLock = false;
 var pmLockUser = '';
@@ -114,7 +114,7 @@ function expire(id) {
         $('#' + id).removeClass('slideInLeft');
         $('#' + id).addClass('slideOutRight');
 	setTimeout(function() {
-	    $('#' + id).hide();
+	    $('#' + id).remove();
 	}, 500);
     }, 7500);    
 };
@@ -833,7 +833,7 @@ function callMsg(data) {
     if (textMode) {
         $("#chattext").append("[" + new Date().getHours() + ":" + (String(new Date().getMinutes()).length == 1 ? "0" + new Date().getMinutes() : new Date().getMinutes()) + "] <span class='color: #e00;'>==</span> <strong>" + data.message + "</strong></br>");
     } else {
-	var rnd = (Math.random() * 100).toFixed(0);
+	var rnd = (Math.random() * 1000).toFixed(0);
         $("#chattext").append("<div class='chatline animated slideInLeft' id='" + rnd + "' style='background-color: #D0F098;'><center><strong>" + data.message + "</strong></center></div>");
 	expire(rnd);
     }
@@ -876,7 +876,7 @@ function updateSidebar() {
     moveWin();
 }
 socket.on('tip', function(data) {
-    var rnd2 = (Math.random() * 100).toFixed(0);
+    var rnd2 = (Math.random() * 1000).toFixed(0);
     console.log('TIP: ' + JSON.stringify(data));
     if (textMode) {
         if (data.rep) {
@@ -1389,14 +1389,14 @@ function changeTitle(title) {
 }
 
 function genJoinNotice(message) {
-    var rnd3 = (Math.random() * 100).toFixed(0);
+    var rnd3 = (Math.random() * 1000).toFixed(0);
     $('#chattext').append("<div class='chatline animated slideInLeft' style='background-color: #95E79E;' id='" + rnd3 + "'><center>" + message + "</center></div>");
     addToRoomHTML("<div class='chatline' style='background-color: #95E79E;'><center>" + message + "</center></div>")
     expire(rnd3);
 }
 
 function genQuitNotice(message) {
-    var rnd4 = (Math.random() * 100).toFixed(0);
+    var rnd4 = (Math.random() * 1000).toFixed(0);
     $('#chattext').append("<div class='chatline animated slideInLeft' style='background-color: #F56868;' id='" + rnd4 + "'><center>" + message + "</center></div>");
     addToRoomHTML("<div class='chatline' style='background-color: #F56868;'><center>" + message + "</center></div>")
     expire(rnd4);
