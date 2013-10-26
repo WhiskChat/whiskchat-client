@@ -69,6 +69,7 @@ setTimeout(function() {
         callMsg({
             message: 'You seem to be having trouble connecting. WhiskChat may be down, or you might need to refresh.'
         });
+	
     }
 }, 10000);
 
@@ -444,7 +445,7 @@ $(document).ready(function() {
     joinroomhandler('main');
     $("#chattext").append("<div class='chatline'><span class='user' onclick='place()' style='background: rgba(238, 160, 136, 0.64);'><span>Copyright notice</span>&nbsp;&nbsp;</span><span class='message' style='background: #eee'>WhiskChat Client uses code from <a href='http://coinchat.org/'>coinchat.org</a> (c) 2013 admin@glados.cc</span></div>");
     callMsg({
-        message: 'Connecting to server.whiskchat.com...'
+        message: 'Connecting to ' + url + '...'
     });
 });
 socket.on("whitelist", function(data) {
