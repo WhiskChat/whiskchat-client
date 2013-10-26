@@ -5,7 +5,25 @@
   Forever open source.
 */
 var url = 'http://server.whiskchat.com';
-if (getCookie('server') {
+function getCookie(c_name) {
+    var c_value = document.cookie;
+    var c_start = c_value.indexOf(" " + c_name + "=");
+    if (c_start == -1) {
+        c_start = c_value.indexOf(c_name + "=");
+    }
+    if (c_start == -1) {
+        c_value = null;
+    } else {
+        c_start = c_value.indexOf("=", c_start) + 1;
+        var c_end = c_value.indexOf(";", c_start);
+        if (c_end == -1) {
+            c_end = c_value.length;
+        }
+        c_value = unescape(c_value.substring(c_start, c_end));
+    }
+    return c_value;
+}
+if (getCookie('server')) {
     url = getCookie('server');
 }
 var socket = io.connect(url, {
@@ -929,7 +947,7 @@ socket.on('tip', function(data) {
     }
     return;
 });
-
+    
 function newRoom(room) {
     
     updateSidebar();
@@ -1328,7 +1346,7 @@ function embed(roomName) {
     srwrap(roomName);
 }
 // stuff
-
+    
 function setCookie(c_name, value, exdays) {
     var exdate = new Date();
     exdate.setDate(exdate.getDate() + exdays);
@@ -1336,24 +1354,7 @@ function setCookie(c_name, value, exdays) {
     document.cookie = c_name + "=" + c_value;
 }
 
-function getCookie(c_name) {
-    var c_value = document.cookie;
-    var c_start = c_value.indexOf(" " + c_name + "=");
-    if (c_start == -1) {
-        c_start = c_value.indexOf(c_name + "=");
-    }
-    if (c_start == -1) {
-        c_value = null;
-    } else {
-        c_start = c_value.indexOf("=", c_start) + 1;
-        var c_end = c_value.indexOf(";", c_start);
-        if (c_end == -1) {
-            c_end = c_value.length;
-        }
-        c_value = unescape(c_value.substring(c_start, c_end));
-    }
-    return c_value;
-}
+    
 var flashInterval;
 
 function startFlashing(title) {
