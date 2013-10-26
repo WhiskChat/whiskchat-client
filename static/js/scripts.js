@@ -36,7 +36,7 @@ var usernames = [];
 var online = 0;
 var lastCheck = new Date("1990");
 var hasFocus = true;
-var versionString = 'WhiskChat X 10.6.5 Feature-packed Flock';
+var versionString = 'WhiskChat X 10.6.7 Feature-packed Flock';
 var muted = [];
 var pmLock = false;
 var pmLockUser = '';
@@ -67,9 +67,12 @@ function notificationPermission() {
 setTimeout(function() {
     if (!socket.socket.connected) {
         callMsg({
-            message: '<i class="icon-signal"></i> Took too long to connect! Resetting your server - please refresh!'
+            message: '<i class="icon-signal"></i> Connection timed out! Please wait, refreshing...'
         });
 	setCookie('server', 'http://server.whiskchat.com', 14);
+	setTimeout(function() {
+	    window.location.reload(true);
+	}, 2000);
     }
 }, 10000);
 
