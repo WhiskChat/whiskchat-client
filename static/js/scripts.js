@@ -67,9 +67,9 @@ function notificationPermission() {
 setTimeout(function() {
     if (!socket.socket.connected) {
         callMsg({
-            message: 'You seem to be having trouble connecting. WhiskChat may be down, or you might need to refresh.'
+            message: '<i class="icon-signal"></i> Took too long to connect! Resetting your server - please refresh!'
         });
-	
+	setCookie('server', 'http://server.whiskchat.com', 14);
     }
 }, 10000);
 
@@ -594,8 +594,8 @@ function sendMsg() {
         }
         if (msg.substr(0, 7) == "/server") {
             if (msg.split(" ").length == 2) {
-                setCookie('server', msg.split(' ')[1], 14);
-		callMsg({message: '<i class="icon-signal"></i> You will connect to ' + msg.split(' ')[1] + ' from now on.'});
+                setCookie('server', 'http://' + msg.split(' ')[1], 14);
+		callMsg({message: '<i class="icon-signal"></i> You will connect to http://' + msg.split(' ')[1] + ' from now on.'});
 		return;
             }
         }
