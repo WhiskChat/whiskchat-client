@@ -4,8 +4,11 @@
   Aut viam inveniam aut faciam.
   Forever open source.
 */
-
-var socket = io.connect('http://server.whiskchat.com', {
+var url = 'http://server.whiskchat.com';
+if (getCookie('server') {
+    url = getCookie('server');
+}
+var socket = io.connect(url, {
     resource: 'socket.io',
     reconnect: false
 });
@@ -15,7 +18,7 @@ var usernames = [];
 var online = 0;
 var lastCheck = new Date("1990");
 var hasFocus = true;
-var versionString = 'WhiskChat X 10.6.3 Feature-packed Flock';
+var versionString = 'WhiskChat X 10.6.5 Feature-packed Flock';
 var muted = [];
 var pmLock = false;
 var pmLockUser = '';
@@ -568,6 +571,13 @@ function sendMsg() {
                     rep: true
                 });
                 return;
+            }
+        }
+        if (msg.substr(0, 7) == "/server") {
+            if (msg.split(" ").length == 2) {
+                setCookie('server', msg.split(' ')[1], 14);
+		callMsg({message: '<i class="icon-signal"></i> You will connect to ' + msg.split(' ')[1] + ' from now on.'});
+		return;
             }
         }
         if (msg.substr(0, 3) == "/sr" || msg.substr(0, 5) == "/join") {
