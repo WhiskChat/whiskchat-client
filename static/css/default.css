@@ -68,7 +68,7 @@ body {
 #chattext {
     width: 675px;
     overflow-x: hidden;
-    overflow-y: hidden;
+    overflow-y: scroll;
     height: 100%;
     margin-right: 0;
     display: inline-block;
