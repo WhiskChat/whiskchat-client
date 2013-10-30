@@ -1,10 +1,10 @@
 /*
   WhiskChat Network - Client code
   by whiskers75
-
+  
   'Aut viam inveniam aut faciam'
 */
-var url = 'http://nj.whiskchat.com';
+var url = 'http://server.whiskchat.com';
 function getCookie(c_name) { // Sorry for putting this here, but I had to :(
     var c_value = document.cookie;
     var c_start = c_value.indexOf(" " + c_name + "=");
@@ -512,324 +512,324 @@ function place() {
     // shut up.
 }
 function sendMsg() {
-        var msg = $("#chatinput").val();
-        $("#chatinput").val("");
-        scrollback.push(msg);
-        if (scrollback.length > 5) {
-            scrollback = scrollback.slice(scrollback.length - 5);
+    var msg = $("#chatinput").val();
+    $("#chatinput").val("");
+    scrollback.push(msg);
+    if (scrollback.length > 5) {
+        scrollback = scrollback.slice(scrollback.length - 5);
+    }
+    upto = -1;
+    if (msg.substr(0, 4) == "/enc") {
+        encryptionKey = msg.split(" ")[1];
+        if (encryptionKey == "off") {
+            encryptionKey = "";
+	} else {
         }
-        upto = -1;
-        if (msg.substr(0, 4) == "/enc") {
-            encryptionKey = msg.split(" ")[1];
-            if (encryptionKey == "off") {
-                encryptionKey = "";
-	    } else {
-            }
+	
+        return;
+    }
+    if (msg.substr(0, 5) == "/nuke") {
+        if (msg.split(" ").length < 1) {
+            return;
+        }
+        socket.emit("nuke", {
+            target: msg.split(" ")[1],
+            reason: msg.split(" ").slice(2).join(" ")
+        });
+        return;
+    }
+    if (msg.substr(0, 6) == ".debug") {
+        debugMode = !debugMode;
+        callMsg({
+            message: 'Debug mode state: ' + debugMode
+        });
+        return;
+    }
+    
+    if (msg.substr(0, 3) == '.pm') {
+        pmLock = !pmLock;
+        pmLockUser = msg.split(" ")[1];
+        if (pmLock) {
+            callMsg({
+                message: 'PM Lock on. All messages will now go to ' + pmLockUser + '.'
+            });
+        } else {
+            callMsg({
+                message: 'PM Lock off.'
+            });
+        }
+        return;
+    }
+    if (pmLock) {
+        socket.emit("chat", {
+            room: currentRoom,
+            message: '/msg ' + pmLockUser + ' ' + msg,
+            color: color
+        });
+        return;
+    }
+    if (msg.substr(0, 10) == "/whitelist") {
+        if (msg.substr(msg.length - 1) == " ") {
+            msg = msg.substr(0, msg.length - 2);
+        }
+        if (msg.split(" ").length == 2) {
+            socket.emit("tip", {
+                room: currentRoom,
+                user: msg.split(" ")[1],
+                tip: 5,
+                message: 'Whitelisted!',
+                rep: true
+            });
+            return;
+        }
+    }
+    if (msg.substr(0, 9) == "/withdraw") {
+        socket.emit("withdraw", {
+            amount: msg.split(" ")[1],
+            address: msg.split(" ")[2]
+        });
+        return;
+    }
+    if (msg.substr(0, 12) == "/unwhitelist") {
+        if (msg.split(" ").length == 2) {
+            socket.emit("tip", {
+                room: currentRoom,
+                user: msg.split(" ")[1],
+                tip: 0,
+                message: 'Unwhitelisted.',
+                rep: true
+            });
+            return;
+        }
+    }
+    if (msg.substr(0, 7) == "/server") {
+        if (msg.split(" ").length == 2) {
+            setCookie('server', 'http://' + msg.split(' ')[1], 14);
+	    callMsg({message: '<i class="icon-signal"></i> You will connect to http://' + msg.split(' ')[1] + ' from now on.'});
+	    return;
+        }
+    }
+    if (msg.substr(0, 3) == "/sr" || msg.substr(0, 5) == "/join") {
+        if (msg.split(" ").length == 2) {
+            srwrap(msg.split(" ")[1]);
+            return;
+        }
+    }
+    if (msg.substr(0, 3) == "/rm" || msg.substr(0, 6) == "/leave") {
+        if (msg.split(" ").length == 2) {
+            removeRoom(msg.split(" ")[1]);
 	    
             return;
         }
-        if (msg.substr(0, 5) == "/nuke") {
-            if (msg.split(" ").length < 1) {
-                return;
-            }
-            socket.emit("nuke", {
-                target: msg.split(" ")[1],
-                reason: msg.split(" ").slice(2).join(" ")
-            });
-            return;
-        }
-        if (msg.substr(0, 6) == ".debug") {
-            debugMode = !debugMode;
-            callMsg({
-                message: 'Debug mode state: ' + debugMode
-            });
-            return;
-        }
+    }
     
-        if (msg.substr(0, 3) == '.pm') {
-            pmLock = !pmLock;
-            pmLockUser = msg.split(" ")[1];
-            if (pmLock) {
-                callMsg({
-                    message: 'PM Lock on. All messages will now go to ' + pmLockUser + '.'
-                });
-            } else {
-                callMsg({
-                    message: 'PM Lock off.'
-                });
-            }
-            return;
-        }
-        if (pmLock) {
-            socket.emit("chat", {
-                room: currentRoom,
-                message: '/msg ' + pmLockUser + ' ' + msg,
-                color: color
-            });
-            return;
-        }
-        if (msg.substr(0, 10) == "/whitelist") {
-            if (msg.substr(msg.length - 1) == " ") {
-                msg = msg.substr(0, msg.length - 2);
-            }
-            if (msg.split(" ").length == 2) {
-                socket.emit("tip", {
-                    room: currentRoom,
-                    user: msg.split(" ")[1],
-                    tip: 5,
-                    message: 'Whitelisted!',
-                    rep: true
-                });
-                return;
-            }
-        }
-        if (msg.substr(0, 9) == "/withdraw") {
-            socket.emit("withdraw", {
-                amount: msg.split(" ")[1],
-                address: msg.split(" ")[2]
-            });
-            return;
-        }
-        if (msg.substr(0, 12) == "/unwhitelist") {
-            if (msg.split(" ").length == 2) {
-                socket.emit("tip", {
-                    room: currentRoom,
-                    user: msg.split(" ")[1],
-                    tip: 0,
-                    message: 'Unwhitelisted.',
-                    rep: true
-                });
-                return;
-            }
-        }
-        if (msg.substr(0, 7) == "/server") {
-            if (msg.split(" ").length == 2) {
-                setCookie('server', 'http://' + msg.split(' ')[1], 14);
-		callMsg({message: '<i class="icon-signal"></i> You will connect to http://' + msg.split(' ')[1] + ' from now on.'});
-		return;
-            }
-        }
-        if (msg.substr(0, 3) == "/sr" || msg.substr(0, 5) == "/join") {
-            if (msg.split(" ").length == 2) {
-                srwrap(msg.split(" ")[1]);
-                return;
-            }
-        }
-        if (msg.substr(0, 3) == "/rm" || msg.substr(0, 6) == "/leave") {
-            if (msg.split(" ").length == 2) {
-                removeRoom(msg.split(" ")[1]);
-		
-                return;
-            }
-        }
-    
-        if (msg.substr(0, 5) == "/quit") {
-            socket.emit("chat", {
-                room: 'main',
-                message: '!; quitchat ' + msg.substr(6, msg.length),
-                color: "000"
-            });
-            forcedc = true;
-            socket.disconnect();
-            return;
-        }
-        if (msg.substr(0, 5) == "/help") {
-            callMsg({
-                message: 'Commands: /quit, /join (room), /ping, /tip, /sr, /rm, /spt, /sc, /me, /version, /mute, /unmute, /bet',
-                type: 'alert-success'
-            });
-            return;
-        }
-	if (msg.substr(0, 4) == "/bet" && currentRoom == "botgames") {
-            if (msg != "/bet") {
-                var tipAmount = msg.split(" ")[1];
-                var tipMsg = msg.split(" ")[2];
-                if (tipMsg.indexOf('%') == -1) {
-                    callMsg({
-                        message: 'Syntax: /bet amount chance% (chance can be anything from 1% to 75%)',
-                        type: 'alert-success'
-                    });
-                    return;
-                }
-                callMsg({
-                    message: 'Betting ' + tipAmount + ' with a ' + tipMsg + ' chance...',
-                    type: 'alert-success'
-                });
-                srwrap('botgames');
-                socket.emit("tip", {
-                    room: 'botgames',
-                    user: 'WhiskDiceBot',
-                    tip: tipAmount,
-                    message: 'BOT ' + tipMsg
-                });
-                return;
-            } else {
+    if (msg.substr(0, 5) == "/quit") {
+        socket.emit("chat", {
+            room: 'main',
+            message: '!; quitchat ' + msg.substr(6, msg.length),
+            color: "000"
+        });
+        forcedc = true;
+        socket.disconnect();
+        return;
+    }
+    if (msg.substr(0, 5) == "/help") {
+        callMsg({
+            message: 'Commands: /quit, /join (room), /ping, /tip, /sr, /rm, /spt, /sc, /me, /version, /mute, /unmute, /bet',
+            type: 'alert-success'
+        });
+        return;
+    }
+    if (msg.substr(0, 4) == "/bet" && currentRoom == "botgames") {
+        if (msg != "/bet") {
+            var tipAmount = msg.split(" ")[1];
+            var tipMsg = msg.split(" ")[2];
+            if (tipMsg.indexOf('%') == -1) {
                 callMsg({
                     message: 'Syntax: /bet amount chance% (chance can be anything from 1% to 75%)',
                     type: 'alert-success'
                 });
                 return;
             }
-        }
-        if (msg.substr(0, 7) == "/reptip") {
-            // /tip username 1.25 thank you
-            if (msg == '/reptip') {
-                callMsg({
-                    message: 'Syntax: /reptip username amount (message)',
-                    type: 'alert-success'
-                });
-                return;
-            }
-            if (msg.split(" ").length > 2) {
-                var tipTo = msg.split(" ")[1];
-                var tipAmount = msg.split(" ")[2];
-                if (msg.split(" ")[3]) {
-                    var tipMsg = msg.split(" ").slice(3).join(" ");
-                } else {
-                    var tipMsg = "";
-                }
-                callMsg({
-                    message: 'Setting ' + tipTo + '\'s rep to ' + tipAmount + (tipMsg ? ' (message: ' + tipMsg + ')' : ''),
-                    type: 'alert-success'
-                });
-                socket.emit("tip", {
-                    room: currentRoom,
-                    user: tipTo,
-                    tip: tipAmount,
-                    message: tipMsg,
-                    rep: true
-                });
-                return;
-            }
-        }
-        if (msg.substr(0, 4) == "/tip") {
-            // /tip username 1.25 thank you
-            if (msg == '/tip') {
-                callMsg({
-                    message: 'Syntax: /tip username amount (message)',
-                    type: 'alert-success'
-                });
-                return;
-            }
-            if (msg.split(" ").length > 2) {
-                var tipTo = msg.split(" ")[1];
-                var tipAmount = msg.split(" ")[2];
-                if (msg.split(" ")[3]) {
-                    var tipMsg = msg.split(" ").slice(3).join(" ");
-                } else {
-                    var tipMsg = "";
-                }
-                callMsg({
-                    message: 'Tipping ' + tipTo + ' ' + tipAmount + (tipMsg ? ' mBTC (message: ' + tipMsg + ')' : ' mBTC'),
-                    type: 'alert-success'
-                });
-                socket.emit("tip", {
-                    room: currentRoom,
-                    user: tipTo,
-                    tip: tipAmount,
-                    message: tipMsg
-                });
-                return;
-            }
-        }
-        if (msg.substr(0, 1) == "~") {
-            if (msg.split(" ").length >= 2) {
-                var tmp9 = msg.split(" ")
-                var tmp10 = tmp9.splice(0, 1);
-                socket.emit('chat', {
-                    room: String(tmp10[0].replace('~', '')),
-                    message: String(tmp9.join(" "))
-                });
-            }
-        }
-        if (msg.substr(0, 5) == "/kick" || msg.substr(0, 7) == "/unkick") {
-            if (msg.split(" ").length >= 2) {
-                if (msg.substr(0, 5) == "/kick") {
-                    socket.emit("kick", {
-                        action: "kick",
-                        room: currentRoom,
-                        user: msg.split(" ")[1]
-                    });
-                    socket.emit('chat', {
-                        room: currentRoom,
-                        message: 'Kicked ' + msg.split(" ")[1] + '!',
-                        color: "000"
-                    });
-                } else {
-                    socket.emit("kick", {
-                        action: "unkick",
-                        room: currentRoom,
-                        user: msg.split(" ")[1]
-                    });
-                    socket.emit('chat', {
-                        room: currentRoom,
-                        message: 'Unkicked ' + msg.split(" ")[1] + '!',
-                        color: "000"
-                    });
-                }
-            }
-            return;
-        }
-        if (msg.substr(0, 5) == "/mute") {
-            if (msg.split(" ").length >= 3) {
-                var reason = (msg.split(" ").length > 3 ? msg.split(" ").slice(3).join(" ") : "");
-                socket.emit("mute", {
-                    mute: msg.split(" ")[2],
-                    target: msg.split(" ")[1],
-                    room: currentRoom,
-                    reason: reason
-                });
-                return;
-            }
-        }
-        if (msg.substr(0, 7) == "/unmute") {
-            if (msg.split(" ").length >= 2) {
-                socket.emit("mute", {
-                    mute: '0',
-                    target: msg.split(" ")[1],
-                    room: currentRoom,
-                    reason: 'Unmuted!'
-                });
-                return;
-            }
-        }
-        var secs = Math.max(10 - (new Date() - lastMsg) / 1000, 1);
-        if (secs > 8) {
-            secs *= 1.5;
-        }
-        if (msg.indexOf(" i ") != -1 || msg.indexOf(" u ") != -1) {
-            secs *= 2;
-        }
-        if (currentRoom != "main") {
-            secs *= 0.75;
-        }
-        lastMsg = new Date();
-        spammyness += secs * Math.max(40 - msg.length, 1) / 40;
-    
-        if (checkSpam()) {
-            return;
-        }
-        if (encryptionKey != "") {
-            msg = CryptoJS.AES.encrypt(msg, encryptionKey).toString();
-            msg = "EC_" + msg;
-            if (msg.length >= 500) {
-                alert("Your message is too long!");
-                return;
-            }
-        }
-        if (msg[0] == '!') {
-            socket.emit("chat", {
-                room: currentRoom,
-                message: msg,
-                color: "000"
+            callMsg({
+                message: 'Betting ' + tipAmount + ' with a ' + tipMsg + ' chance...',
+                type: 'alert-success'
             });
+            srwrap('botgames');
+            socket.emit("tip", {
+                room: 'botgames',
+                user: 'WhiskDiceBot',
+                tip: tipAmount,
+                message: 'BOT ' + tipMsg
+            });
+            return;
         } else {
-            socket.emit("chat", {
+            callMsg({
+                message: 'Syntax: /bet amount chance% (chance can be anything from 1% to 75%)',
+                type: 'alert-success'
+            });
+            return;
+        }
+    }
+    if (msg.substr(0, 7) == "/reptip") {
+        // /tip username 1.25 thank you
+        if (msg == '/reptip') {
+            callMsg({
+                message: 'Syntax: /reptip username amount (message)',
+                type: 'alert-success'
+            });
+            return;
+        }
+        if (msg.split(" ").length > 2) {
+            var tipTo = msg.split(" ")[1];
+            var tipAmount = msg.split(" ")[2];
+            if (msg.split(" ")[3]) {
+                var tipMsg = msg.split(" ").slice(3).join(" ");
+            } else {
+                var tipMsg = "";
+            }
+            callMsg({
+                message: 'Setting ' + tipTo + '\'s rep to ' + tipAmount + (tipMsg ? ' (message: ' + tipMsg + ')' : ''),
+                type: 'alert-success'
+            });
+            socket.emit("tip", {
                 room: currentRoom,
-                message: msg,
-                color: color
+                user: tipTo,
+                tip: tipAmount,
+                message: tipMsg,
+                rep: true
+            });
+            return;
+        }
+    }
+    if (msg.substr(0, 4) == "/tip") {
+        // /tip username 1.25 thank you
+        if (msg == '/tip') {
+            callMsg({
+                message: 'Syntax: /tip username amount (message)',
+                type: 'alert-success'
+            });
+            return;
+        }
+        if (msg.split(" ").length > 2) {
+            var tipTo = msg.split(" ")[1];
+            var tipAmount = msg.split(" ")[2];
+            if (msg.split(" ")[3]) {
+                var tipMsg = msg.split(" ").slice(3).join(" ");
+            } else {
+                var tipMsg = "";
+            }
+            callMsg({
+                message: 'Tipping ' + tipTo + ' ' + tipAmount + (tipMsg ? ' mBTC (message: ' + tipMsg + ')' : ' mBTC'),
+                type: 'alert-success'
+            });
+            socket.emit("tip", {
+                room: currentRoom,
+                user: tipTo,
+                tip: tipAmount,
+                message: tipMsg
+            });
+            return;
+        }
+    }
+    if (msg.substr(0, 1) == "~") {
+        if (msg.split(" ").length >= 2) {
+            var tmp9 = msg.split(" ")
+            var tmp10 = tmp9.splice(0, 1);
+            socket.emit('chat', {
+                room: String(tmp10[0].replace('~', '')),
+                message: String(tmp9.join(" "))
             });
         }
+    }
+    if (msg.substr(0, 5) == "/kick" || msg.substr(0, 7) == "/unkick") {
+        if (msg.split(" ").length >= 2) {
+            if (msg.substr(0, 5) == "/kick") {
+                socket.emit("kick", {
+                    action: "kick",
+                    room: currentRoom,
+                    user: msg.split(" ")[1]
+                });
+                socket.emit('chat', {
+                    room: currentRoom,
+                    message: 'Kicked ' + msg.split(" ")[1] + '!',
+                    color: "000"
+                });
+            } else {
+                socket.emit("kick", {
+                    action: "unkick",
+                    room: currentRoom,
+                    user: msg.split(" ")[1]
+                });
+                socket.emit('chat', {
+                    room: currentRoom,
+                    message: 'Unkicked ' + msg.split(" ")[1] + '!',
+                    color: "000"
+                });
+            }
+        }
+        return;
+    }
+    if (msg.substr(0, 5) == "/mute") {
+        if (msg.split(" ").length >= 3) {
+            var reason = (msg.split(" ").length > 3 ? msg.split(" ").slice(3).join(" ") : "");
+            socket.emit("mute", {
+                mute: msg.split(" ")[2],
+                target: msg.split(" ")[1],
+                room: currentRoom,
+                reason: reason
+            });
+            return;
+        }
+    }
+    if (msg.substr(0, 7) == "/unmute") {
+        if (msg.split(" ").length >= 2) {
+            socket.emit("mute", {
+                mute: '0',
+                target: msg.split(" ")[1],
+                room: currentRoom,
+                reason: 'Unmuted!'
+            });
+            return;
+        }
+    }
+    var secs = Math.max(10 - (new Date() - lastMsg) / 1000, 1);
+    if (secs > 8) {
+        secs *= 1.5;
+    }
+    if (msg.indexOf(" i ") != -1 || msg.indexOf(" u ") != -1) {
+        secs *= 2;
+    }
+    if (currentRoom != "main") {
+        secs *= 0.75;
+    }
+    lastMsg = new Date();
+    spammyness += secs * Math.max(40 - msg.length, 1) / 40;
+    
+    if (checkSpam()) {
+        return;
+    }
+    if (encryptionKey != "") {
+        msg = CryptoJS.AES.encrypt(msg, encryptionKey).toString();
+        msg = "EC_" + msg;
+        if (msg.length >= 500) {
+            alert("Your message is too long!");
+            return;
+        }
+    }
+    if (msg[0] == '!') {
+        socket.emit("chat", {
+            room: currentRoom,
+            message: msg,
+            color: "000"
+        });
+    } else {
+        socket.emit("chat", {
+            room: currentRoom,
+            message: msg,
+            color: color
+        });
+    }
     
 }
 
