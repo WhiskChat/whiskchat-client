@@ -36,7 +36,7 @@ var usernames = [];
 var online = 0;
 var lastCheck = new Date("1990");
 var hasFocus = true;
-var versionString = 'WhiskChat XI 11 HTML5 Hassles';
+var versionString = 'WhiskChat XI 11.1 HTML5 Hassles';
 var muted = [];
 var pmLock = false;
 var pmLockUser = '';
@@ -491,6 +491,29 @@ socket.on("disconnect", function(data) {
             type: 'alert-warning'
         });
 	socket.socket.connect();
+        socket.on("connect", function() {
+            if (disconnected) {
+                disconnected = false;
+                callMsg({
+                    message: '<i class="icon-ok"></i> Connected to WhiskChat Network!'
+                });
+                $('#username').html('<a id="loginsignup">Authenticate</a>');
+                $("#loginsignup").click(function() {
+                    $('#login').modal('show');
+                });
+                $('#balance').html('0');
+                if (document.URL.split("index.html?j:").length == 2) {
+                    roomToJoin = document.URL.split("j:")[1].split("&")[0];
+                }
+                if (getCookie("session")) {
+                    socket.emit("login", {
+                        session: getCookie("session"),
+                        quiet: true
+                    });
+                }
+                socket.emit('quiet');
+            }
+        });
     } else {
         callMsg({
             message: "Disconnected from WhiskChat - you can reload the page now.",
