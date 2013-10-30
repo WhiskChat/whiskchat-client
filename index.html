@@ -30,6 +30,25 @@
 	 I've commented stuff for you, dear source checker.
 	 -whiskers75
       -->
+    <div class="modal hide fade" id="login" style="display: none;"> <!-- Login dialog -->
+          <div class="modal-header">
+            <center><h4>Login/sign up</h4></center>
+          </div>
+          <div class="modal-body">
+            Username:   <input placeholder="Username" id="login-username" type="text"><br>
+            Password:   <input placeholder="Password" id="login-password" type="password"><br>
+	    <center><button class="btn btn-link" id="signuptoggle">Don't have an account?</button></center>
+            <div id="signup" style="display: none;">
+              Email:    <input placeholder="Email" id="register-email" type="text"><br>
+              <center><span id="captcha"><span class="muted">Loading CAPTCHA...</span></span></center><br>
+              CAPTCHA:  <input placeholder="CAPTCHA" id="register-email" type="text"><br>
+              <center><i><p>Keep in mind that we are not a faucet with chat, and that earning is a side goal - you are not here just for the BTC.</p>
+                  <a href="https://github.com/WhiskTech/whiskchat-server/wiki/Guide-to-WhiskChat" target="_blank">Read the newbie guide!</a><p>Nobody online? Learn to idle!</p></i></center></div></div>
+          <div class="modal-footer">
+            <button class="btn btn-success" id="login-button">Login</button>
+            <button class="btn btn-danger" id="register-button">Sign up</button>
+          </div>
+    </div>
     <div class="modal hide fade" id="quitmodal"> <!-- Quit dialog -->
       <div class="modal-header">
         <h4>Quit</h4>
@@ -42,12 +61,12 @@
         <button class="btn btn-danger" id="quit-button">Quit</button>
       </div>
     </div>
-    <div class="modal hide fade" id="infomodal"> <!-- Help/info dialog -->
+    <div class="modal hide fade" id="roomsinfo">
       <div class="modal-header">
-        <h4>Info</h4>
+        <h4>Rooms</h4>
       </div>
       <div class="modal-body">
-        <p>TBD.</p>
+        <p id="roomsdata"><span class="muted">Loading room details from server...</span></p>
       </div>
     </div>
     <div id="chat"> <!-- Welcome to the arena. -->
@@ -88,17 +107,10 @@
 <li> <a id="webkitn"> Activate desktop notifications </a> </li>
 </ul>
 </div>
-<div class="btn-group dropup hidden-phone">
-  <button class="btn dropdown-toggle tenpx" data-toggle="dropdown" id="roomslist" style="display: inline-block;">
+<div class="btn-group hidden-phone">
+  <button class="btn tenpx" data-toggle="dropdown" id="roomsbtn" style="display: inline-block;">
     <i class="icon-home"></i> none <!-- The menu button -->
   </button>
-  <ul class="dropdown-menu keep_open" id="roomenu">
-    <li class="dropdown-item-muted dropdown-submenu"><a>Join a room...</a>
-      <ul class="dropdown-menu">
-        <li><div class="input-append" style="margin-bottom: 0px; margin-right: 5px;"><input type="text" placeholder="Room name" id="roominput" style="margin-left: 5px;"><span class="btn" id="joinroombtn">Join</span></div></li>
-      </ul>
-    </li>
-  </ul>
 </div>
 <div class="btn-group dropup hidden-phone">
   <button class="btn dropdown-toggle tenpx" data-toggle="dropdown" id="userslist" style="display: inline-block;">

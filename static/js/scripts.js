@@ -1,11 +1,11 @@
 /*
-  WhiskChat Reloaded
-  whiskers75
-  Aut viam inveniam aut faciam.
-  Forever open source.
+  WhiskChat Network - Client code
+  by whiskers75
+
+  'Aut viam inveniam aut faciam'
 */
-var url = 'http://server.whiskchat.com';
-function getCookie(c_name) {
+var url = 'http://nj.whiskchat.com';
+function getCookie(c_name) { // Sorry for putting this here, but I had to :(
     var c_value = document.cookie;
     var c_start = c_value.indexOf(" " + c_name + "=");
     if (c_start == -1) {
@@ -36,7 +36,7 @@ var usernames = [];
 var online = 0;
 var lastCheck = new Date("1990");
 var hasFocus = true;
-var versionString = 'WhiskChat X 10.6.7 Feature-packed Flock';
+var versionString = 'WhiskChat XI 11 Terrible TradeFortress';
 var muted = [];
 var pmLock = false;
 var pmLockUser = '';
@@ -67,7 +67,7 @@ function notificationPermission() {
 setTimeout(function() {
     if (!socket.socket.connected) {
         callMsg({
-            message: '<i class="icon-signal"></i> Connection timed out! Please wait, refreshing...'
+            message: '<i class="icon-remove"></i> Connection timed out! Please wait, refreshing...'
         });
 	setCookie('server', 'http://server.whiskchat.com', 14);
 	setTimeout(function() {
@@ -104,16 +104,17 @@ socket.on('connect_failed', function() {
 });
 socket.on('error', function() {
     callMsg({message: '<img src="http://whiskchat.com/static/img/smileys/sad.png"> An error occurred!'});
+    callMsg({message: 'Check <a href="http://server.whiskchat.com">server status</a> or refresh to retry!'});
 });
 function updateTitle() {
     if (pendingMention) {
-        changeTitle("(" + pendingMsgs + "!) WhiskChat");
+        changeTitle("[" + pendingMsgs + "!] WhiskChat");
     } else {
         if (pendingMsgs == 0) {
             changeTitle("WhiskChat");
             return;
         }
-        changeTitle("(" + pendingMsgs + ") WhiskChat");
+        changeTitle("[" + pendingMsgs + "] WhiskChat");
     }
 }
 $(window).focus(function() {
@@ -135,20 +136,32 @@ function expire(id) {
     console.log('Expiring #' + id);
     console.log($('#' + id).attr('class'));
     setTimeout(function() {
-	$('#' + id).removeClass('slideOutRight');
+        $('#' + id).removeClass('slideOutRight');
         $('#' + id).removeClass('slideInLeft');
         $('#' + id).addClass('slideOutRight');
-	setTimeout(function() {
-	    $('#' + id).remove();
-	}, 500);
+        setTimeout(function() {
+            $('#' + id).remove();
+        }, 500);
     }, 7500);    
+};
+function fexpire(id) {
+    console.log('Expiring #' + id);
+    console.log($('#' + id).attr('class'));
+    setTimeout(function() {
+        $('#' + id).removeClass('fadeOutRight');
+        $('#' + id).removeClass('fadeInLeft');
+        $('#' + id).addClass('fadeOutRight');
+        setTimeout(function() {
+            $('#' + id).remove();
+        }, 500);
+    }, 2500);    
 };
 setTimeout(function() {
     socket.on("connect", function() {
         if (disconnected) {
             disconnected = false;
             callMsg({
-                message: 'Connected to WhiskChat Server!'
+                message: '<i class="icon-ok"></i> Connected to WhiskChat Network!'
             });
             $('#username').html('<a id="loginsignup">Authenticate</a>');
             $("#loginsignup").click(function() {
@@ -163,13 +176,6 @@ setTimeout(function() {
                     session: getCookie("session"),
                     quiet: true
                 });
-            } else {
-                if (roomToJoin) {
-                    socket.emit("joinroom", {
-                        join: roomToJoin
-                    });
-                    roomToJoin = "";
-                }
             }
             socket.emit('quiet');
         }
@@ -187,7 +193,7 @@ $(document).ready(function() {
             }, 2000);
         });
     }
-    if ($('#userslist').outerWidth(true) == 0) {
+    if ($('#userslist').outerWidth(true) == 0 && confirm('Would you like to launch text mode?')) {
         textMode = true; // We must be in a small space!
     }
     if (document.URL.split("?r:").length == 2) {
@@ -199,13 +205,6 @@ $(document).ready(function() {
         socket.emit("login", {
             session: getCookie("session")
         });
-    } else {
-        if (roomToJoin) {
-            socket.emit("joinroom", {
-                join: roomToJoin
-            });
-            roomToJoin = "";
-        }
     }
     $('#logout').click(function() {
 	setCookie('session', 'loggedout', 14);
@@ -243,9 +242,6 @@ $(document).ready(function() {
     });
     $('.inputsio-alt').click(function() {
         $('#menubtn').dropdown('toggle');
-    });
-    socket.on("onlineFriends", function(data) {
-        onlineFriends = data.online;
     });
     $(window).resize(moveWin);
     moveWin();
@@ -285,36 +281,6 @@ $(document).ready(function() {
             window.close();
         }, 800);
     });
-    /*$('.header').on('mouseover', function() {
-      if (typeof removeTimeout != 'undefined') {
-      clearTimeout(removeTimeout);
-      }
-      $('.roomheader').show();
-      moveWin();
-      });
-      $('.roomheader').on('mouseover', function(){
-      if (typeof removeTimeout != 'undefined') {
-      clearTimeout(removeTimeout);
-      }
-      $('.roomheader').show();
-      moveWin();
-      });
-      $('.header').on('mouseout', function() {
-      var removeTimeout = setTimeout(function() {
-      $('.roomheader').fadeOut(300);
-      setTimeout(function() {
-      moveWin();
-      }, 202);
-      }, 3000);
-      });
-      $('.roomheader').on('mouseout', function() {
-      var removeTimeout = setTimeout(function() {
-      $('.roomheader').fadeOut(300);
-      setTimeout(function() {
-      moveWin();
-      }, 302);
-      }, 3000);
-      });*/
     $("#mute").click(function() {
         var tmp = prompt('Who do you want to mute? (effective until page is reloaded)');
         if (tmp === '') {
@@ -334,15 +300,27 @@ $(document).ready(function() {
         srwrap(tmp);
     });
     $("#withdrawlnk").click(function() {
-        $('#chatinput').val('/withdraw amount address');
+        $('#chatinput').val('/withdraw [amount] [address]');
+	$('#chatinput').addClass('animated shake');
+	setTimeout(function() {
+            $('#chatinput').removeClass('animated shake');
+	}, 1000);
     });
     $("#botstate").click(function() {
         srwrap('botgames');
         $('#chatinput').val('!state');
+        $('#chatinput').addClass('animated shake');
+        setTimeout(function() {
+            $('#chatinput').removeClass('animated shake');
+        }, 1000);
     });
     $("#bothelp").click(function() {
         srwrap('botgames');
         $('#chatinput').val('!help');
+        $('#chatinput').addClass('animated shake');
+        setTimeout(function() {
+            $('#chatinput').removeClass('animated shake');
+        }, 1000);
     });
     $("#getcolors").click(function() {
         socket.emit('getcolors');
@@ -350,12 +328,24 @@ $(document).ready(function() {
     $("#lastwinner").click(function() {
         srwrap('botgames');
         $('#chatinput').val('!lastwinner');
+        $('#chatinput').addClass('animated shake');
+        setTimeout(function() {
+            $('#chatinput').removeClass('animated shake');
+        }, 1000);
     });
     $("#userlistbot").click(function() {
         srwrap('botgames');
         $('#chatinput').val('!users');
+        $('#chatinput').addClass('animated shake');
+        setTimeout(function() {
+            $('#chatinput').removeClass('animated shake');
+        }, 1000);
     });
     $("#tipmenu").click(function() {
+        $('#chatinput').addClass('animated shake');
+        setTimeout(function() {
+            $('#chatinput').removeClass('animated shake');
+        }, 1000);
         $('#chatinput').val('/tip <user> <amount in mBTC> <message (optional)>');
     });
     $("#unmute").click(function() {
@@ -376,8 +366,14 @@ $(document).ready(function() {
             });
         }
     });
+    $('#roomsbtn').click(function() {
+	$('#roomsinfo').modal();
+    });
     $("#reloadbal").click(function() {
         socket.emit('getbalance');
+    });
+    $('#signuptoggle').click(function() {
+	$('#signup').toggle();
     });
     $("#login-button").click(function() {
         socket.emit("accounts", {
@@ -425,6 +421,10 @@ $(document).ready(function() {
             }
             if (tmp2.length > 1) {
                 event.preventDefault();
+                $('#chatinput').addClass('animated shake');
+                setTimeout(function() {
+                    $('#chatinput').removeClass('animated shake');
+                }, 1000);
                 return callMsg({
                     message: 'Multiple choices: ' + tmp2.join(', ')
                 });
@@ -448,21 +448,23 @@ $(document).ready(function() {
     joinroomhandler('main');
     $("#chattext").append("<div class='chatline'><span class='user' onclick='place()' style='background: rgba(238, 160, 136, 0.64);'><span>Copyright notice</span>&nbsp;&nbsp;</span><span class='message' style='background: #eee'>WhiskChat Client uses code from <a href='http://coinchat.org/'>coinchat.org</a> (c) 2013 admin@glados.cc</span></div>");
     callMsg({
-        message: 'Connecting to ' + url + '...'
+        message: '<i class="icon-upload"></i> Connecting to ' + url.replace('http://', '') + '...'
     });
 });
 socket.on("whitelist", function(data) {
     whitelisted = data.whitelisted;
     $('#whitelisted').html('<i class="icon-gift"></i>  ' + whitelisted);
 });
-
+socket.on("rooms", function(data) {
+    $('#roomsdata').html(data.html);
+});
 function moveWin() {
     var h = $(window).height() - 6;
     var w = $(window).width() - 6;
     var s296 = 0;
     
     window.scrollTo(0, 0);
-    $("#roomslist").html('<i class="icon-home"></i> ' + currentRoom);
+    $("#roomsbtn").html('<i class="icon-home"></i> ' + currentRoom);
     $('#usercount').html(online);
     $("#chat").css("position", "absolute");
     $("#chat").css("top", 2);
@@ -473,8 +475,7 @@ function moveWin() {
     $("#chattext").css("width", w - s296);
     $("#chat .content").css("height", h - 35 - $(".header").height());
     $("body").css("overflow", "hidden");
-    $("#chatinput").css("width", w - 130 - $('#roomslist').outerWidth(true) - $('#userslist').outerWidth(true));
-    //$("#chattext").animate({ scrollTop:$("#chattext").prop('scrollHeight') }, "slow");
+    $("#chatinput").css("width", w - 130 - $('#roomsbtn').outerWidth(true) - $('#userslist').outerWidth(true));
 }
 
 function scrollWin() {
@@ -485,17 +486,24 @@ function scrollWin() {
 var color = "000";
 socket.on("disconnect", function(data) {
     if (!forcedc) {
-        window.location.reload(true);
+        callMsg({
+            message: "<i class='icon-remove'></i> Disconnected from WhiskChat - attempting to reconnect...",
+            type: 'alert-warning'
+        });
+	socket.socket.connect();
     } else {
         callMsg({
-            message: "Disconnected from WhiskChat.",
+            message: "Disconnected from WhiskChat - you can reload the page now.",
             type: 'alert-warning'
         });
     }
 });
+socket.on('captcha', function(data) {
+    $('#captcha').html(data.html);
+});
 socket.on("warn", function(data) {
     callMsg({
-        message: "Mod note: " + data.message,
+        message: "<i class='icon-exclamation-sign'></i> Warning: " + data.message,
         type: 'alert-warning'
     });
 });
@@ -504,7 +512,6 @@ function place() {
     // shut up.
 }
 function sendMsg() {
-    if (username != "") {
         var msg = $("#chatinput").val();
         $("#chatinput").val("");
         scrollback.push(msg);
@@ -538,7 +545,7 @@ function sendMsg() {
             });
             return;
         }
-	
+    
         if (msg.substr(0, 3) == '.pm') {
             pmLock = !pmLock;
             pmLockUser = msg.split(" ")[1];
@@ -615,7 +622,7 @@ function sendMsg() {
                 return;
             }
         }
-	
+    
         if (msg.substr(0, 5) == "/quit") {
             socket.emit("chat", {
                 room: 'main',
@@ -798,7 +805,7 @@ function sendMsg() {
         }
         lastMsg = new Date();
         spammyness += secs * Math.max(40 - msg.length, 1) / 40;
-	
+    
         if (checkSpam()) {
             return;
         }
@@ -823,13 +830,11 @@ function sendMsg() {
                 color: color
             });
         }
-    } else {
-        alert("Please register or log in to chat!");
-    }
+    
 }
 
 function checkSpam() {
-    return false;
+    return false; // LOL
 }
 
 function checknew(room, message) {
@@ -882,11 +887,20 @@ function callMsg(data) {
 }
 
 socket.on("online", function(data) {
+    if (data.people != online) {
+	$('#userslist').addClass('animated flash');
+	moveWin();
+	setTimeout(function() {
+            $('#userslist').removeClass('animated flash');
+	    moveWin();
+	}, 1000);
+    }
     online = data.people;
     if (data.array) {
         usernames = data.array;
     }
     updateSidebar();
+    console.log(data.people, JSON.stringify(data.array));
 });
 var roomHTML = [];
 var users = [];
@@ -898,7 +912,6 @@ function updateSidebar() {
     } else {
         $('#chatinput').attr('placeholder', 'Send to #' + currentRoom + ' as ' + username + '... (' + online + ' people online)');
     }
-    $("#roomslist").html('<i class="icon-home"></i> ' + currentRoom);
     var userslistHTML = '<li class="dropdown-item-muted"><a>Users</a></li>\n'
     usernames.forEach(function(user) {
         userslistHTML += '<li><a>' + user + '</a></li>'
@@ -951,7 +964,7 @@ socket.on('tip', function(data) {
     }
     return;
 });
-    
+
 function newRoom(room) {
     
     updateSidebar();
@@ -1203,14 +1216,16 @@ socket.on("chat", function(data) {
                 $("#chattext").append("<div class='chatline' style='background-color: #6F6F6F; color: #BBBBBB;' title='" + data.timestamp + "'><span class='user" + pmClass + "' onclick='place()' data-user='" + data.user + "'><span>" + (data.userShow ? data.userShow : data.user) + "</span>&nbsp;&nbsp;</span><span class='message'>" + data.message + winBTCtext + dateFormat + "   <strong class='muted notif'>Encrypted with /enc " + encryptionKey + ". /enc off to stop.</strong></span></div>");
             } else {
                 if (data.room != currentRoom) {
-                    $("#chattext").append("<div class='chatline' style='background-color: #C0C0C0;' title='" + data.timestamp + "'><span class='user" + pmClass + "' onclick='place()' data-user='" + data.user + "'><span>" + (data.userShow ? data.userShow : data.user) + "</span>&nbsp;&nbsp;</span><span class='message'>" + data.message + winBTCtext + dateFormat + "   <strong class='muted notif'>" + data.room + "</strong></span></div>");
+                    var fid = (Math.random() * 1000).toFixed(0);
+                    $("#chattext").append("<div style='background-color:#CFACAC;' class='chatline animated fadeInLeft' id='" + fid + "' title='" + data.timestamp + "'><span class='user" + pmClass + "' style='background-color: #CCC2C2;' onclick='place()' data-user='" + data.user + "'><span>" + (data.userShow ? data.userShow : data.user) + "</span>&nbsp;&nbsp;</span><span class='message'>" + data.message + winBTCtext + dateFormat + "   <strong class='muted notif'>" + data.room + "</strong></span></div>");
+		    fexpire(fid);
                 } else {
                     $("#chattext").append("<div class='chatline' title='" + data.timestamp + "'><span class='user" + pmClass + "' onclick='place()' data-user='" + data.user + "'><span>" + (data.userShow ? data.userShow : data.user) + "</span>&nbsp;&nbsp;</span><span class='message'>" + data.message + winBTCtext + dateFormat + "</span></div>");
                 }
             }
         }
         log(data.message.split("<span class=\"foo\"></span>")[0], currentRoom);
-
+	
         if (($("#chattext").scrollTop() + 1000 >= $("#chattext").prop('scrollHeight')) || (fs && $("#chattext").scrollTop() + $(window).height() >= $("#chattext").prop('scrollHeight'))) {
             $("#chattext").animate({
                 scrollTop: $("#chattext").prop('scrollHeight')
@@ -1239,10 +1254,10 @@ socket.on("chat", function(data) {
             roomHTML[data.room] = "";
         }
         roomHTML[data.room] += "<div class='chatline' title='" + data.timestamp + "'><span class='user" + pmClass + "' onclick='place()' data-user='" + data.user + "'><span>" + (data.userShow ? data.userShow : data.user) + "</span>&nbsp;&nbsp;</span><span class='message'>" + data.message + winBTCtext + dateFormat + "</span></div>";
-
+	
     }
     moveWin();
-
+    
 });
 
 function log(message, room) {
@@ -1350,7 +1365,7 @@ function embed(roomName) {
     srwrap(roomName);
 }
 // stuff
-    
+
 function setCookie(c_name, value, exdays) {
     var exdate = new Date();
     exdate.setDate(exdate.getDate() + exdays);
@@ -1358,7 +1373,7 @@ function setCookie(c_name, value, exdays) {
     document.cookie = c_name + "=" + c_value;
 }
 
-    
+
 var flashInterval;
 
 function startFlashing(title) {

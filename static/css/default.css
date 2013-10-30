@@ -1,3 +1,6 @@
+.modal-backdrop {
+    background-color: transparent;
+}
 body {
     background-color: #e5e5e4;
 }
@@ -44,8 +47,8 @@ body {
 }
 #chat .header {
     min-height: 38px;
-    overflow-y: auto;
-    
+    overflow-x: hidden;
+    overflow-y: hidden;
     padding-left: 5px;
     padding-top: 3px;
     background: #e4e4e4;
@@ -65,7 +68,7 @@ body {
 #chattext {
     width: 675px;
     overflow-x: hidden;
-    overflow-y: scroll;
+    overflow-y: hidden;
     height: 100%;
     margin-right: 0;
     display: inline-block;
