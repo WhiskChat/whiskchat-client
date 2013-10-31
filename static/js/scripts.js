@@ -36,7 +36,7 @@ var usernames = [];
 var online = 0;
 var lastCheck = new Date("1990");
 var hasFocus = true;
-var versionString = 'WhiskChat XI 11.1 HTML5 Hassles';
+var versionString = 'WhiskChat XI 12 - Joyous JavaScript';
 var muted = [];
 var pmLock = false;
 var pmLockUser = '';
@@ -1253,6 +1253,17 @@ socket.on("chat", function(data) {
             $("#chattext").animate({
                 scrollTop: $("#chattext").prop('scrollHeight')
             }, "slow");
+        }
+	if (getCookie('theme') == 'dark') {
+	    $('#chattext').css('background-color', '#000');
+            $('.chatline').css('background-color', '#000');
+            $('.chatline').css('color', '#c09853');
+            $('.chatline .user').css('background-color', '#222222');
+            $('.chatline .user').css('color', '#c09853');
+            $('.input').css('background-color', '#000');
+            $('.input').css('color', '#fff');
+            $('.header').css('background-color', '#000');
+            $('.header').css('color', '#fff');
         }
         $(".chatline").hover(function() {
             $(this).find(".tipbutton").show();
