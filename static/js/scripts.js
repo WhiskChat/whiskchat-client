@@ -36,7 +36,7 @@ var usernames = [];
 var online = 0;
 var lastCheck = new Date("1990");
 var hasFocus = true;
-var versionString = 'WhiskChat XI 12 - Joyous JavaScript';
+var versionString = 'WhiskChat v2 Beta';
 var muted = [];
 var pmLock = false;
 var pmLockUser = '';
@@ -489,10 +489,16 @@ var color = "000";
 socket.on("disconnect", function(data) {
     if (!forcedc) {
         callMsg({
-            message: "<i class='icon-remove'></i> Disconnected from WhiskChat - attempting to reconnect...",
+            message: "<i class='icon-remove'></i> Disconnected from WhiskChat. Waiting 5 seconds for the server to reboot.",
             type: 'alert-warning'
         });
-	socket.socket.connect();
+	setTimeout(function() {
+            callMsg({
+                message: "<i class='icon-signal'></i> Attempting to reconnect...",
+                type: 'alert-warning'
+            });
+            socket.socket.connect();
+	}, 5000);
         socket.on("connect", function() {
             if (disconnected) {
                 disconnected = false;
