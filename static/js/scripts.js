@@ -254,6 +254,8 @@ $(document).ready(function() {
             password: $("#login-password").val(),
             password2: $("#login-password").val(),
             email: $("#register-email").val(),
+            captcha: $("#register-captcha").val(),
+            invite: $("#register-invite").val(),
             refer: referrer
         });
     });
