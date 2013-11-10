@@ -308,7 +308,7 @@ $(document).ready(function() {
             $('#chatinput').removeClass('animated shake');
 	}, 1000);
     });
-    $("#withdrawlnk").click(function() {
+    $("#depositlnk").click(function() {
         $('#chatinput').val('/deposit');
         $('#chatinput').addClass('animated shake');
         setTimeout(function() {
