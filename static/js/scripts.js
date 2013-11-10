@@ -308,6 +308,13 @@ $(document).ready(function() {
             $('#chatinput').removeClass('animated shake');
 	}, 1000);
     });
+    $("#withdrawlnk").click(function() {
+        $('#chatinput').val('/deposit');
+        $('#chatinput').addClass('animated shake');
+        setTimeout(function() {
+            $('#chatinput').removeClass('animated shake');
+        }, 1000);
+    });
     $("#botstate").click(function() {
         srwrap('botgames');
         $('#chatinput').val('!state');
@@ -750,8 +757,11 @@ function sendMsg() {
             } else {
                 var tipMsg = "";
             }
+            if (tipTo == 'donate') {
+                tipTo == 'donations'
+            }
             callMsg({
-                message: 'Tipping ' + tipTo + ' ' + tipAmount + (tipMsg ? ' mBTC (message: ' + tipMsg + ')' : ' mBTC'),
+                message: 'Tipping ' + tipTo + ' ' + tipAmount + (tipMsg ? ' mBTC (message: ' + tipMsg + ')' : ' mBTC') + '...',
                 type: 'alert-success'
             });
             socket.emit("tip", {
