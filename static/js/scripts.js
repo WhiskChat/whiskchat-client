@@ -193,7 +193,7 @@ $(document).ready(function() {
             }, 2000);
         });
     }
-    if ($('#userslist').outerWidth(true) == 0 && confirm('Would you like to launch text mode?')) {
+    if ($('#userslist').outerWidth(true) == 0) {
         textMode = true; // We must be in a small space!
     }
     if (document.URL.split("?r:").length == 2) {
