@@ -4,7 +4,7 @@
   
   'Aut viam inveniam aut faciam'
 */
-var url = 'http://server.whiskchat.com';
+var url = 'http://whiskchat.com';
 function getCookie(c_name) { // Sorry for putting this here, but I had to :(
     var c_value = document.cookie;
     var c_start = c_value.indexOf(" " + c_name + "=");
@@ -512,21 +512,21 @@ socket.on("disconnect", function(data) {
                 callMsg({
                     message: '<i class="icon-ok"></i> Connected to WhiskChat Network!'
                 });
-                $('#username').html('<a id="loginsignup">Authenticate</a>');
-                $("#loginsignup").click(function() {
-                    $('#login').modal('show');
-                });
-                $('#balance').html('0');
-                if (document.URL.split("index.html?j:").length == 2) {
-                    roomToJoin = document.URL.split("j:")[1].split("&")[0];
-                }
-                if (getCookie("session")) {
-                    socket.emit("login", {
-                        session: getCookie("session"),
-                        quiet: true
+		setTimeout(function() {
+                    $('#username').html('<a id="loginsignup">Authenticate</a>');
+                    $("#loginsignup").click(function() {
+			$('#login').modal('show');
                     });
-                }
-                socket.emit('quiet');
+                    $('#balance').html('0');
+                    if (document.URL.split("index.html?j:").length == 2) {
+			roomToJoin = document.URL.split("j:")[1].split("&")[0];
+                    }
+                    if (getCookie("session")) {
+			socket.emit("login", {
+                            session: getCookie("session")
+			});
+                    }
+		}, 500);
             }
         });
     } else {
@@ -642,8 +642,8 @@ function sendMsg() {
     }
     if (msg.substr(0, 7) == "/server") {
         if (msg.split(" ").length == 2) {
-            setCookie('server', 'http://' + msg.split(' ')[1], 14);
-	    callMsg({message: '<i class="icon-signal"></i> You will connect to http://' + msg.split(' ')[1] + ' from now on.'});
+            setCookie('server', msg.split(' ')[1], 14);
+	    callMsg({message: '<i class="icon-signal"></i> You will connect to ' + msg.split(' ')[1] + ' from now on.'});
 	    return;
         }
     }
