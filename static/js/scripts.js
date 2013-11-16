@@ -282,6 +282,7 @@ $(document).ready(function() {
             socket.disconnect();
             window.close();
         }, 800);
+        $('#chattext').append('<center><h2 class="muted" style="background-color: #eee; margin: 0px 0;">Disconnected</h2></center>');
     });
     $("#mute").click(function() {
         var tmp = prompt('Who do you want to mute? (effective until page is reloaded)');
