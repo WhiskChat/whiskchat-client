@@ -4,7 +4,7 @@
   
   'Aut viam inveniam aut faciam'
 */
-var url = 'http://whiskchat.com';
+var url = 'https://whiskchat.com';
 function getCookie(c_name) { // Sorry for putting this here, but I had to :(
     var c_value = document.cookie;
     var c_start = c_value.indexOf(" " + c_name + "=");
@@ -69,7 +69,7 @@ setTimeout(function() {
         callMsg({
             message: '<i class="icon-remove"></i> Connection timed out! Please wait, refreshing...'
         });
-	setCookie('server', 'http://server.whiskchat.com', 14);
+	setCookie('server', 'https://whiskchat.com', 14);
 	setTimeout(function() {
 	    window.location.reload(true);
 	}, 2000);
