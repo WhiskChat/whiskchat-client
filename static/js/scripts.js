@@ -132,7 +132,13 @@ setInterval(function() {
     spammyness -= 0.05;
     spammyness = Math.max(spammyness, 0);
 }, 1250);
-function expire(id) {
+function expire(id, length) {
+    if (!length) {
+	length = 10000;
+    }
+    if (getCookie('expirelength')){
+	length = Number(getCookie('expirelength'));
+    }
     console.log('Expiring #' + id);
     console.log($('#' + id).attr('class'));
     setTimeout(function() {
@@ -142,7 +148,7 @@ function expire(id) {
         setTimeout(function() {
             $('#' + id).remove();
         }, 500);
-    }, 7500);    
+    }, length);    
 };
 function fexpire(id) {
     console.log('Expiring #' + id);
