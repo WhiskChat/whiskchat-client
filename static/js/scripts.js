@@ -99,12 +99,12 @@ var spammyness = 0;
 var lastMsg = new Date();
 var warningLevel = 0;
 socket.on('connect_failed', function() {
-    callMsg({message: '<img src="http://whiskchat.com/static/img/smileys/sad.png"> Failed to connect!'});
-    callMsg({message: 'Check <a href="http://server.whiskchat.com">server status</a> or refresh to retry!'});
+    callMsg({message: '<img src="https://whiskchat.com/static/img/smileys/sad.png"> Failed to connect!'});
+    callMsg({message: 'Check <a href="https://server.whiskchat.com">server status</a> or refresh to retry!'});
 });
 socket.on('error', function() {
-    callMsg({message: '<img src="http://whiskchat.com/static/img/smileys/sad.png"> An error occurred!'});
-    callMsg({message: 'Check <a href="http://server.whiskchat.com">server status</a> or refresh to retry!'});
+    callMsg({message: '<img src="https://whiskchat.com/static/img/smileys/sad.png"> An error occurred!'});
+    callMsg({message: 'Check <a href="https://server.whiskchat.com">server status</a> or refresh to retry!'});
 });
 function updateTitle() {
     if (pendingMention) {
@@ -134,7 +134,7 @@ setInterval(function() {
 }, 1250);
 function expire(id, length) {
     if (!length) {
-	length = 10000;
+	length = 30000;
     }
     if (getCookie('expirelength')){
 	length = Number(getCookie('expirelength'));
@@ -462,9 +462,9 @@ $(document).ready(function() {
         sendMsg();
     });
     joinroomhandler('main');
-    $("#chattext").append("<div class='chatline'><span class='user' onclick='place()' style='background: rgba(238, 160, 136, 0.64);'><span>Copyright notice</span>&nbsp;&nbsp;</span><span class='message' style='background: #eee'>WhiskChat Client uses code from <a href='http://coinchat.org/'>coinchat.org</a> (c) 2013 admin@glados.cc</span></div>");
+    $("#chattext").append("<div class='chatline'><span class='user' onclick='place()' style='background: rgba(238, 160, 136, 0.64);'><span>Copyright notice</span>&nbsp;&nbsp;</span><span class='message' style='background: #eee'>WhiskChat Client uses code from <a href='https://coinchat.org/'>coinchat.org</a> (c) 2013 admin@glados.cc</span></div>");
     callMsg({
-        message: '<i class="icon-upload"></i> Connecting to ' + url.replace('http://', '') + '...'
+        message: '<i class="icon-upload"></i> Connecting to ' + url.replace('https://', '') + '...'
     });
 });
 socket.on("whitelist", function(data) {
@@ -502,40 +502,10 @@ function scrollWin() {
 var color = "000";
 socket.on("disconnect", function(data) {
     if (!forcedc) {
-        callMsg({
-            message: "<i class='icon-remove'></i> Disconnected from WhiskChat. Waiting 5 seconds for the server to reboot.",
-            type: 'alert-warning'
-        });
+        $('#chattext').html('<center><h2>whiskchat is rebooting</h2><p>please wait a few seconds...</p></center>');
 	setTimeout(function() {
-            callMsg({
-                message: "<i class='icon-signal'></i> Attempting to reconnect...",
-                type: 'alert-warning'
-            });
-            socket.socket.connect();
-	}, 5000);
-        socket.on("connect", function() {
-            if (disconnected) {
-                disconnected = false;
-                callMsg({
-                    message: '<i class="icon-ok"></i> Connected to WhiskChat Network!'
-                });
-		setTimeout(function() {
-                    $('#username').html('<a id="loginsignup">Authenticate</a>');
-                    $("#loginsignup").click(function() {
-			$('#login').modal('show');
-                    });
-                    $('#balance').html('0');
-                    if (document.URL.split("index.html?j:").length == 2) {
-			roomToJoin = document.URL.split("j:")[1].split("&")[0];
-                    }
-                    if (getCookie("session")) {
-			socket.emit("login", {
-                            session: getCookie("session")
-			});
-                    }
-		}, 500);
-            }
-        });
+	    document.location.reload(true);
+	}, 7500);
     } else {
         callMsg({
             message: "Disconnected from WhiskChat - you can reload the page now.",
@@ -1450,7 +1420,7 @@ function startFlashing(title) {
 
 function chatNotify(user, message, room) {
     if (window.webkitNotifications && window.webkitNotifications.checkPermission() == 0) {
-        var notif = webkitNotifications.createNotification('http://whiskers75.com/whiskchat_logo.png', stripHTML(user), stripHTML(message));
+        var notif = webkitNotifications.createNotification('https://whiskers75.com/whiskchat_logo.png', stripHTML(user), stripHTML(message));
         notif.show();
         setTimeout(function() {
             notif.cancel()
@@ -1460,7 +1430,7 @@ function chatNotify(user, message, room) {
 
 function chatQuickNotify(user, message, room) {
     if (window.webkitNotifications && window.webkitNotifications.checkPermission() == 0) {
-        var notif = webkitNotifications.createNotification('http://whiskers75.com/whiskchat_logo.png', stripHTML(user), stripHTML(message));
+        var notif = webkitNotifications.createNotification('https://whiskers75.com/whiskchat_logo.png', stripHTML(user), stripHTML(message));
         notif.show();
         setTimeout(function() {
             notif.cancel()
