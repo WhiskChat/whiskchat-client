@@ -797,6 +797,7 @@ function sendMsg() {
     if(msg == "/clear" || msg == "/clearchat") {
     	$("#chattext").val('');
     	callMsg({message: "Chat history cleared."});
+    	return;
     } 
     if (msg.substr(0, 5) == "/kick" || msg.substr(0, 7) == "/unkick") {
         if (msg.split(" ").length >= 2) {
