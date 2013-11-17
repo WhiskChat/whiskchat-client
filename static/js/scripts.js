@@ -36,7 +36,7 @@ var usernames = [];
 var online = 0;
 var lastCheck = new Date("1990");
 var hasFocus = true;
-var versionString = 'WhiskChat v2 Beta';
+var versionString = 'WhiskChat Client 2 (beta)';
 var muted = [];
 var pmLock = false;
 var pmLockUser = '';
@@ -81,7 +81,31 @@ function sync() {
         sync: appended
     });
 }
-
+function tutorial() {
+    $('#chattext').html('<center><h1>Tutorial</h1></center>');
+    callMsg({message: 'Hello! Welcome to WhiskChat! <img src="https://whiskchat.com/static/img/smileys/smile.png"></img>'});
+    callMsg({message: 'WhiskChat is a free, open chatroom where talking sense earns you some bitcoins.'});
+    setTimeout(function() {
+	callMsg({message: 'Let\'s start with the basics: the chat bar.'});
+    }, 4000);
+    setTimeout(function() {
+	callMsg({message: 'Insert messages below, and press Enter to say them!'});
+	$('#chatinput').addClass('animated tada');
+    }, 6500);
+    setTimeout(function() {
+        $('#chatinput').removeClass('animated tada');
+        callMsg({message: 'Quality chat earns mBTC (milli-Bitcoins). This balance is reflected in the top-right corner.'});
+        callMsg({message: 'Please note that you must have more than 5 reputation (<i class="icon-gift"></i> 5, given to you by a moderator) to begin earning.'});
+    }, 9500);
+    setTimeout(function() {
+	$('#roomenu').addClass('animated tada');
+	callMsg({message: 'The many functions of WhiskChat are hidden away in the <i class="icon-plus-sign"></i> button, in the lower left.'});
+    }, 12500);
+    setTimeout(function() {
+        $('#roomenu').removeClass('animated tada');
+        callMsg({message: 'That\'s about it for now, enjoy WhiskChat!'});
+    }, 14500);
+}
 function hex2a(hex) {
     var str = '';
     for (var i = 0; i < hex.length; i += 2)
@@ -314,6 +338,9 @@ $(document).ready(function() {
 	setTimeout(function() {
             $('#chatinput').removeClass('animated shake');
 	}, 1000);
+    });
+    $(".tutorial").click(function() {
+        tutorial();
     });
     $("#depositlnk").click(function() {
         $('#chatinput').val('/deposit');
