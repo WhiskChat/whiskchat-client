@@ -322,6 +322,10 @@ $(document).ready(function() {
             $('#chatinput').removeClass('animated shake');
         }, 1000);
     });
+    $("#clearchat").click(function() {
+    	$("#chattext").val('');
+    	callMsg({message: 'Chat history cleared.'});
+    })
     $("#botstate").click(function() {
         srwrap('botgames');
         $('#chatinput').val('!state');
@@ -790,6 +794,11 @@ function sendMsg() {
             });
         }
     }
+    if(msg == "/clear" || msg == "/clearchat") {
+    	$("#chattext").val('');
+    	callMsg({message: "Chat history cleared."});
+    	return;
+    } 
     if (msg.substr(0, 5) == "/kick" || msg.substr(0, 7) == "/unkick") {
         if (msg.split(" ").length >= 2) {
             if (msg.substr(0, 5) == "/kick") {
