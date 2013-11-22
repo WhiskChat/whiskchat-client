@@ -350,7 +350,7 @@ $(document).ready(function() {
         }, 1000);
     });
     $("#clearchat").click(function() {
-    	$("#chattext").val('');
+    	$("#chattext").val('<center><h2 class="muted" style="background-color: #eee; margin: 0px 0;">Connected</h2></center>');
     	callMsg({message: 'Chat history cleared.'});
     })
     $("#botstate").click(function() {
@@ -792,7 +792,7 @@ function sendMsg() {
         }
     }
     if(msg == "/clear" || msg == "/clearchat") {
-    	$("#chattext").val('');
+    	$("#chattext").val('<center><h2 class="muted" style="background-color: #eee; margin: 0px 0;">Connected</h2></center>');
     	callMsg({message: "Chat history cleared."});
     	return;
     } 
