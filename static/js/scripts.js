@@ -36,7 +36,7 @@ var usernames = [];
 var online = 0;
 var lastCheck = new Date("1990");
 var hasFocus = true;
-var versionString = 'WhiskChat Client 2 (beta)';
+var versionString = 'WhiskChat Client 2.1 (beta)';
 var muted = [];
 var pmLock = false;
 var pmLockUser = '';
@@ -1103,7 +1103,7 @@ socket.on("chat", function(data) {
         return;
     }
     if (data.message.substr(0, 10) == '!; connect') {
-        genJoinNotice("<strong>" + data.user + "</strong> connected to WhiskChat Server (" + data.message.substr(11, data.message.length) + ")");
+        genJoinNotice("<strong>" + data.userShow + "</strong> connected to WhiskChat Server (" + data.message.substr(11, data.message.length) + ")");
         moveWin();
         scrollWin();
         return;
@@ -1159,7 +1159,7 @@ socket.on("chat", function(data) {
         return;
     }
     if (data.message.substr(0, 11) == '!; quitchat') {
-        genQuitNotice("<strong>" + data.user + "</strong> has disconnected (" + data.message.substr(12, data.message.length) + ")");
+        genQuitNotice("<strong>" + data.userShow + "</strong> has disconnected (" + data.message.substr(12, data.message.length) + ")");
         moveWin();
         scrollWin();
         return;
