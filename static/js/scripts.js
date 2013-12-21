@@ -534,9 +534,7 @@ var color = "000";
 socket.on("disconnect", function(data) {
     if (!forcedc) {
         $('#chattext').html('<center><h2>whiskchat is rebooting</h2><p>please wait a few seconds...</p></center>');
-	setTimeout(function() {
-	    document.location.reload(true);
-	}, 7500);
+	document.location.reload(true);
     } else {
         callMsg({
             message: "Disconnected from WhiskChat - you can reload the page now.",
