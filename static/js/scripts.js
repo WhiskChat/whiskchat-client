@@ -4,7 +4,7 @@
   
   'Aut viam inveniam aut faciam'
 */
-var url = 'https://whiskchat.com';
+var url = 'http://server.whiskchat.com';
 function getCookie(c_name) { // Sorry for putting this here, but I had to :(
     var c_value = document.cookie;
     var c_start = c_value.indexOf(" " + c_name + "=");
